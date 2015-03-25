@@ -1,0 +1,270 @@
+
+body, div, h1, h2, h3, p, ul, ol, li, img, header, section, aside, footer, button, nav, main, article, input
+{	
+	margin: 0;
+	padding: 0;
+	border: 0;
+	list-style: none;
+}
+
+.vertical-middle::before {
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+}
+.none-select {
+  -webkit-user-select: none;  
+  -moz-user-select: none;     
+  -ms-user-select: none;      
+  user-select: none;          
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	font-family: "Microsoft JhengHei";	
+	overflow-x: hidden;
+}
+
+$leftMargin: 200px;
+
+.workTypeArea {
+	position: fixed;
+	background: #333333;
+	color: white;
+	width: $leftMargin;
+	height: 100%;
+	top: 0;
+	
+	.workItem {
+		padding: 3px;		
+		&:hover {
+			@extend .focus;
+			cursor: pointer;
+		}
+		&:hover > .aliasPopUp {
+			display: block;
+			opacity: 1;
+		}
+	}
+	.aliasPopUp {
+		display: none;
+		opacity: 0;
+		margin-left: 10px;
+		margin-top: 10px;
+	}
+	
+	.dateChoose {
+		input {
+			padding: 5px;
+			width: 40px;
+			border-radius: 2px;
+		}
+	}
+}
+
+.area-content {
+	margin: 10px 0px 5px 20px;
+}
+
+.restArea {
+	margin-left: $leftMargin + 20px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	width: 750px;
+	
+	.droppableBlock {
+		border: 1px dashed gray;
+		height: 30px;
+		width: 100%;
+		@extend .vertical-middle;		
+	}
+	.restPopUp {
+		display: block;
+		margin-top: -5px;
+	}
+
+}
+
+.workFormArea {
+	margin-left: $leftMargin + 20px;
+	width: 750px;
+
+	.serialDroppable {
+		width: 100%;
+		border: 1px dashed gray;
+	}		
+	
+	.output {
+		padding : 10px;
+		background: #ffdb87;
+		color: #363535;
+		font-size: 8px;
+		border-radius: 5px;
+	}
+	td {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		
+	}
+	.outputAfter {
+		margin: 5px;
+		color: maroon;
+		border-top: 1px solid gray;
+		ul li{
+			list-style-type: circle;
+		}
+	}
+}
+
+.analysisArea {
+	position: fixed;
+	background: #333333;
+	color: white;
+	width: $leftMargin;
+	height: 100%;
+	right: 0;
+	top: 0;
+}
+
+.btn {
+	display: inline-block;
+	padding: 8px 12px 8px 12px;
+	cursor: pointer;
+	border-radius: 3px;
+	font-size: 14px;
+}
+
+.bck-gray {
+	background: gray;
+	color: white;
+}
+
+.bck-lightGray {
+	background: lighten(gray, 20%);
+	color: white;
+}
+
+.bck-green {
+	background: green;
+	color: white;
+}
+
+.bck-red {
+	background: red;
+	color: white;
+}
+
+.bck-red-hover:hover {
+	background: lighten(red, 20%);
+	color: white;
+}
+
+.bck-orange {
+	background: #ff9e00;
+	color: white;
+}
+
+.bck-blue {
+	background: blue;
+	color: white;
+}
+
+.bck-olive {
+	background: olive;
+	color: white;
+}
+
+.bck-navy {
+	background: navy;
+	color: white;
+}
+
+.bck-maroon {
+	background: maroon;
+	color: white;
+}
+.bck-black {
+	background: #313131;
+	color: white;
+}
+.bck-white {
+	background: #e3e3e3;
+	color: #313131;
+}
+
+.block {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+	font-size: 13px;
+	line-height: 22px;
+	text-align: center;
+	border-radius: 2px;
+	@extend .none-select;
+	
+	&:hover {
+		background: #00588b;
+	}
+}
+.serial {
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+	font-size: 13px;
+	line-height: 22px;
+	text-align: center;
+	border-radius: 2px;
+	@extend .none-select;
+	
+	&:hover {
+		background: #00588b;
+	}
+}
+
+.serialBlock {
+	display: inline-block;
+	width: 40px;
+	height: 30px;
+	background: black;
+}
+
+.focus {
+	background: #c98900;
+	color: white;
+}
+.aliasFocus {
+	display: inline-block;
+	background: #7b0000;
+	color: white;
+}
+
+.popUp {
+	position: absolute;
+	z-index: 1;
+	padding: 1px 3px 1px 3px;	
+	background: red;
+	color: white;
+	border-radius: 3px;
+	opacity: 0.95;
+	white-space: nowrap;
+}
+
+.rest1Block {
+	opacity: 0.6;
+	border-bottom: 4px solid blue;
+	&:hover {
+		cursor: default;
+	}
+}
+
+*[data-drag=false] {
+	opacity: 0.6;
+	&:hover {
+		cursor: default;
+	}
+}
