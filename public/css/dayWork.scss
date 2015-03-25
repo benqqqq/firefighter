@@ -113,9 +113,15 @@ $leftMargin: 200px;
 	.outputAfter {
 		margin: 5px;
 		color: maroon;
-		border-top: 1px solid gray;
 		ul li{
 			list-style-type: circle;
+		}
+	}
+	.remarkArea {
+		textarea {
+			width: 750px;
+			height: 150px;
+			font-size: 14px;
 		}
 	}
 }
@@ -136,6 +142,10 @@ $leftMargin: 200px;
 	cursor: pointer;
 	border-radius: 3px;
 	font-size: 14px;
+}
+
+.red {
+	color: red;
 }
 
 .bck-gray {

@@ -1,14 +1,15 @@
-var attandArticle = "第一梯次\\n\
-信二52車 　指2    司14     瞄7     副18    救19    鑑\\n\
-信二61車 　指3    司5      瞄8     副\\n\
-信二91車 　司6    副17.D\\n\
-第二梯次\\n\
-信二32 51 71車 指　 司15   副B\\n\
-第三梯次 92車\\n\
-分隊通訊 A.E";
-var memoArticle = "空氣複合瓶 可使用量21支  52車複合瓶6支 61車複合瓶8支 71車複合瓶7支\\n\
-救生艇2艘 橡皮艇2艘  分隊通訊22時後燈火管制\\n\
-20號公假(警大受訓)";
+var attandArticle = "第一梯次\n\
+信二52車 　指    司     瞄     副    救    鑑\n\
+信二61車 　指    司      瞄     副\n\
+信二91車 　司    副\n\
+第二梯次\n\
+信二32 51 71車 指　 司   副\n\
+第三梯次 92車\n\
+分隊通訊 ";
+var memoInit = "空氣複合瓶 可使用量21支  52車複合瓶6支 61車複合瓶8支 71車複合瓶7支\n\
+救生艇2艘 橡皮艇2艘  分隊通訊22時後燈火管制\n";
+var memoPeople = "20號公假(警大受訓)\n"
+var memoArticle = memoInit + memoPeople;
 
 
 var app = angular.module("workApp", ['ngDragDrop']);
@@ -30,7 +31,8 @@ app.controller("formCtrl", function($scope, $http) {
 		{ name : '其他勤務(離隊)', id : 8, css : 'bck-black', str : '離'},
 		{ name : '不在隊', id : -1, css : 'bck-white', str : '-'}
 	];
-	var us = ['A', 'B', 'C', 'D', 'E'];
+	var us = ['A', 'B', 'C', 'D'];
+	
 	
 	
 	$scope.changeWorkType = function(index) {
@@ -47,6 +49,7 @@ app.controller("formCtrl", function($scope, $http) {
 		}		
 		delete $scope.dropSerial;
 		deleteAllNull();
+		$scope.checkWorkPeople();
 	};
 	
 	$scope.dropARest1 = function() {
@@ -105,7 +108,30 @@ app.controller("formCtrl", function($scope, $http) {
 			return $scope.rest2.indexOf(key) != -1;
 		}
 		
-	}
+	};
+	
+	$scope.checkWorkPeople = function() {
+		for (var i in $scope.serials) {
+			var serial = $scope.serials[i];
+			var article = $scope.attandArticle.replace(/[3569][12]/gm, '');
+			if (article.indexOf(serial) == -1) {
+				$scope.serialColor[serial] = 'red';
+			} else {
+				delete $scope.serialColor[serial];
+			}
+		}
+	};
+	
+	$scope.insertRemark = function() {
+		var mp = '';
+		if ($scope.serials.indexOf(1) == -1) {
+			var serial = $scope.serials.indexOf(2) == -1 ? 3 : 2;
+			mp += '1號輪休職務由' + serial + '號代理\n';			
+		} 
+		mp += memoPeople;	// insert the fix words
+		
+		$scope.memoArticle = memoInit + mp;
+	};
 	
 	init();		    			
 	
@@ -116,6 +142,9 @@ app.controller("formCtrl", function($scope, $http) {
 		insertMembers();		
 		createBtnsStorage();
 		$scope.changeWorkType(0);
+		$scope.attandArticle = attandArticle;
+		$scope.memoArticle = memoArticle;
+		$scope.serialColor = {};
 	}
 	
 	function createTimes() {
@@ -353,8 +382,8 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.output += "fillOther('" + $scope.rest4.toString() + "', '_txtVTYPE_D');";
 		$scope.output += "fillOther('" + $scope.rest5.toString() + "', '_txtVTYPE_E');";
 		$scope.output += "fillOther('" + $scope.rest6.toString() + "', '_txtVTYPE_F');";
-		$scope.output += "fillOther('" + attandArticle + "', '_areATTEND');";
-		$scope.output += "fillOther('" + memoArticle + "', '_areMEMO');";
+		$scope.output += "fillOther('" + $scope.attandArticle.replace(/\n/gm, "\\n") + "', '_areATTEND');";
+		$scope.output += "fillOther('" + $scope.memoArticle.replace(/\n/gm, "\\n") + "', '_areMEMO');";
 	};
 	
 	function buildResult() {

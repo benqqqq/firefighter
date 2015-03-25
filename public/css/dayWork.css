@@ -81,10 +81,13 @@ body {
     padding-bottom: 0; }
   .workFormArea .outputAfter {
     margin: 5px;
-    color: maroon;
-    border-top: 1px solid gray; }
+    color: maroon; }
     .workFormArea .outputAfter ul li {
       list-style-type: circle; }
+  .workFormArea .remarkArea textarea {
+    width: 750px;
+    height: 150px;
+    font-size: 14px; }
 
 .analysisArea {
   position: fixed;
@@ -101,6 +104,9 @@ body {
   cursor: pointer;
   border-radius: 3px;
   font-size: 14px; }
+
+.red {
+  color: red; }
 
 .bck-gray {
   background: gray;

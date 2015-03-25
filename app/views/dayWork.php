@@ -24,12 +24,14 @@
 		    		</span><br>
 	    		</span>
 	    	</div>
+<!--
 	    	<h2 class='area-content'>選擇日期</h2>
 	    	<div class='area-content dateChoose' ng-controller='dateCtrl'>
 		    	<input ng-model='dateY' type="number">年<br>
 		    	<input ng-model='dateM' type="number">月
 		    	<input ng-model='dateD' type="number">日
 	    	</div>
+-->
 		</div>
     	
     	<div class='restArea'>
@@ -103,41 +105,13 @@
 			</div>
     	</div>
 
-<!--
-    	<p>輪休</p>
-    	{{ rest1 }}
-    	<p>外宿</p>
-    	{{ rest2 }}
-    	<p>serials</p>
-    	{{ serials }}
-    	
-    	<p>nums</p>
-    	{{ nums }}
-
-		<p>dropRest1</p>
-		{{ dropRest1 }}
-		<p>dropRest2</p>
-		{{ dropRest2 }}
-
-		<p>dropSerial</p>
-		{{ dropSerial }}
--->
-		
     	<div class='workFormArea'>
 			<form method='post' ng-submit="outputForm()">
 				<button class='btn bck-red bck-red-hover' type="submit">輸出</button>
 				<span class='btn bck-orange' ng-click="restart()">重置</span>
 				
 				<span ng-show="output">複製以下文字至Console貼上</span>				
-				<p class='output'>{{ output }}</p>
-				<div ng-show="output" class='outputAfter'>
-					未完工作 : 
-					<ul>
-						<li>檢查新進人員順序</li>
-						<li>填寫出動梯次(1~15日91，16~31日92)</li>
-						<li>填寫備註欄(特休、慰外、公假、榮譽假、任何有附註之內容)</li>						
-					</ul>
-				</div>
+				<p class='output'>{{ output }}</p>				
 				
 				<div class='serialDroppable none-select' ng-model='dropSerial'
 						data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop : 'dropASerial'}">
@@ -163,6 +137,35 @@
 					</table>
 				</div>
 			</form>
+			
+			<div class='remarkArea'>
+				<h3>出動梯次</h3>
+				上班隊員、役男 : 
+				<span ng-repeat="serial in serials">
+					<span ng-class="serialColor[serial]">
+					{{ serial }}
+					</span>
+					, 
+				</span><br>
+				(<span class='red'>紅色</span>為尚未填入以下任一車輛)					
+				<div class='outputAfter'>
+					<ul>
+						<li>91車92車(1~15日91，16~31日92)</li>
+					</ul>
+				</div>
+				<textarea ng-model='attandArticle' ng-change='checkWorkPeople()'></textarea>
+				
+				<h3>備註</h3>
+				<button class='btn bck-orange bck-red-hover' ng-click="insertRemark()">轉換</button> (注意 ! 以下內容將會被覆蓋)
+				<div class='outputAfter'>
+					<ul>
+						<li>特休、慰外、公假、榮譽假、任何有附註之內容需加註</li>						
+					</ul>
+				</div>
+				<textarea ng-model='memoArticle'></textarea>
+				<p>轉換功能目前包括 : 主管代理
+				</p>
+			</div>
     	</div>    	
     	
     	<div class='analysisArea'>
