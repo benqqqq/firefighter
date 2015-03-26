@@ -1,27 +1,13 @@
-<!doctype html>
+@extends('order.layout')
 
-
-<html>
-    <head>
-    	<title>訂餐 - 基隆消防信二分隊</title>
-    	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    	
-    	
-    	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-    	<script src="lib/socket.js"></script>
-    	
-    	
-    	<script src="js/orderCtrl.js"></script>
-    	
-    </head>
-    <body ng-app='orderApp' ng-controller='orderCtrl'>
-    
-        <span ng-bind="orders"></span>
-        
-		<form method='post' ng-submit="">
-			<button type=submit>update</button>
-		</form>
-		
-    </body>
-    
-</html>
+@section('content')
+	@foreach($missions as $mission)
+		<div class='block' onclick="util.toUrl('{{ URL::to("order/$mission->id") }}')">
+			<span class='block-word'>{{{ $mission->name }}}</span>
+			<span class='block-word'>{{{ $mission->store->name }}}</span>
+	    	<span class='block-word'>主揪 : {{{ $mission->user->name }}}</span>
+			<time class='block-word'>{{{ $mission->created_at }}}</time>
+		</div>
+	
+	@endforeach
+@stop        

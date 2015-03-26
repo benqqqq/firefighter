@@ -13,4 +13,8 @@ class Combo extends Eloquent {
 		return $this->hasMany('Item');
 	}
 	
+	public function comboItems() {
+		return $this->hasMany('ComboItem');
+	}
+	
 }

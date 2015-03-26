@@ -14,7 +14,9 @@
 Route::get('/', 'HomeController@show');
 
 Route::get('dayWork', 'DayWorkController@show');
-Route::get('foodOrder', 'OrderController@show');
+Route::get('order/{id}', 'OrderController@showMission');
+Route::get('order', 'OrderController@show');
+
 
 Route::get('api/orders', 'OrderController@addOrder');
 
