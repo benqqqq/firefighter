@@ -35,7 +35,34 @@
 		</div>
     	
     	<div class='restArea'>
-	    	
+	    	<p>(橘框假別可自動產生註解)</p>
+	    	<div class='droppableBlock remarkBlock' ng-model="dropRest7"
+	    		ng-mouseenter="rest7Show = true" ng-mouseleave="rest7Show = false"
+    			data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop : 'dropARest7'}">
+    			<span>特休</span>
+		    	<span class='block bck-gray' ng-repeat="person in rest7" 
+		    		ng-model="rest7[$index]" ng-hide="!rest7[$index]" 
+		    		data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:false}">{{ person }}</span>
+			</div>
+			
+			<div class='droppableBlock remarkBlock' ng-model="dropRest8"
+	    		ng-mouseenter="rest8Show = true" ng-mouseleave="rest8Show = false"
+    			data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop : 'dropARest8'}">
+    			<span>慰外假</span>
+		    	<span class='block bck-gray' ng-repeat="person in rest8" 
+		    		ng-model="rest8[$index]" ng-hide="!rest8[$index]" 
+		    		data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:false}">{{ person }}</span>
+			</div>
+			
+			<div class='droppableBlock remarkBlock' ng-model="dropRest9"
+	    		ng-mouseenter="rest9Show = true" ng-mouseleave="rest9Show = false"
+    			data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop : 'dropARest9'}">
+    			<span>榮譽假</span>
+		    	<span class='block bck-gray' ng-repeat="person in rest9" 
+		    		ng-model="rest9[$index]" ng-hide="!rest9[$index]" 
+		    		data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:false}">{{ person }}</span>
+			</div>
+			<p>
 	    	<div class='droppableBlock' ng-model="dropRest2"
     			data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop : 'dropARest2'}">
     			<span>外宿</span>	
@@ -137,7 +164,13 @@
 					</table>
 				</div>
 			</form>
-			
+			<div class='outputAfter'>
+				<ul>
+					<li>檢查役男時數 > 8小時</li>
+					<li>深救役男需填入車輛保養</li>
+				</ul>
+			</div>
+				
 			<div class='remarkArea'>
 				<h3>出動梯次</h3>
 				上班人員 : 
@@ -160,7 +193,7 @@
 				<p>目前可以產生 : 主管代理註解、返隊註解、勤務時間</p>
 				<div class='outputAfter'>
 					<ul>
-						<li>特休、慰外、公假、榮譽假、任何有附註之內容需加註</li>						
+						<li>其他有附註之內容需加註</li>						
 					</ul>
 				</div>
 				<textarea ng-model='memoArticle'></textarea>

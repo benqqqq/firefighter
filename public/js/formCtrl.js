@@ -31,6 +31,9 @@ app.controller("formCtrl", function($scope, $http) {
 		{ name : '其他勤務(離隊)', id : 8, css : 'bck-black', str : '離'},
 		{ name : '不在隊', id : -1, css : 'bck-white', str : '-'}
 	];
+	$scope.restMapping = {
+		1 : '輪休', 2 : '外宿', 3 : '補休', 4 : '休假', 5 : '差假', 6 : '事病假', 7 : '特休', 8 : '慰外假', 9 : '榮譽假'	
+	};
 	var us = ['A', 'B', 'C', 'D'];
 	
 	
@@ -100,6 +103,28 @@ app.controller("formCtrl", function($scope, $http) {
 		delete $scope.dropRest6;
 		deleteAllNull();
 	};
+	$scope.dropARest7 = function() {
+		$scope.rest7.push($scope.dropRest7);
+		deleteRest1Duplicate($scope.dropRest7);
+		deleteRest2Duplicate($scope.dropRest7);
+		delete $scope.dropRest7;
+		deleteAllNull();
+	};
+	$scope.dropARest8 = function() {
+		$scope.rest8.push($scope.dropRest8);
+		deleteRest1Duplicate($scope.dropRest8);
+		deleteRest2Duplicate($scope.dropRest8);
+		delete $scope.dropRest8;
+		deleteAllNull();
+	};
+	$scope.dropARest9 = function() {
+		$scope.rest9.push($scope.dropRest9);
+		deleteRest1Duplicate($scope.dropRest9);
+		deleteRest2Duplicate($scope.dropRest9);
+		delete $scope.dropRest9;
+		deleteAllNull();
+	};
+	
 	
 	$scope.isInRest2 = function(key) {
 		if (isInt(key)) {
@@ -113,7 +138,7 @@ app.controller("formCtrl", function($scope, $http) {
 	$scope.checkWorkPeople = function() {
 		for (var i in $scope.serials) {
 			var serial = $scope.serials[i];
-			var article = $scope.attandArticle.replace(/[3569][12]/gm, '');
+			var article = $scope.attandArticle.replace(/[35679][12]/gm, '');
 			if (article.indexOf(serial) == -1) {
 				$scope.serialColor[serial] = 'red';
 			} else {
@@ -124,20 +149,45 @@ app.controller("formCtrl", function($scope, $http) {
 	
 	$scope.insertRemark = function() {
 	
-	
 		$scope.memoArticle = memoInit + makeMemoPeople() + makeMemoWork();
 		
 		function makeMemoPeople() {
 			var result = '';
-			if ($scope.serials.indexOf(1) == -1) {
+			if (!$scope.isInArea(0, 1)) {
 				var serial = $scope.serials.indexOf(2) == -1 ? 3 : 2;
-				result += '1號?休職務由' + serial + '號代理\n';			
+				result += '1號' + $scope.restMapping[$scope.whereIs(1)] + '職務由' + serial + '號代理\n';			
 			}
-			for (var serial in $scope.rest1Class) {
-				result += serial + '號21時返隊\n';
+			var skip = {7 : false, 8 : false, 9 : false};
+			for (var i in $scope.all) {
+				var serial = $scope.all[i];
+				if (serial == 1) {
+					continue;
+				}
+				if (!skip[7] && $scope.isInArea(7, serial)) {
+					result += buildConcatStr($scope.rest7) + '號特休\n';
+					skip[7] = true;
+				}
+				if (!skip[8] && $scope.isInArea(8, serial)) {
+					result += buildConcatStr($scope.rest8) + '號慰外假\n';
+					skip[8] = true;
+				}
+				if (!skip[9] && $scope.isInArea(9, serial)) {
+					result += buildConcatStr($scope.rest9) + '號榮譽假\n';
+					skip[9] = true;
+				}
+			}
+			if (Object.keys($scope.rest1Class).length > 0) {				
+				result += buildConcatStr(Object.keys($scope.rest1Class)) + '號21時返隊\n';
 			}
 			result += memoPeople;	// insert the fix words
 			return result;
+		}
+		function buildConcatStr(arr) {
+			var arr = arr.slice();
+			if (arr.indexOf(1) != -1) {
+				arr.splice(arr.indexOf(1), 1);
+			}
+			return arr.sort(mySortFunc).join('.');
 		}
 		
 		function makeMemoWork() {
@@ -226,6 +276,9 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest4 = [];
 		$scope.rest5 = [];
 		$scope.rest6 = [];
+		$scope.rest7 = [];
+		$scope.rest8 = [];
+		$scope.rest9 = [];
 		$scope.rest1Class = {};
 		$scope.analysis = {
 			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0},
@@ -241,6 +294,8 @@ app.controller("formCtrl", function($scope, $http) {
 			$scope.rest1.push(i);
 		}
 		$scope.rest1 = $scope.rest1.concat(us);
+		$scope.all = $scope.rest1.slice();
+		$scope.all.sort(mySortFunc)
 	}
 	
 	function createBtnsStorage() {		
@@ -276,6 +331,9 @@ app.controller("formCtrl", function($scope, $http) {
 		deleteNull($scope.rest4);
 		deleteNull($scope.rest5);
 		deleteNull($scope.rest6);
+		deleteNull($scope.rest7);
+		deleteNull($scope.rest8);
+		deleteNull($scope.rest9);
 		deleteNull($scope.serials);
 	}
 
@@ -442,10 +500,10 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.output += "fillWork(" + JSON.stringify($scope.result) + ");";
 		$scope.output += "fillOther('" + $scope.rest1.toString() + "', '_txtVTYPE_A');";
 		$scope.output += "fillOther('" + $scope.rest2.toString() + "', '_txtVTYPE_B');";
-		$scope.output += "fillOther('" + $scope.rest3.toString() + "', '_txtVTYPE_C');";
-		$scope.output += "fillOther('" + $scope.rest4.toString() + "', '_txtVTYPE_D');";
+		$scope.output += "fillOther('" + $scope.rest3result.toString() + "', '_txtVTYPE_C');";
+		$scope.output += "fillOther('" + $scope.rest4result.toString() + "', '_txtVTYPE_D');";
 		$scope.output += "fillOther('" + $scope.rest5.toString() + "', '_txtVTYPE_E');";
-		$scope.output += "fillOther('" + $scope.rest6.toString() + "', '_txtVTYPE_F');";
+		$scope.output += "fillOther('" + $scope.rest6result.toString() + "', '_txtVTYPE_F');";
 		$scope.output += "fillOther('" + $scope.attandArticle.replace(/\n/gm, "\\n") + "', '_areATTEND');";
 		$scope.output += "fillOther('" + $scope.memoArticle.replace(/\n/gm, "\\n") + "', '_areMEMO');";
 	};
@@ -477,58 +535,62 @@ app.controller("formCtrl", function($scope, $http) {
 		}
 		$scope.rest1.sort(mySortFunc);
 		$scope.rest2.sort(mySortFunc);
-		$scope.rest3.sort(mySortFunc);
-		$scope.rest4.sort(mySortFunc);
+		$scope.rest3result = $scope.rest3.concat($scope.rest7);
+		$scope.rest3result.sort(mySortFunc);
+		$scope.rest4result = $scope.rest4.concat($scope.rest8);
+		$scope.rest4result.sort(mySortFunc);
 		$scope.rest5.sort(mySortFunc);
-		$scope.rest6.sort(mySortFunc);
-				
-		function mySortFunc(a, b) {
-			if (typeof a == 'number' && typeof b == 'number') {
-				return a - b 	
-			} else if (typeof a == 'number') {
-				return -1;
-			} else if (typeof b == 'number'){
-				return 1;
-			} else {
-				return (a > b) ? 1 : -1;
-			}					
-		}
+		$scope.rest6result = $scope.rest6.concat($scope.rest9);
+		$scope.rest6result.sort(mySortFunc);
 	}
+	function mySortFunc(a, b) {
+		if (typeof a == 'number' && typeof b == 'number') {
+			return a - b 	
+		} else if (typeof a == 'number') {
+			return -1;
+		} else if (typeof b == 'number'){
+			return 1;
+		} else {
+			return (a > b) ? 1 : -1;
+		}					
+	}
+	
 	$scope.restart = function() {
 		$scope.output = '';
 		$scope.result = {};
 		init();
 	}
-	
-	$scope.isInArea = function(i, serial) {
-		var storage;
-		switch(i) {
-			case 0: 
-				storage = $scope.serials;
-				break;
-			case 1:
-				storage = $scope.rest1;
-				break;
-			case 2:
-				storage = $scope.rest2;
-				break;
-			case 3:
-				storage = $scope.rest3;
-				break;
-			case 4:
-				storage = $scope.rest4;
-				break;
-			case 5:
-				storage = $scope.rest5;
-				break;
-			case 6:
-				storage = $scope.rest6;
-				break;
-		}
+	$scope.whereIs = function(serial) {
 		if (isInt(serial)) {
 			serial = parseInt(serial);
 		}
-		return (storage.indexOf(serial) != -1);
+		if ($scope.serials.indexOf(serial) != -1) {
+			return 0;
+		} else if ($scope.rest1.indexOf(serial) != -1) {
+			return 1;
+		} else if ($scope.rest2.indexOf(serial) != -1) {
+			return 2;
+		} else if ($scope.rest3.indexOf(serial) != -1) {
+			return 3;
+		} else if ($scope.rest4.indexOf(serial) != -1) {
+			return 4;
+		} else if ($scope.rest5.indexOf(serial) != -1) {
+			return 5;
+		} else if ($scope.rest6.indexOf(serial) != -1) {
+			return 6;
+		} else if ($scope.rest7.indexOf(serial) != -1) {
+			return 7;
+		} else if ($scope.rest8.indexOf(serial) != -1) {
+			return 8;
+		} else if ($scope.rest9.indexOf(serial) != -1) {
+			return 9;
+		} else {
+			return -1;
+		}
+	}
+	
+	$scope.isInArea = function(i, serial) {
+		return $scope.whereIs(serial) == i;
 	}
 	
 });
