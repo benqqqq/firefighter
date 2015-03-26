@@ -95,10 +95,11 @@ $leftMargin: 200px;
 .workFormArea {
 	margin-left: $leftMargin + 20px;
 	width: 750px;
-
+	margin-bottom: 100px;
+	
 	.serialDroppable {
 		width: 100%;
-		border: 1px dashed gray;
+		border: 2px dashed gray;
 	}		
 	
 	.output {

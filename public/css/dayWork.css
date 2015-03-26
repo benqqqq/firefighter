@@ -68,10 +68,11 @@ body {
 
 .workFormArea {
   margin-left: 220px;
-  width: 750px; }
+  width: 750px;
+  margin-bottom: 100px; }
   .workFormArea .serialDroppable {
     width: 100%;
-    border: 1px dashed gray; }
+    border: 2px dashed gray; }
   .workFormArea .output {
     padding: 10px;
     background: #ffdb87;

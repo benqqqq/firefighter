@@ -133,12 +133,7 @@
     	</div>
 
     	<div class='workFormArea'>
-			<form method='post' ng-submit="outputForm()">
-				<button class='btn bck-red bck-red-hover' type="submit">輸出</button>
-				<span class='btn bck-orange' ng-click="restart()">重置</span>
-				
-				<span ng-show="output">複製以下文字至Console貼上</span>				
-				<p class='output'>{{ output }}</p>				
+			<form method='post'>								
 				
 				<div class='serialDroppable none-select' ng-model='dropSerial'
 						data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop : 'dropASerial'}">
@@ -198,6 +193,13 @@
 				</div>
 				<textarea ng-model='memoArticle'></textarea>
 			</div>
+			
+			<button class='btn bck-red bck-red-hover' ng-click='outputForm()'>輸出為文字</button>
+			<span class='btn bck-orange' ng-click="restart()">重置</span>
+			
+			<span ng-show="output">複製以下文字至Console貼上</span>				
+			<p class='output'>{{ output }}</p>
+			
     	</div>    	
     	
     	<div class='analysisArea'>
