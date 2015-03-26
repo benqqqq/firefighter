@@ -140,7 +140,7 @@
 			
 			<div class='remarkArea'>
 				<h3>出動梯次</h3>
-				上班隊員、役男 : 
+				上班人員 : 
 				<span ng-repeat="serial in serials">
 					<span ng-class="serialColor[serial]">
 					{{ serial }}
@@ -156,15 +156,14 @@
 				<textarea ng-model='attandArticle' ng-change='checkWorkPeople()'></textarea>
 				
 				<h3>備註</h3>
-				<button class='btn bck-orange bck-red-hover' ng-click="insertRemark()">轉換</button> (注意 ! 以下內容將會被覆蓋)
+				<button class='btn bck-orange bck-red-hover' ng-click="insertRemark()">產生備註</button> (注意 ! 目前的備註內容將會被覆蓋)
+				<p>目前可以產生 : 主管代理註解、返隊註解、勤務時間</p>
 				<div class='outputAfter'>
 					<ul>
 						<li>特休、慰外、公假、榮譽假、任何有附註之內容需加註</li>						
 					</ul>
 				</div>
 				<textarea ng-model='memoArticle'></textarea>
-				<p>轉換功能目前包括 : 主管代理
-				</p>
 			</div>
     	</div>    	
     	

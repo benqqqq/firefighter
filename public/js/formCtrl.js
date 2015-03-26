@@ -123,14 +123,78 @@ app.controller("formCtrl", function($scope, $http) {
 	};
 	
 	$scope.insertRemark = function() {
-		var mp = '';
-		if ($scope.serials.indexOf(1) == -1) {
-			var serial = $scope.serials.indexOf(2) == -1 ? 3 : 2;
-			mp += '1號輪休職務由' + serial + '號代理\n';			
-		} 
-		mp += memoPeople;	// insert the fix words
+	
+	
+		$scope.memoArticle = memoInit + makeMemoPeople() + makeMemoWork();
 		
-		$scope.memoArticle = memoInit + mp;
+		function makeMemoPeople() {
+			var result = '';
+			if ($scope.serials.indexOf(1) == -1) {
+				var serial = $scope.serials.indexOf(2) == -1 ? 3 : 2;
+				result += '1號?休職務由' + serial + '號代理\n';			
+			}
+			for (var serial in $scope.rest1Class) {
+				result += serial + '號21時返隊\n';
+			}
+			result += memoPeople;	// insert the fix words
+			return result;
+		}
+		
+		function makeMemoWork() {
+			var work = [];
+			var result = [];
+			// travel from the bottom, and push them into a stack
+			var timeIndex = [7, 6, 5, 4, 3, 2, 1, 0, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8];
+			for (var i in timeIndex) {
+				var time = timeIndex[i];			
+								
+				for (var serial in $scope.btnWorkId[time]) {
+					var workId = $scope.btnWorkId[time][serial];
+					var objs = $.grep(work, function(e) { return e.serial == serial; });
+					if (objs.length > 0 && workId != objs[0].workId) {
+						result.push((time+1) + '-' + (objs[0].time+1) + ' \n');
+						work = $.grep(work, function(e) { return !(e.workId == objs[0].workId && e.time == objs[0].time); });
+					}
+				}
+			
+				for (var serial in $scope.btnWorkId[time]) {
+					var workId = $scope.btnWorkId[time][serial];
+					if (!isWork(workId, time)) {
+						continue;
+					}					
+					if ($.grep(work, function(e) { return e.workId == workId; }).length > 0) {
+						continue;
+					} 					
+					work.push({
+						time : time,
+						workId : workId,
+						serial : serial
+					});
+				}
+				
+				if (time == 8) {
+					for (var i in work) {
+						result.push('8-' + (work[i].time+1) + '\n');
+					}
+				}
+			}
+			return result.reverse().join('');
+		}
+		function isWork(id, time) {
+			if (id == 6 && [7, 8].indexOf(parseInt(time)) != -1) {
+				return false;
+			} else {
+				return [1, 9, 10, 11, -1].indexOf(id) == -1;	
+			}			
+		}
+		
+		function matchWorkId(e) {
+			return e.workId == workId;
+		}
+		function matchSerial(e) {
+			return e.serial == serial;
+		}
+
 	};
 	
 	init();		    			
@@ -337,7 +401,7 @@ app.controller("formCtrl", function($scope, $http) {
 			initBtnWithTime(person, 21, 23, true);
 			initBtnWithTime(person, 0, 7, false);
 		} else {
-			$scope.rest1Class[person] = null;
+			delete $scope.rest1Class[person];
 			$scope.serials.splice($scope.serials.indexOf(person), 1);
 		}
 		
