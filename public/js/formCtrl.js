@@ -462,8 +462,7 @@ app.controller("formCtrl", function($scope, $http) {
 			delete $scope.rest1Class[person];
 			$scope.serials.splice($scope.serials.indexOf(person), 1);
 		}
-		
-			
+		$scope.checkWorkPeople();			
 	};	
 	
 	$scope.hoverBlock = function(timeIndex, serialIndex) {

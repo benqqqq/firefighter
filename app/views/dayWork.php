@@ -185,7 +185,7 @@
 				
 				<h3>備註</h3>
 				<button class='btn bck-orange bck-red-hover' ng-click="insertRemark()">產生備註</button> (注意 ! 目前的備註內容將會被覆蓋)
-				<p>目前可以產生 : 主管代理註解、返隊註解、勤務時間</p>
+				<p>目前可以產生 : 主管代理、役男返隊、特休榮譽假慰外假註解、勤務時間</p>
 				<div class='outputAfter'>
 					<ul>
 						<li>其他有附註之內容需加註</li>						
