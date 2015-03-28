@@ -14,5 +14,9 @@ class OrderCombo extends Eloquent {
 		return $this->belongsTo('Combo');
 	}	
 	
+	public function orderComboItems() {
+		return $this->hasMany('OrderComboItem');
+	}
+	
 	
 }

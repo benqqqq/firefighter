@@ -16,7 +16,7 @@ class CreateOrderTables extends Migration {
 		Schema::create('users', function($table) {
 			$table->increments('id');
 			$table->string('name');
-			$table->string('serial');
+			$table->string('serial')->unique();
 			$table->string('password');
 			
 			$table->rememberToken();
@@ -112,6 +112,18 @@ class CreateOrderTables extends Migration {
 			$table->foreign('combo_id')->references('id')->on('combos')->onDelete('cascade');
 			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');			
 		});
+		
+		Schema::create('orderComboItems', function($table) {
+			$table->increments('id');			
+			$table->string('optStr')->default('');
+			$table->integer('optPrice')->default(0);
+			$table->integer('quantity')->default(1);
+			$table->integer('item_id')->unsigned();			
+			$table->integer('order_combo_id')->unsigned();
+			
+			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
+			$table->foreign('order_combo_id')->references('id')->on('orderCombos')->onDelete('cascade');			
+		});
 	}
 
 	/**
@@ -122,6 +134,7 @@ class CreateOrderTables extends Migration {
 	public function down()
 	{				
 		Schema::drop('orderItems');
+		Schema::drop('orderComboItems');
 		Schema::drop('orderCombos');
 		Schema::drop('orders');
 		Schema::drop('missions');

@@ -52,7 +52,8 @@ class OrderSeeder extends Seeder {
 		$store1->combos()->saveMany([$combo1, $combo2]);
 		
 		$comboItem1 = ComboItem::create(['combo_id' => $combo1->id, 'item_id' => $drink1->id]);
-		CtrlUtil::setOpt($comboItem1, [$drink1->opts[0]->id, $drink1->opts[3]->id]);
+		$comboItem1 = CtrlUtil::setOpt($comboItem1, [$drink1->opts[0]->id, $drink1->opts[3]->id]);
+		$comboItem1->save();
 		$comboItem2 = ComboItem::create(['combo_id' => $combo1->id, 'item_id' => $item1->id]);
 		$comboItem3 = ComboItem::create(['combo_id' => $combo2->id, 'item_id' => $item2->id]);
 		$comboItem4 = ComboItem::create(['combo_id' => $combo2->id, 'item_id' => $drink2->id]);
@@ -72,8 +73,9 @@ class OrderSeeder extends Seeder {
 		$mission = Mission::create(['name' => '週四早餐', 'user_id' => $user1->id, 'store_id' => $store1->id]);		
 		$order = Order::create(['user_id' => $user2->id, 'mission_id' => $mission->id]);
 		$orderItem = OrderItem::create(['item_id' => $item1->id, 'order_id' => $order->id]);
-		CtrlUtil::setOpt($orderItem, [$item1->opts[0]->id]);
-		$orderCombo = OrderCombo::create(['combo_id' => $combo1->id, 'order_id' => $order->id]);
+		$orderItem = CtrlUtil::setOpt($orderItem, [$item1->opts[0]->id]);
+		$orderItem->save();
+		/* $orderCombo = OrderCombo::create(['combo_id' => $combo1->id, 'order_id' => $order->id]); */
 	}
 
 }

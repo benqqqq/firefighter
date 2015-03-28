@@ -17,8 +17,12 @@ Route::get('dayWork', 'DayWorkController@show');
 Route::get('order/{id}', 'OrderController@showMission');
 Route::get('order', 'OrderController@show');
 
+Route::get('login', 'UserController@showLogin');
+Route::post('login', 'UserController@doLogin');
+Route::get('logout', 'UserController@doLogout');
 
-Route::get('api/orders', 'OrderController@addOrder');
+
+Route::post('api/order/add', 'OrderController@addOrder');
 
 if (file_exists(__DIR__.'/controllers/Server.php')) {
     Route::get('/server', 'Server@show');

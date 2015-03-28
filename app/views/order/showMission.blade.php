@@ -1,6 +1,13 @@
 @extends('order.layout')
 
+@section('head')
+
+@stop
+
 @section('content')
+	<span ng-init="url = '{{ URL::to("") }}'"></span>
+	<span ng-init="missionId = {{ $mission->id }}"></span>
+	<span ng-init='initOpts({{ $mission->store->combos }})'></span>
 	
 	<div class='block'>
 		<span class='block-word'>{{{ $mission->name }}}</span>
@@ -17,41 +24,68 @@
 		
 		<h2>菜單</h2>
 		@foreach ($mission->store->items as $item)
-			<span>{{{ $item->name }}}</span>
+			<span ng-click="showItemOpt[{{ $item->id }}] = !showItemOpt[{{ $item->id }}]">{{{ $item->name }}}</span>
+			<span ng-show="showItemOpt[{{ $item->id }}]">
+				@if (count($item->opts) > 0)
+					- 
+				@endif
+				
+				@foreach ($item->opts as $opt)
+					<input type='checkbox' ng-model='itemOpt[{{ $item->id }}][{{ $opt->id }}]'>
+					<span>{{{ $opt->name }}}</span> 
+				@endforeach				
+				
+				<span ng-click="orderItem({{ $item->id }})">訂</span>
+			</span>
 			<br>
 		@endforeach
 				
 		
 		@foreach ($mission->store->combos as $combo)			
-			<span>{{{ $combo->name }}}</span>
-			(
-			@foreach ($combo->comboItems as $comboItem)
-				<span>{{{ $comboItem->item->name }}}</span>
-			@endforeach
-			)
-			<br>
+			<div>
+				<span>{{{ $combo->name }}}</span>
+				(
+				@foreach ($combo->comboItems as $comboItem)
+					<span>{{{ $comboItem->item->name }}}</span>
+					<span>
+						@if (count($comboItem->item->opts) > 0)
+							-
+						@endif
+						
+						@foreach ($comboItem->item->opts as $opt)
+							<input type='checkbox' ng-model='comboItemOpt[{{ $combo->id }}][{{ $comboItem->id }}][{{ $opt->id }}]'>
+							<span>{{{ $opt->name }}}</span> 
+						@endforeach
+					</span>
+				@endforeach
+				)				
+				<span ng-click="orderCombo({{ $combo->id }})">訂</span>
+			</div>
 		@endforeach
 	</div>
 	
-	<div class='order'>
+	<div class='order' ng-init='orders = {{ $mission->orders }}'>
 		<h2>訂單</h2>
-		@foreach ($mission->orders as $order)
-			<span>{{{ $order->user->name }}}</span>
-			<br>
-			@foreach ($order->orderItems as $orderItem)
-				<span>{{{ $orderItem->item->name }}} * {{{ $orderItem->quantity }}}</span>
-			@endforeach
-			<br>
-			@foreach ($order->orderCombos as $orderCombo)
-				<span>{{{ $orderCombo->combo->name }}}</span>
-				(
-				@foreach ($orderCombo->combo->comboItems as $comboItem)
-					<span>{{{ $comboItem->item->name }}}</span>
-				@endforeach
-				) * {{{ $orderCombo->quantity }}}
-			@endforeach
-			
-		@endforeach
+		<div ng-repeat='order in orders'>
+			<p ng-bind='order.user.serial'></p>
+			<p ng-repeat='orderItem in order.order_items'>
+				<span ng-bind='orderItem.item.name'></span>
+				(<span ng-bind='orderItem.optStr'></span>)
+				<span> * </span>
+				<span ng-bind='orderItem.quantity'></span>
+			</p>
+			<p ng-repeat='orderCombo in order.order_combos'>
+				<span ng-bind='orderCombo.combo.name'></span>
+				
+				[
+				<span ng-repeat='orderComboItem in orderCombo.order_combo_items'>
+					<span ng-bind='orderComboItem.item.name'></span>
+					(<span ng-bind='orderComboItem.optStr'></span>)
+				</span>
+				] * <span ng-bind='orderCombo.quantity'></span>
+				
+			</p>			
+		</div>
 	</div>
 	
 @stop        

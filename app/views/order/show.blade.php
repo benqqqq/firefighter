@@ -1,6 +1,7 @@
 @extends('order.layout')
 
 @section('content')
+	
 	@foreach($missions as $mission)
 		<div class='block' onclick="util.toUrl('{{ URL::to("order/$mission->id") }}')">
 			<span class='block-word'>{{{ $mission->name }}}</span>
