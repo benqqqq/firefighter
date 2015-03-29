@@ -18,5 +18,12 @@ class OrderCombo extends Eloquent {
 		return $this->hasMany('OrderComboItem');
 	}
 	
+	public function decrease() {
+		--$this->quantity;
+		$this->save();
+		if ($this->quantity < 1) {
+			$this->delete();
+		}
+	}	
 	
 }

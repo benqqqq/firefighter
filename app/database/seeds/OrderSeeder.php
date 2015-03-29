@@ -24,6 +24,7 @@ class OrderSeeder extends Seeder {
 	private function createUser() {
 		User::create(['name' => '管理員', 'serial' => 0, 'password' => Hash::make('admin')]);
 		User::create(['name' => 'AAA', 'serial' => 'A', 'password' => Hash::make('admin')]);
+		User::create(['name' => '1', 'serial' => '1', 'password' => Hash::make('admin')]);
 	}
 	
 	private function createStore() {

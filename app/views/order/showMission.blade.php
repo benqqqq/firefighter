@@ -24,8 +24,8 @@
 		
 		<h2>菜單</h2>
 		@foreach ($mission->store->items as $item)
-			<span ng-click="showItemOpt[{{ $item->id }}] = !showItemOpt[{{ $item->id }}]">{{{ $item->name }}}</span>
-			<span ng-show="showItemOpt[{{ $item->id }}]">
+			<span>{{{ $item->name }}}</span>
+			<span>
 				@if (count($item->opts) > 0)
 					- 
 				@endif
@@ -73,6 +73,7 @@
 				(<span ng-bind='orderItem.optStr'></span>)
 				<span> * </span>
 				<span ng-bind='orderItem.quantity'></span>
+				<span ng-click="decreaseOrderItem(orderItem.id)">刪</span>
 			</p>
 			<p ng-repeat='orderCombo in order.order_combos'>
 				<span ng-bind='orderCombo.combo.name'></span>
@@ -83,7 +84,7 @@
 					(<span ng-bind='orderComboItem.optStr'></span>)
 				</span>
 				] * <span ng-bind='orderCombo.quantity'></span>
-				
+				<span ng-click="decreaseOrderCombo(orderCombo.id)">刪</span>
 			</p>			
 		</div>
 	</div>

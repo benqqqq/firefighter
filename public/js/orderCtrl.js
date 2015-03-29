@@ -85,5 +85,18 @@ app.controller("orderCtrl", function($scope, socket) {
 			optIds : optIds
 		}, null, 'post');
 	};
+	
+	$scope.decreaseOrderItem = function(id) {
+		decreaseOrder('item', id);
+	}
+	$scope.decreaseOrderCombo = function(id) {
+		decreaseOrder('combo', id);
+	}
+	function decreaseOrder(type, id) {
+		util.ajax($scope.url + '/api/order/decrease', {
+			type : type,
+			id : id
+		}, null, 'post');
+	}
 	    
 });

@@ -30,7 +30,7 @@ class OrderController extends BaseController {
 		if ($order == null) {
 			$order = Order::create(['user_id' => Auth::id(), 'mission_id' => $missionId]);	
 		}		
-		if ($type == 'item') {						
+		if ($type === 'item') {						
 			$inputOrderItem = new OrderItem(['item_id' => $id, 'order_id' => $order->id, 'quantity' => 0]);
 			$inputOrderItem = CtrlUtil::setOpt($inputOrderItem, $opts);
 			$orderItem = OrderItem::where(['item_id' => $id, 'order_id' => $order->id, 'optStr' => $inputOrderItem->optStr])->first();			
@@ -72,9 +72,27 @@ class OrderController extends BaseController {
 				}
 			}
 		}		
+		$this->updateOrder($missionId);
+		
+	}	
+	public function decreaseOrder() {
+		if (!Auth::check()) {
+			return;
+		}
+		$type = Input::get('type');
+		$id = Input::get('id');
+		$orderThing = ($type == 'item') ? OrderItem::find($id) : OrderCombo::find($id);
+		if ($orderThing->order->user->id != Auth::id()) {
+			return;
+		}
+		$missionId = $orderThing->order->mission->id;
+		$orderThing->decrease();		
+		$this->updateOrder($missionId);		
+	}
+	private function updateOrder($missionId) {
 		$orders = Order::where('mission_id', $missionId)->with('user', 'orderItems.item', 
 			'orderCombos.combo', 'orderCombos.orderComboItems.item')->get();
 		Event::fire(\Realtime\OrderUpdatedEventHandler::EVENT, $orders);
-	}	
+	}
 
 }

@@ -14,5 +14,13 @@ class OrderItem extends Eloquent {
 		return $this->belongsTo('Item');
 	}	
 	
+	public function decrease() {
+		--$this->quantity;
+		$this->save();
+		if ($this->quantity < 1) {
+			$this->delete();
+		}
+	}
+	
 	
 }
