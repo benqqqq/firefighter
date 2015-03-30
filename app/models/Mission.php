@@ -15,4 +15,12 @@ class Mission extends Eloquent {
 	public function orders() {
 		return $this->hasMany('Order');
 	}
+	
+	public function orderItems() {
+		return $this->hasManyThrough('OrderItem', 'Order');
+	}
+	
+	public function orderCombos() {
+		return $this->hasManyThrough('OrderCombo', 'Order');
+	}
 }

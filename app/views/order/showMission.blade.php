@@ -8,6 +8,7 @@
 	<span ng-init="url = '{{ URL::to("") }}'"></span>
 	<span ng-init="missionId = {{ $mission->id }}"></span>
 	<span ng-init='initOpts({{ $mission->store->combos }})'></span>
+	<span ng-init='statistic = {{ $statistic }}'></span>
 	
 	<div class='block'>
 		<span class='block-word'>{{{ $mission->name }}}</span>
@@ -25,18 +26,19 @@
 		<h2>菜單</h2>
 		@foreach ($mission->store->items as $item)
 			<span>{{{ $item->name }}}</span>
-			<span>
-				@if (count($item->opts) > 0)
-					- 
-				@endif
-				
-				@foreach ($item->opts as $opt)
-					<input type='checkbox' ng-model='itemOpt[{{ $item->id }}][{{ $opt->id }}]'>
-					<span>{{{ $opt->name }}}</span> 
-				@endforeach				
-				
-				<span ng-click="orderItem({{ $item->id }})">訂</span>
-			</span>
+			<span>{{{ $item->price }}}$</span>
+			@if (count($item->opts) > 0)
+				- 
+			@endif
+			
+			@foreach ($item->opts as $opt)
+				<input type='checkbox' ng-model='itemOpt[{{ $item->id }}][{{ $opt->id }}]' 
+					ng-change='changeItemPrice({{ $item->id }}, {{ $opt->id }}, {{ $opt->price }})'>
+				<span>{{{ $opt->name }}}</span> 
+				<span>+{{{ $opt->price }}}$</span>
+			@endforeach				
+			> <span ng-bind='iPrice[{{ $item->id }}]' ng-init='iPrice[{{ $item->id }}] = {{ $item->price }}'></span>$
+			<span ng-click="orderItem({{ $item->id }})">訂</span>
 			<br>
 		@endforeach
 				
@@ -87,6 +89,27 @@
 				<span ng-click="decreaseOrderCombo(orderCombo.id)">刪</span>
 			</p>			
 		</div>
+	</div>
+	
+	<div class='statistic'>
+		<h2>統計</h2>
+		<p ng-repeat='item in statistic.item'>
+			<span ng-bind='item.name'></span>
+			(
+			<span ng-bind='item.optStr'></span>
+			) * 
+			<span ng-bind='item.quantity'></span>
+		</p>
+		<p ng-repeat='combo in statistic.combo'>
+			<span ng-bind='combo.name'></span>
+			[
+			<span ng-repeat='item in combo.items'>
+				<span ng-bind='item.name'></span>
+				(<span ng-bind='item.optStr'></span>)
+			</span>
+			] *
+			<span ng-bind='combo.quantity'></span>
+		</p>
 	</div>
 	
 @stop        

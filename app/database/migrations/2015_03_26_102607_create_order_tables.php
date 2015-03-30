@@ -108,6 +108,7 @@ class CreateOrderTables extends Migration {
 			$table->integer('combo_id')->unsigned();			
 			$table->integer('order_id')->unsigned();
 			$table->integer('quantity')->default(1);
+			$table->string('optStr')->default('');
 			
 			$table->foreign('combo_id')->references('id')->on('combos')->onDelete('cascade');
 			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');			

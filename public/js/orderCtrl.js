@@ -27,9 +27,9 @@ app.factory('socket', function ($rootScope) {
 app.controller("orderCtrl", function($scope, socket) {
 	
     socket.on('orders.update', function (data) {
-		$scope.orders = JSON.parse(data);
-		    	
-
+    	var data = JSON.parse(data);
+		$scope.orders = data.orders;
+		$scope.statistic = data.statistic;		    	
     });
     
     $scope.itemOpt = {};
@@ -97,6 +97,14 @@ app.controller("orderCtrl", function($scope, socket) {
 			type : type,
 			id : id
 		}, null, 'post');
+	}
+	
+	$scope.changeItemPrice = function(itemId, optId, optPrice) {
+		if ($scope.itemOpt[itemId][optId]) {
+			$scope.iPrice[itemId] += optPrice;
+		} else {
+			$scope.iPrice[itemId] -= optPrice;
+		}
 	}
 	    
 });
