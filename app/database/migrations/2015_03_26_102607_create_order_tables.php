@@ -34,7 +34,9 @@ class CreateOrderTables extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->integer('price')->unsigned();
-			$table->boolean('isIndependent')->default(true);
+			$table->string('optStr')->default('');
+			$table->integer('optPrice')->default(0);
+						
 			$table->integer('store_id')->unsigned();
 			
 			$table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');			
@@ -58,16 +60,17 @@ class CreateOrderTables extends Migration {
 			$table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');			
 		});
 		
-		Schema::create('comboItems', function($table) {
+		Schema::create('combo_item', function($table) {
 			$table->increments('id');
+			$table->integer('combo_id')->unsigned();
+			$table->integer('item_id')->unsigned();			
 			$table->string('optStr')->default('');
 			$table->integer('optPrice')->default(0);
-			$table->integer('item_id')->unsigned();
-			$table->integer('combo_id')->unsigned();
-			
-			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-			$table->foreign('combo_id')->references('id')->on('combos')->onDelete('cascade');			
-		});
+						
+			$table->foreign('combo_id')->references('id')->on('combos')->onDelete('cascade');
+			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');						
+		});	
+		
 		
 		Schema::create('missions', function($table) {
 			$table->increments('id');
@@ -91,40 +94,41 @@ class CreateOrderTables extends Migration {
 			$table->foreign('mission_id')->references('id')->on('missions')->onDelete('cascade');	
 		});
 
-		Schema::create('orderItems', function($table) {
-			$table->increments('id');			
+		Schema::create('item_order', function($table) {
+			$table->increments('id');
+			$table->integer('order_id')->unsigned();
+			$table->integer('item_id')->unsigned();			
 			$table->string('optStr')->default('');
 			$table->integer('optPrice')->default(0);
-			$table->integer('quantity')->default(1);
-			$table->integer('item_id')->unsigned();			
-			$table->integer('order_id')->unsigned();
-			
-			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');			
-		});
+			$table->integer('quantity')->default(0);
+						
+			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');						
+		});	
+
 		
-		Schema::create('orderCombos', function($table) {
+		Schema::create('ordercombos', function($table) {
 			$table->increments('id');
 			$table->integer('combo_id')->unsigned();			
 			$table->integer('order_id')->unsigned();
-			$table->integer('quantity')->default(1);
+			$table->integer('quantity')->default(0);
 			$table->string('optStr')->default('');
 			
 			$table->foreign('combo_id')->references('id')->on('combos')->onDelete('cascade');
 			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');			
 		});
 		
-		Schema::create('orderComboItems', function($table) {
-			$table->increments('id');			
+		Schema::create('item_ordercombo', function($table) {
+			$table->increments('id');
+			$table->integer('ordercombo_id')->unsigned();
+			$table->integer('item_id')->unsigned();			
 			$table->string('optStr')->default('');
 			$table->integer('optPrice')->default(0);
-			$table->integer('quantity')->default(1);
-			$table->integer('item_id')->unsigned();			
-			$table->integer('order_combo_id')->unsigned();
-			
-			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-			$table->foreign('order_combo_id')->references('id')->on('orderCombos')->onDelete('cascade');			
-		});
+						
+			$table->foreign('ordercombo_id')->references('id')->on('ordercombos')->onDelete('cascade');
+			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');						
+		});	
+	
 	}
 
 	/**
@@ -134,18 +138,17 @@ class CreateOrderTables extends Migration {
 	 */
 	public function down()
 	{				
-		Schema::drop('orderItems');
-		Schema::drop('orderComboItems');
-		Schema::drop('orderCombos');
+		Schema::drop('item_ordercombo');
+		Schema::drop('ordercombos');
+		Schema::drop('item_order');
 		Schema::drop('orders');
 		Schema::drop('missions');
 		Schema::drop('users');
 		Schema::drop('opts');
-		Schema::drop('comboItems');
+		Schema::drop('combo_item');
 		Schema::drop('items');
 		Schema::drop('combos');
-		Schema::drop('stores');
-		
+		Schema::drop('stores');		
 	}
 
 }

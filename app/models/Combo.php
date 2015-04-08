@@ -10,11 +10,7 @@ class Combo extends Eloquent {
 	}
 	
 	public function items() {
-		return $this->hasMany('Item');
-	}
-	
-	public function comboItems() {
-		return $this->hasMany('ComboItem');
+		return $this->belongsToMany('Item')->withPivot('optStr', 'optPrice');
 	}
 	
 }

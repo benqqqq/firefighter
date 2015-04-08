@@ -14,8 +14,8 @@ class OrderCombo extends Eloquent {
 		return $this->belongsTo('Combo');
 	}	
 	
-	public function orderComboItems() {
-		return $this->hasMany('OrderComboItem');
+	public function items() {
+		return $this->belongsToMany('Item', 'item_orderCombo', 'ordercombo_id', 'item_id')->withPivot('optStr', 'optPrice');
 	}
 	
 	public function decrease() {

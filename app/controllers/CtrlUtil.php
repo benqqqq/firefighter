@@ -29,4 +29,16 @@ class CtrlUtil {
 		}
 		return $optStr;
 	}
+	
+	public static function getOptPrice($optIds) {
+		if ($optIds == null) {
+			return 0;
+		}
+		$optPrice = 0;
+		foreach($optIds as $optId) {
+			$opt = Opt::find($optId);
+			$optPrice += $opt->price;
+		}
+		return $optPrice;
+	}
 }

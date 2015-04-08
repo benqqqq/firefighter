@@ -31,23 +31,33 @@ app.controller("orderCtrl", function($scope, socket) {
 		$scope.orders = data.orders;
 		$scope.statistic = data.statistic;		    	
     });
-    
+ 
+    $scope.iPrice = {};
+    $scope.cPrice = {};
     $scope.itemOpt = {};
     $scope.comboItemOpt = {};
-    $scope.initOpts = function(combos) {
+    $scope.initStore = function(items, combos) {
+    	for (var i in items) {
+	    	var item = items[i];
+	    	$scope.iPrice[item.id] = item.price;
+	    	$scope.itemOpt[item.id] = {};	    	
+	    	for (var j in item.opts) {
+		    	var opt = item.opts[j];
+		    	$scope.itemOpt[item.id][opt.id] = (item.optStr.indexOf(opt.name) != -1);
+		    	$scope.initItemPrice(item.id, opt.id, opt.price);
+	    	}
+    	}
 	    for (var i in combos) {
 	    	var combo = combos[i];
+	    	$scope.cPrice[combo.id] = combo.price;
 	    	$scope.comboItemOpt[combo.id] = {};
-		    for (var j in combo.combo_items) {
-			    var comboItem = combos[i].combo_items[j];
-			    $scope.comboItemOpt[combo.id][comboItem.id] = {};
-			    for (var k in comboItem.item.opts) {
-				    var opt = comboItem.item.opts[k];
-				    if (comboItem.optStr.indexOf(opt.name) != -1) {
-					    $scope.comboItemOpt[combo.id][comboItem.id][opt.id] = true;
-				    } else {
-					    $scope.comboItemOpt[combo.id][comboItem.id][opt.id] = false;
-				    }
+		    for (var j in combo.items) {
+			    var item = combos[i].items[j];
+			    $scope.comboItemOpt[combo.id][item.id] = {};
+			    for (var k in item.opts) {
+				    var opt = item.opts[k];
+				    $scope.comboItemOpt[combo.id][item.id][opt.id]= (item.pivot.optStr.indexOf(opt.name) != -1);
+				    $scope.initComboPrice(combo.id, item.id, opt.id, opt.price);
 			    }
 		    }
 	    }
@@ -66,12 +76,12 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 	$scope.orderCombo = function(id) {
 		var optIds = {};
-		for (var comboItemId in $scope.comboItemOpt[id]) {
-			var comboItem = $scope.comboItemOpt[id][comboItemId];
-			optIds[comboItemId] = [];			
-			for (optId in comboItem) {
-				if (comboItem[optId]) {
-					optIds[comboItemId].push(parseInt(optId));
+		for (var itemId in $scope.comboItemOpt[id]) {
+			var item = $scope.comboItemOpt[id][itemId];
+			optIds[itemId] = [];			
+			for (optId in item) {
+				if (item[optId]) {
+					optIds[itemId].push(parseInt(optId));
 				}				
 			}
 		}	
@@ -86,25 +96,35 @@ app.controller("orderCtrl", function($scope, socket) {
 		}, null, 'post');
 	};
 	
-	$scope.decreaseOrderItem = function(id) {
-		decreaseOrder('item', id);
+	$scope.decreaseItem = function(orderId, id, optStr) {
+		decreaseOrder('item', orderId, id, optStr);
 	}
 	$scope.decreaseOrderCombo = function(id) {
 		decreaseOrder('combo', id);
 	}
-	function decreaseOrder(type, id) {
+	function decreaseOrder(type, orderId, id, optStr) {
 		util.ajax($scope.url + '/api/order/decrease', {
 			type : type,
-			id : id
+			orderId : orderId,
+			id : id,
+			optStr : optStr
 		}, null, 'post');
 	}
 	
+	$scope.initItemPrice = function(itemId, optId, optPrice) {
+		$scope.iPrice[itemId] += ($scope.itemOpt[itemId][optId]) ? optPrice : 0;
+	}
+	
 	$scope.changeItemPrice = function(itemId, optId, optPrice) {
-		if ($scope.itemOpt[itemId][optId]) {
-			$scope.iPrice[itemId] += optPrice;
-		} else {
-			$scope.iPrice[itemId] -= optPrice;
-		}
+		$scope.iPrice[itemId] += ($scope.itemOpt[itemId][optId]) ? optPrice : -1 * optPrice;
+	}
+	
+	$scope.initComboPrice = function(comboId, itemId, optId, optPrice) {
+		$scope.cPrice[comboId] += ($scope.comboItemOpt[comboId][itemId][optId]) ? optPrice : 0;
+	}
+	
+	$scope.changeComboPrice = function(comboId, itemId, optId, optPrice) {
+		$scope.cPrice[comboId] += ($scope.comboItemOpt[comboId][itemId][optId]) ? optPrice : -1 * optPrice;
 	}
 	    
 });
