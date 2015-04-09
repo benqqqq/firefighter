@@ -17,7 +17,7 @@ class Mission extends Eloquent {
 	}
 	
 	public function items() {
-		return $this->hasManyThrough('Item', 'Order')->withPivot('optStr', 'optPrice');
+		return $this->hasManyThrough('Item', 'Order');
 	}
 	
 	public function orderCombos() {

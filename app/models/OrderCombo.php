@@ -15,10 +15,10 @@ class OrderCombo extends Eloquent {
 	}	
 	
 	public function items() {
-		return $this->belongsToMany('Item', 'item_orderCombo', 'ordercombo_id', 'item_id')->withPivot('optStr', 'optPrice');
+		return $this->belongsToMany('Item', 'item_ordercombo', 'ordercombo_id', 'item_id')->withPivot('optStr', 'optPrice');
 	}
 	
-	public function decrease() {
+	public function decrementQuantity() {
 		--$this->quantity;
 		$this->save();
 		if ($this->quantity < 1) {

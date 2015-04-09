@@ -30,4 +30,7 @@ class Order extends Eloquent {
 		}
 		DB::table('item_order')->where(['order_id' => $this->id, 'item_id' => $id, 'optStr' => $optStr])->decrement('quantity');		
 	}
+	public function decrementComboQuantity($id) {
+		OrderCombo::find($id)->decrementQuantity();
+	}
 }

@@ -96,13 +96,13 @@ app.controller("orderCtrl", function($scope, socket) {
 		}, null, 'post');
 	};
 	
-	$scope.decreaseItem = function(orderId, id, optStr) {
-		decreaseOrder('item', orderId, id, optStr);
+	$scope.decrementItem = function(orderId, id, optStr) {
+		decrementOrder('item', orderId, id, optStr);
 	}
-	$scope.decreaseOrderCombo = function(id) {
-		decreaseOrder('combo', id);
+	$scope.decrementCombo = function(orderId, id) {
+		decrementOrder('combo', orderId, id);
 	}
-	function decreaseOrder(type, orderId, id, optStr) {
+	function decrementOrder(type, orderId, id, optStr) {
 		util.ajax($scope.url + '/api/order/decrease', {
 			type : type,
 			orderId : orderId,
@@ -126,5 +126,35 @@ app.controller("orderCtrl", function($scope, socket) {
 	$scope.changeComboPrice = function(comboId, itemId, optId, optPrice) {
 		$scope.cPrice[comboId] += ($scope.comboItemOpt[comboId][itemId][optId]) ? optPrice : -1 * optPrice;
 	}
-	    
+	
+	$scope.getOrderPrice = function(order) {
+		var price = 0;
+		for (var i in order.items) {
+			var item = order.items[i];
+			price += (item.price + item.pivot.optPrice) * item.pivot.quantity;
+		}
+		for (var i in order.order_combos) {
+			var orderCombo = order.order_combos[i];
+			price += (orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity;
+		}
+		return price;
+	}
+	
+	$scope.paid = [];
+	$scope.editPaid = function(orderId) {		
+		if ($scope.paid[orderId] == null) {
+			return;
+		}
+		util.ajax($scope.url + '/api/order/paid', {
+			orderId : orderId,
+			paid : $scope.paid[orderId]
+		}, null, 'post');
+	}
+	$scope.remark = [];
+	$scope.editRemark = function(orderId) {
+		util.ajax($scope.url + '/api/order/remark', {
+			orderId : orderId,
+			remark : $scope.remark[orderId]
+		}, null, 'post');
+	}
 });

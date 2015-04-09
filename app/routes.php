@@ -23,7 +23,9 @@ Route::get('logout', 'UserController@doLogout');
 
 
 Route::post('api/order/add', 'OrderController@addOrder');
-Route::post('api/order/decrease', 'OrderController@decreaseOrder');
+Route::post('api/order/decrease', 'OrderController@decrementOrder');
+Route::post('api/order/paid', 'OrderController@paid');
+Route::post('api/order/remark', 'OrderController@remark');
 
 if (file_exists(__DIR__.'/controllers/Server.php')) {
     Route::get('/server', 'Server@show');

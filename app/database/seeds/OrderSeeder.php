@@ -71,8 +71,10 @@ class OrderSeeder extends Seeder {
 		$combo1 = Combo::where('name', 'A套餐')->first();
 		
 		$mission = Mission::create(['name' => '週四早餐', 'user_id' => $user1->id, 'store_id' => $store1->id]);
+/*
 		$order = Order::create(['user_id' => $user2->id, 'mission_id' => $mission->id]);
 		$order->items()->sync([$item1->id => ['optPrice' => 5, 'optStr' => '加蛋'], $drink1->id]);
+*/
 		
 	}
 

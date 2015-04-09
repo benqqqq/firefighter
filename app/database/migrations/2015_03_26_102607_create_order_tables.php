@@ -88,10 +88,12 @@ class CreateOrderTables extends Migration {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('mission_id')->unsigned();
-			$table->timestamps();
+			$table->integer('paid')->default(0);
+			$table->text('remark');
 			
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');	
 			$table->foreign('mission_id')->references('id')->on('missions')->onDelete('cascade');	
+			$table->timestamps();
 		});
 
 		Schema::create('item_order', function($table) {
@@ -113,6 +115,7 @@ class CreateOrderTables extends Migration {
 			$table->integer('order_id')->unsigned();
 			$table->integer('quantity')->default(0);
 			$table->string('optStr')->default('');
+			$table->integer('optPrice')->default(0);
 			
 			$table->foreign('combo_id')->references('id')->on('combos')->onDelete('cascade');
 			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');			
