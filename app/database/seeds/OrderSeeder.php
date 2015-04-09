@@ -19,7 +19,6 @@ class OrderSeeder extends Seeder {
 		DB::table('missions')->delete();	
 		DB::table('items')->delete();	
 		DB::table('orders')->delete();	
-		DB::table('orderCombos')->delete();
 		DB::table('stores')->delete();
 	}
 	
