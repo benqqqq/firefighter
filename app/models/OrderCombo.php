@@ -2,7 +2,7 @@
 
 class OrderCombo extends Eloquent {
 	
-	public $table = 'orderCombos';
+	public $table = 'ordercombos';
 	public $timestamps = false;
 	protected $guarded = ['id'];
 	
