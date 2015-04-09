@@ -9,7 +9,7 @@
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js') }}
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
     	
-    	{{ HTML::script('http://localhost:3000/socket.io/socket.io.js') }}
+		{{ HTML::script(URL::to('/') . ':3000/socket.io/socket.io.js') }}
     	{{ HTML::script('lib/socket.js') }}
     	
     	{{ HTML::script('js/orderCtrl.js') }}
