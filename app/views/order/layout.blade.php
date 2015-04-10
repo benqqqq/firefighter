@@ -5,7 +5,9 @@
     <head>
     	<title>訂餐 - 基隆消防信二分隊</title>
     	
-    	
+    	<script>
+            var host = URL::to('/');
+        </script>
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js') }}
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
     	
