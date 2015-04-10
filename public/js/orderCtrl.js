@@ -1,7 +1,7 @@
 var app = angular.module('orderApp', ['btford.socket-io']);
 
 app.factory('socket', function ($rootScope) {
-    var socket = io.connect('http://127.0.0.1:3000/');
+    var socket = io.connect('http://keelungfirefighter.tk:3000/');
     return {
         on: function (eventName, callback) {
             socket.on(eventName, function () {
