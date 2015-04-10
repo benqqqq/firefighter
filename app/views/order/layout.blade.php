@@ -5,11 +5,14 @@
     <head>
     	<title>訂餐 - 基隆消防信二分隊</title>
     	
-    	
+    	<script>
+            var hostSplit = '{{ URL::to("/") }}'.split(':');
+            var host = hostSplit[0] + ':' + hostSplit[1];
+        </script>
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js') }}
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
     	
-		{{ HTML::script(URL::to('/') . ':3000/socket.io/socket.io.js') }}
+		{{ HTML::script('lib/socket.io.js') }}
     	{{ HTML::script('lib/socket.js') }}
     	
     	{{ HTML::script('js/orderCtrl.js') }}
