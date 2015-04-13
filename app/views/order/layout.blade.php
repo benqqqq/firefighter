@@ -24,16 +24,16 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-    	<!-- {{ HTML::style('css/order.css') }}         -->
+    	{{ HTML::style('css/order.css') }}
     	
     	@yield('head')
     </head>
     <body ng-app='orderApp' class='container orderBody' ng-controller='orderCtrl'>
     	<header class='row'>
 			@if (!Auth::check())
-				<a class='col-md-1 btn btn-default' href='{{ URL::to("login") }}'>登入</a>
+				<a class='col-md-1 col-md-offset-11 btn btn-default' href='{{ URL::to("login") }}'>登入</a>
 			@else
-				<span class='col-md-1'>番號 : {{ Auth::user()->serial }}</span>
+				<span class='col-md-1 col-md-offset-10'>番號 : {{ Auth::user()->serial }}</span>
 				<a class='col-md-1 btn btn-default' href='{{ URL::to("logout") }}'>登出</a>
 			@endif
     	</header>

@@ -27,8 +27,9 @@ app.factory('socket', function ($rootScope) {
 app.controller("orderCtrl", function($scope, socket) {
 	
     socket.on('orders.update', function (data) {
-    	var data = JSON.parse(data);
-		$scope.orders = data.orders;
+    	var data = JSON.parse(data);    	
+		$scope.myOrder = data.myOrder;
+		$scope.otherOrders = data.otherOrders;		
 		$scope.statistic = data.statistic;		    	
     });
  

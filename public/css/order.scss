@@ -21,87 +21,9 @@ body, div, h1, h2, h3, p, ul, ol, li, img, header, section, aside, footer, butto
 }
 
 body {
-	width: 100%;
-	height: 100%;
 	font-family: "Microsoft JhengHei";	
-	overflow-x: hidden;
 }
 
-.btn {
-	display: inline-block;
-	padding: 8px 12px 8px 12px;
-	cursor: pointer;
-	border-radius: 3px;
-	font-size: 14px;
-}
+.mission {
 
-.bck-gray {
-	background: gray;
-	color: white;
-}
-
-.bck-lightGray {
-	background: lighten(gray, 20%);
-	color: white;
-}
-
-.bck-green {
-	background: green;
-	color: white;
-}
-
-.bck-red {
-	background: red;
-	color: white;
-}
-
-.bck-red-hover:hover {
-	background: lighten(red, 20%);
-	color: white;
-}
-
-.bck-orange {
-	background: #ff9e00;
-	color: white;
-}
-
-.bck-blue {
-	background: blue;
-	color: white;
-}
-
-.bck-olive {
-	background: olive;
-	color: white;
-}
-
-.bck-navy {
-	background: navy;
-	color: white;
-}
-
-.bck-maroon {
-	background: maroon;
-	color: white;
-}
-.bck-black {
-	background: #313131;
-	color: white;
-}
-.bck-white {
-	background: #e3e3e3;
-	color: #313131;
-}
-
-.block {
-	background: #ffca6c;
-	margin: 5px;
-	padding: 5px;
-	cursor: pointer;
-	.block-word {
-		margin: 0 5px 0 5px;
-	}
-	time {
-		font-size: 12px;
-	}
 }

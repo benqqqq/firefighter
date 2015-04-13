@@ -8,7 +8,7 @@ const redis =   require('redis');
 const io =      require('socket.io');
 const client =  redis.createClient();
 
-server.listen(3000, host);
+server.listen(3000, '0.0.0.0');
 console.log("Listening.....");
 
 io.listen(server).on('connection', function(client) {

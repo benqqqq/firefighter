@@ -14,7 +14,8 @@ class OrderController extends BaseController {
 			'orders.orderCombos.combo',
 			'orders.orderCombos.items')->find($id);
 		$statistic = json_encode($this->buildOrderStatistic($id));
-		return View::make('order.showMission', ['mission' => $mission, 'statistic' => $statistic]);
+		return View::make('order.showMission', ['mission' => $mission, 'myOrder' => $this->getMyOrder($id), 
+			'otherOrders' => $this->getOtherOrders($id), 'statistic' => $statistic]);
 	}
 	
 	private function buildOrderStatistic($id) {
@@ -135,10 +136,30 @@ class OrderController extends BaseController {
 	}
 	
 	private function update($missionId) {
-		$data['orders'] = Order::where('mission_id', $missionId)->with('user', 'items', 
+/*
+		if (Auth::check()) {
+			$data['myOrder'] = Order::where(['mission_id' => $missionId, 'user_id' => Auth::id()])->with('user', 'items', 
+			'orderCombos.combo.items', 'orderCombos.items')->get();	
+			$data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 
 			'orderCombos.combo.items', 'orderCombos.items')->get();
+		} else {
+			$data['myOrder'] = null;
+			$data['OtherOrders'] = Order::where('mission_id', $missionId)->with('user', 'items', 
+			'orderCombos.combo.items', 'orderCombos.items')->get();
+		}
+*/
+		$data['myOrder'] = $this->getMyOrder($missionId);		
+		$data['otherOrders'] = $this->getOtherOrders($missionId);
 		$data['statistic'] = $this->buildOrderStatistic($missionId);
 		Event::fire(\Realtime\OrderUpdatedEventHandler::EVENT, json_encode($data));
+	}
+	private function getMyOrder($missionId) {
+		return Auth::check() ? Order::where(['mission_id' => $missionId, 'user_id' => Auth::id()])->with('user', 'items', 
+			'orderCombos.combo.items', 'orderCombos.items')->get() : null;	
+	}
+	private function getOtherOrders($missionId) {
+		return Auth::check() ? $data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get() :
+				Order::where('mission_id', $missionId)->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get();				
 	}
 	
 	public function paid() {
