@@ -3,7 +3,7 @@
 
 <html>
     <head>
-    	<title>訂餐 - 基隆消防信二分隊</title>
+    	<!-- <title>訂餐 - 基隆消防信二分隊</title> -->
     	
     	<script>
             var hostSplit = '{{ URL::to("/") }}'.split(':');
@@ -17,18 +17,24 @@
     	
     	{{ HTML::script('js/orderCtrl.js') }}
     	{{ HTML::script('js/util.js') }}
-    	
-    	{{ HTML::style('css/order.css') }}        
+            	
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    	<!-- {{ HTML::style('css/order.css') }}         -->
     	
     	@yield('head')
     </head>
-    <body ng-app='orderApp' class='orderBody' ng-controller='orderCtrl'>
-    	<header>
+    <body ng-app='orderApp' class='container orderBody' ng-controller='orderCtrl'>
+    	<header class='row'>
 			@if (!Auth::check())
-				<a class='btn bck-blue' href='{{ URL::to("login") }}'>登入</a>
+				<a class='col-md-1 btn btn-default' href='{{ URL::to("login") }}'>登入</a>
 			@else
-				<span>{{ Auth::user()->serial }}</span>
-				<a class='btn bck-blue' href='{{ URL::to("logout") }}'>登出</a>
+				<span class='col-md-1'>番號 : {{ Auth::user()->serial }}</span>
+				<a class='col-md-1 btn btn-default' href='{{ URL::to("logout") }}'>登出</a>
 			@endif
     	</header>
     	<div>
