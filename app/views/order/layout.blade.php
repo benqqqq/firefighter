@@ -5,6 +5,8 @@
     <head>
     	<!-- <title>訂餐 - 基隆消防信二分隊</title> -->
     	
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	
     	<script>
             var hostSplit = '{{ URL::to("/") }}'.split(':');
             var host = hostSplit[0] + ':' + hostSplit[1];
@@ -17,7 +19,7 @@
     	
     	{{ HTML::script('js/orderCtrl.js') }}
     	{{ HTML::script('js/util.js') }}
-            	
+         
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
@@ -29,14 +31,23 @@
     	@yield('head')
     </head>
     <body ng-app='orderApp' class='container orderBody' ng-controller='orderCtrl'>
-    	<header class='row'>
-			@if (!Auth::check())
-				<a class='col-md-1 col-md-offset-11 btn btn-default' href='{{ URL::to("login") }}'>登入</a>
-			@else
-				<span class='col-md-1 col-md-offset-10'>番號 : {{ Auth::user()->serial }}</span>
-				<a class='col-md-1 btn btn-default' href='{{ URL::to("logout") }}'>登出</a>
-			@endif
-    	</header>
+    	<nav class='navbar navbar-default navbar-fixed-top'>
+    		<div class='container'>
+    			<div class='navbar-header'>				
+					<a class="navbar-brand" href="#">訂餐</a>
+    			</div>
+    			<div class='collapse navbar-collapse'>
+    				<ul class='nav navbar-nav navbar-right'>
+					@if (!Auth::check())
+						<li><a href='{{ URL::to("login") }}'>登入</a></li>
+					@else
+						<li>番號 : {{ Auth::user()->serial }}</li>
+						<li><a href='{{ URL::to("logout") }}'>登出</a></li>
+					@endif
+    				</ul>
+    			</div>
+    		</div>
+    	</nav>
     	<div>
 	    	@yield('content')
     	</div>
