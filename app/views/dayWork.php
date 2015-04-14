@@ -6,12 +6,13 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     	<script src="lib/angular-dragdrop.min.js"></script>
+    	<script src="js/util.js"></script>
     	<script src="js/formCtrl.js"></script>
-    	<script src="js/dateCtrl.js"></script>
     	<link rel="stylesheet" href="css/dayWork.css">
     	
     </head>
     <body ng-app='workApp' ng-controller='formCtrl' ng-mousedown="press = true" ng-mouseup="press = false">
+    	<span ng-init='host = "<?php echo URL::to("/") ?>"'></span>
 
 		<div class='workTypeArea'>
 			<h1 class='area-content'>選擇勤務</h1>
@@ -24,14 +25,18 @@
 		    		</span><br>
 	    		</span>
 	    	</div>
-<!--
+
 	    	<h2 class='area-content'>選擇日期</h2>
-	    	<div class='area-content dateChoose' ng-controller='dateCtrl'>
+	    	<div class='area-content dateChoose'>
 		    	<input ng-model='dateY' type="number">年<br>
 		    	<input ng-model='dateM' type="number">月
 		    	<input ng-model='dateD' type="number">日
 	    	</div>
--->
+
+	    	<div class='area-content'>
+	    		<button class='btn bck-orange' ng-click='storeDayWork()'>儲存</button>
+	    	</div>
+
 		</div>
     	
     	<div class='restArea'>

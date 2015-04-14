@@ -14,6 +14,9 @@
 Route::get('/', 'HomeController@show');
 
 Route::get('dayWork', 'DayWorkController@show');
+Route::post('dayWork/store', 'DayWorkController@store');
+Route::post('dayWork/load', 'DayWorkController@load');
+
 Route::get('order/{id}', 'OrderController@showMission');
 Route::get('order', 'OrderController@show');
 

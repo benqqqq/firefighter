@@ -591,5 +591,31 @@ app.controller("formCtrl", function($scope, $http) {
 	$scope.isInArea = function(i, serial) {
 		return $scope.whereIs(serial) == i;
 	}
-	
+
+
+	var today = new Date();
+	$scope.dateY = today.getFullYear() - 1911;
+	$scope.dateM = today.getMonth() + 1;
+	$scope.dateD = today.getDate();
+
+	$scope.storeDayWork = function() {
+		buildResult();
+		var result = {
+			result : $scope.result,
+			rest1 : $scope.rest1,
+			rest2 : $scope.rest2,
+			rest3 : $scope.rest3,
+			rest4 : $scope.rest4,
+			rest5 : $scope.rest5, 
+			rest6 : $scope.rest6,
+			rest7 : $scope.rest7,
+			rest8 : $scope.rest8,
+			rest9 : $scope.rest9
+		};
+		var date = ($scope.dateY + 1911) + '-' + $scope.dateM + '-' + $scope.dateD;
+		util.ajax($scope.host + '/dayWork/store', {
+			date : date,
+			result : result
+		}, null, 'post');
+	}
 });
