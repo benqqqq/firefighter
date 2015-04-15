@@ -16,6 +16,7 @@ class CreateWorkTables extends Migration {
 			$table->increments('id');
 			$table->text('content');
 			$table->date('date')->unique()->index();
+			$table->timestamps();
 		});
 	}
 

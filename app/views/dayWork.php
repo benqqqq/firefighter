@@ -28,14 +28,17 @@
 
 	    	<h2 class='area-content'>選擇日期</h2>
 	    	<div class='area-content dateChoose'>
-		    	<input ng-model='dateY' type="number">年<br>
-		    	<input ng-model='dateM' type="number">月
-		    	<input ng-model='dateD' type="number">日
+		    	<input ng-model='dateY' type="number" ng-change='loadNow()'>年<br>
+		    	<input ng-model='dateM' type="number" ng-change='loadNow()'>月
+		    	<input ng-model='dateD' type="number" ng-change='loadNow()'>日
 	    	</div>
 
 	    	<div class='area-content'>
 	    		<button class='btn bck-orange' ng-click='storeDayWork()'>儲存</button>
+	    		<p ng-init='lastModifiedTime = "<?php echo $lastModifiedTime ?>"'>上次修改 : {{ lastModifiedTime }}</p>
 	    	</div>
+	    	
+	    	
 
 		</div>
     	

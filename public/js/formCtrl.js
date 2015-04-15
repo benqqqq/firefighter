@@ -291,7 +291,7 @@ app.controller("formCtrl", function($scope, $http) {
 	
 	function insertMembers() {
 		for (var i = 1; i < 21; ++i) {
-			$scope.rest1.push(i);
+			$scope.rest1.push(i + '');
 		}
 		$scope.rest1 = $scope.rest1.concat(us);
 		$scope.all = $scope.rest1.slice();
@@ -612,10 +612,64 @@ app.controller("formCtrl", function($scope, $http) {
 			rest8 : $scope.rest8,
 			rest9 : $scope.rest9
 		};
-		var date = ($scope.dateY + 1911) + '-' + $scope.dateM + '-' + $scope.dateD;
 		util.ajax($scope.host + '/dayWork/store', {
-			date : date,
+			date : getNow(),
 			result : result
-		}, null, 'post');
+		}, function(result) {
+			$scope.lastModifiedTime = result;
+		}, 'post');
 	}
+	function getNow() {
+		return getDate($scope.dateY, $scope.dateM, $scope.dateD);
+	}
+	
+	function getDate(y, m, d) {
+		var m = (m > 9)? m : '0' + m;
+		var d = (d > 9)? d : '0' + d;
+		return (y + 1911) + '-' + m + '-' + d;
+	}
+	
+	$scope.loadNow = function() {		
+		util.ajax('/dayWork/load', {
+			date : getNow()
+		}, function (result) {
+			console.log(result);
+			var result = JSON.parse(result);
+			if (Object.keys(result).length === 0) {
+				return;
+			}
+			loadRests(result);
+		}, 'post');
+	}
+	function loadRests(result) {
+		if (result.rest1) {
+			$scope.rest1 = result.rest1;	
+		}
+		if (result.rest2) {
+			$scope.rest2 = result.rest2;	
+		}
+		if (result.rest3) {
+			$scope.rest3 = result.rest3;
+		}
+		if (result.rest4) {
+			$scope.rest4 = result.rest4;
+		}
+		if (result.rest5) {
+			$scope.rest5 = result.rest5;
+		}
+		if (result.rest6) {
+			$scope.rest6 = result.rest6;
+		}
+		if (result.rest7) {
+			$scope.rest7 = result.rest7;
+		}
+		if (result.rest8) {
+			$scope.rest8 = result.rest8;
+		}
+		if (result.rest9) {
+			$scope.rest9 = result.rest9;
+		}
+	}
+	
+	$scope.loadNow();
 });
