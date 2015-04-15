@@ -245,16 +245,15 @@ app.controller("formCtrl", function($scope, $http) {
 			return e.serial == serial;
 		}
 
-	};
+	};		
 	
-	init();		    			
-	
+	init();
 	
 	function init() {
-		createTimes();		
+		createTimes();
 		createInfoStorage();
-		insertMembers();		
 		createBtnsStorage();
+		insertMembers();		
 		$scope.changeWorkType(0);
 		$scope.attandArticle = attandArticle;
 		$scope.memoArticle = memoArticle;
@@ -629,6 +628,7 @@ app.controller("formCtrl", function($scope, $http) {
 		return (y + 1911) + '-' + m + '-' + d;
 	}
 	
+	
 	$scope.loadNow = function() {		
 		util.ajax('/dayWork/load', {
 			date : getNow()
@@ -639,37 +639,20 @@ app.controller("formCtrl", function($scope, $http) {
 				return;
 			}
 			loadRests(result);
+			
 		}, 'post');
 	}
-	function loadRests(result) {
-		if (result.rest1) {
-			$scope.rest1 = result.rest1;	
-		}
-		if (result.rest2) {
-			$scope.rest2 = result.rest2;	
-		}
-		if (result.rest3) {
-			$scope.rest3 = result.rest3;
-		}
-		if (result.rest4) {
-			$scope.rest4 = result.rest4;
-		}
-		if (result.rest5) {
-			$scope.rest5 = result.rest5;
-		}
-		if (result.rest6) {
-			$scope.rest6 = result.rest6;
-		}
-		if (result.rest7) {
-			$scope.rest7 = result.rest7;
-		}
-		if (result.rest8) {
-			$scope.rest8 = result.rest8;
-		}
-		if (result.rest9) {
-			$scope.rest9 = result.rest9;
-		}
+	function loadRests(result) {	
+		$scope.rest1 = (result.rest1)? result.rest1 : [];	
+		$scope.rest2 = (result.rest2)? result.rest2 : [];	
+		$scope.rest3 = (result.rest3)? result.rest3 : [];	
+		$scope.rest4 = (result.rest4)? result.rest4 : [];	
+		$scope.rest5 = (result.rest5)? result.rest5 : [];	
+		$scope.rest6 = (result.rest6)? result.rest6 : [];	
+		$scope.rest7 = (result.rest7)? result.rest7 : [];	
+		$scope.rest8 = (result.rest8)? result.rest8 : [];	
+		$scope.rest9 = (result.rest9)? result.rest9 : [];	
 	}
-	
+
 	$scope.loadNow();
 });
