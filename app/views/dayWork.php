@@ -13,6 +13,10 @@
     </head>
     <body ng-app='workApp' ng-controller='formCtrl' ng-mousedown="press = true" ng-mouseup="press = false">
     	<span ng-init='host = "<?php echo URL::to("/") ?>"'></span>
+		<?php if($storable):?>
+			<span ng-init='loadNow()'></span>
+		<?php endif; ?>
+
 
 		<div class='workTypeArea'>
 			<h1 class='area-content'>選擇勤務</h1>
@@ -157,6 +161,7 @@
 				<ul>
 					<li>檢查役男時數 > 8小時</li>
 					<li>深救役男需填入車輛保養</li>
+					<li>檢查隊員7-8, 8-9是否在車輛保養</li>
 				</ul>
 			</div>
 				
@@ -186,6 +191,11 @@
 					</ul>
 				</div>
 				<textarea ng-model='memoArticle'></textarea>
+				
+				<?php if($storable): ?>
+					<h3>系統備註 (記錄一些轉換到派遣系統該注意的)</h3>
+					<textarea ng-model='systemArticle' placeholder="例如 : 記得加上補外假人員至補修"></textarea>
+				<?php endif?>
 			</div>
 			
 			<button class='btn bck-red bck-red-hover' ng-click='outputForm()'>輸出為文字</button>

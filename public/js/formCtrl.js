@@ -265,6 +265,7 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.attandArticle = attandArticle;
 		$scope.memoArticle = memoArticle;
 		$scope.serialColor = {};
+		$scope.systemArticle = '';
 	}
 	
 	function createTimes() {
@@ -619,7 +620,8 @@ app.controller("formCtrl", function($scope, $http) {
 			rest9 : $scope.rest9,
 			attandArticle : $scope.attandArticle,
 			memoArticle : $scope.memoArticle,
-			analysis : $scope.analysis
+			analysis : $scope.analysis,
+			systemArticle : $scope.systemArticle
 		};
 		$.ajax({
 			url : $scope.host + '/dayWork/store',
@@ -693,7 +695,6 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.attandArticle = (result.attandArticle)? result.attandArticle : attandArticle;
 		$scope.memoArticle = (result.memoArticle)? result.memoArticle : memoArticle;		
 		$scope.analysis = (result.analysis) ? result.analysis : {};
+		$scope.systemArticle = (result.systemArticle) ? result.systemArticle : '';
 	}
-
-	$scope.loadNow();
 });
