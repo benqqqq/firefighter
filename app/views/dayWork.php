@@ -26,24 +26,6 @@
 	    		</span>
 	    	</div>
 
-			<?php if($storable): ?>
-	    	<h2 class='area-content'>選擇日期</h2>
-	    	<div class='area-content dateChoose'>
-		    	<input ng-model='dateY' type="number" ng-change='loadNow()'>年<br>
-		    	<input ng-model='dateM' type="number" ng-change='loadNow()'>月
-		    	<input ng-model='dateD' type="number" ng-change='loadNow()'>日
-		    	<span class='btn bck-white bck-white-hover' ng-click='dateD = dateD - 1; loadNow()'>上一天</span>
-		    	<span class='btn bck-white bck-white-hover' ng-click='dateD = dateD + 1; loadNow()'>下一天</span>
-	    	</div>
-
-	    	<div class='area-content storeArea'>
-	    		密碼 : <input type='password' ng-model='password'>
-	    		<button class='btn bck-orange' ng-click='storeDayWork()'>儲存</button>	    		
-	    		<p>上次修改 :<br> {{ lastModifiedTime }}</p>
-	    	</div>
-	    	<?php endif; ?>
-	    	
-
 		</div>
     	
     	<div class='restArea'>
@@ -215,6 +197,23 @@
     	</div>    	
     	
     	<div class='analysisArea'>
+    		<?php if($storable): ?>
+	    	<h2 class='area-content'>選擇日期</h2>
+	    	<div class='area-content dateChoose'>
+		    	<input ng-model='dateY' type="number" ng-change='loadNow()'>年<br>
+		    	<input ng-model='dateM' type="number" ng-change='loadNow()'>月
+		    	<input ng-model='dateD' type="number" ng-change='loadNow()'>日
+		    	<span class='btn bck-white bck-white-hover' ng-click='dateD = dateD - 1; loadNow()'>上一天</span>
+		    	<span class='btn bck-white bck-white-hover' ng-click='dateD = dateD + 1; loadNow()'>下一天</span>
+	    	</div>
+
+	    	<div class='area-content storeArea'>
+	    		密碼 : <input type='password' ng-model='password'>
+	    		<button class='btn bck-orange' ng-click='storeDayWork()'>儲存</button>	    		
+	    		<p>上次修改 :<br> {{ lastModifiedTime }}</p>
+	    	</div>
+	    	<?php endif; ?>
+	    	
     		<h1 class='area-content'>統計</h1>
     		<div class='area-content'>
 	    		<h3>役男時數</h3>

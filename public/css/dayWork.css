@@ -41,12 +41,6 @@ body {
     opacity: 0;
     margin-left: 10px;
     margin-top: 10px; }
-  .workTypeArea .dateChoose input {
-    padding: 5px;
-    margin: 0 5px 5px 0;
-    width: 50px;
-    font-size: 18px;
-    border-radius: 2px; }
 
 .area-content {
   margin: 10px 0px 5px 20px; }
@@ -104,6 +98,12 @@ body {
   height: 100%;
   right: 0;
   top: 0; }
+  .analysisArea .dateChoose input {
+    padding: 5px;
+    margin: 0 5px 5px 0;
+    width: 50px;
+    font-size: 18px;
+    border-radius: 2px; }
 
 .btn {
   display: inline-block;

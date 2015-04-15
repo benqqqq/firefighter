@@ -683,14 +683,16 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest9 = (result.rest9)? result.rest9 : [];	
 	}
 	function loadSerial(result) {
-		$scope.serials = result.serials;
-		$scope.btnCss = result.btnCss;
-		$scope.btnWorkId = result.btnWorkId;
-		$scope.btnStr = result.btnStr;
+		if (result.serials) {
+			$scope.serials = result.serials;			
+			$scope.btnCss =  result.btnCss;
+			$scope.btnWorkId = result.btnWorkId;
+			$scope.btnStr = result.btnStr;
+		}		
 		$scope.rest1Class = (result.rest1Class) ? result.rest1Class : {};
 		$scope.attandArticle = (result.attandArticle)? result.attandArticle : attandArticle;
 		$scope.memoArticle = (result.memoArticle)? result.memoArticle : memoArticle;		
-		$scope.analysis = result.analysis;
+		$scope.analysis = (result.analysis) ? result.analysis : {};
 	}
 
 	$scope.loadNow();

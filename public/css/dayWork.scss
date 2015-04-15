@@ -54,16 +54,6 @@ $leftMargin: 200px;
 		margin-left: 10px;
 		margin-top: 10px;
 	}
-	
-	.dateChoose {
-		input {
-			padding: 5px;
-			margin: 0 5px 5px 0;
-			width: 50px;
-			font-size: 18px;
-			border-radius: 2px;
-		}
-	}
 }
 
 .area-content {
@@ -142,6 +132,15 @@ $leftMargin: 200px;
 	height: 100%;
 	right: 0;
 	top: 0;
+	.dateChoose {
+		input {
+			padding: 5px;
+			margin: 0 5px 5px 0;
+			width: 50px;
+			font-size: 18px;
+			border-radius: 2px;
+		}
+	}
 }
 
 .btn {
