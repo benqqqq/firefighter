@@ -442,7 +442,7 @@ app.controller("formCtrl", function($scope, $http) {
 	}
 	
 	function doCollectTimes(oldWorkId, newWorkId, serial, analysis) {
-		if (oldWorkId != null && isRealWorkId(oldWorkId, serial)) {
+		if (oldWorkId != null && isRealWorkId(oldWorkId, serial)) {			
 			--analysis[serial];	
 		}
 		if (isRealWorkId(newWorkId, serial)) {
@@ -456,6 +456,9 @@ app.controller("formCtrl", function($scope, $http) {
 	}
 	function isRealWorkId(workId, serial) {
 		var restWorkId = [10, 11, -1];
+		if (typeof workId == 'string') {
+			workId = parseInt(workId);
+		}
 		return restWorkId.indexOf(workId) == -1;
 	}
 		
@@ -694,7 +697,10 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest1Class = (result.rest1Class) ? result.rest1Class : {};
 		$scope.attandArticle = (result.attandArticle)? result.attandArticle : attandArticle;
 		$scope.memoArticle = (result.memoArticle)? result.memoArticle : memoArticle;		
-		$scope.analysis = (result.analysis) ? result.analysis : {};
+		$scope.analysis = (result.analysis) ? result.analysis : {
+			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0},
+			memberTimes : {}
+		};
 		$scope.systemArticle = (result.systemArticle) ? result.systemArticle : '';
 	}
 });
