@@ -153,7 +153,7 @@ app.controller("formCtrl", function($scope, $http) {
 		
 		function makeMemoPeople() {
 			var result = '';
-			if (!$scope.isInArea(0, 1)) {
+			if (!$scope.isInArea(0, '1')) {
 				var serial = $scope.serials.indexOf('2') == -1 ? 3 : 2;
 				result += '1號' + $scope.restMapping[$scope.whereIs('1')] + '職務由' + serial + '號代理\n';			
 			}
@@ -550,6 +550,12 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest6result.sort(mySortFunc);
 	}
 	function mySortFunc(a, b) {
+		if (!isNaN(parseInt(a))) {
+			a = parseInt(a);
+		}
+		if (!isNaN(parseInt(b))) {
+			b = parseInt(b);
+		}
 		if (typeof a == 'number' && typeof b == 'number') {
 			return a - b 	
 		} else if (typeof a == 'number') {
