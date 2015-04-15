@@ -32,7 +32,7 @@ app.controller("formCtrl", function($scope, $http) {
 		{ name : '不在隊', id : -1, css : 'bck-white', str : '-'}
 	];
 	$scope.restMapping = {
-		1 : '輪休', 2 : '外宿', 3 : '補休', 4 : '休假', 5 : '差假', 6 : '事病假', 7 : '特休', 8 : '慰外假', 9 : '榮譽假'	
+		'1' : '輪休', '2' : '外宿', '3' : '補休', '4' : '休假', '5' : '差假', '6' : '事病假', '7' : '特休', '8' : '慰外假', '9' : '榮譽假'	
 	};
 	var us = ['A', 'B', 'C', 'D'];
 	
@@ -154,8 +154,8 @@ app.controller("formCtrl", function($scope, $http) {
 		function makeMemoPeople() {
 			var result = '';
 			if (!$scope.isInArea(0, 1)) {
-				var serial = $scope.serials.indexOf(2) == -1 ? 3 : 2;
-				result += '1號' + $scope.restMapping[$scope.whereIs(1)] + '職務由' + serial + '號代理\n';			
+				var serial = $scope.serials.indexOf('2') == -1 ? 3 : 2;
+				result += '1號' + $scope.restMapping[$scope.whereIs('1')] + '職務由' + serial + '號代理\n';			
 			}
 			var skip = {7 : false, 8 : false, 9 : false};
 			for (var i in $scope.all) {
@@ -184,7 +184,7 @@ app.controller("formCtrl", function($scope, $http) {
 		}
 		function buildConcatStr(arr) {
 			var arr = arr.slice();
-			if (arr.indexOf(1) != -1) {
+			if (arr.indexOf('1') != -1) {
 				arr.splice(arr.indexOf(1), 1);
 			}
 			return arr.sort(mySortFunc).join('.');
@@ -198,15 +198,20 @@ app.controller("formCtrl", function($scope, $http) {
 			for (var i in timeIndex) {
 				var time = timeIndex[i];			
 								
+				// collect old work
 				for (var serial in $scope.btnWorkId[time]) {
 					var workId = $scope.btnWorkId[time][serial];
 					var objs = $.grep(work, function(e) { return e.serial == serial; });
 					if (objs.length > 0 && workId != objs[0].workId) {
 						result.push((time+1) + '-' + (objs[0].time+1) + ' \n');
 						work = $.grep(work, function(e) { return !(e.workId == objs[0].workId && e.time == objs[0].time); });
+					} else if (time == 8 && objs.length > 0 && objs[0].workId == 6) {
+						result.push((time+1) + '-' + (objs[0].time+1) + ' \n');
+						work = $.grep(work, function(e) { return !(e.workId == objs[0].workId && e.time == objs[0].time); });
 					}
 				}
 			
+				// push new work
 				for (var serial in $scope.btnWorkId[time]) {
 					var workId = $scope.btnWorkId[time][serial];
 					if (!isWork(workId, time)) {
@@ -224,14 +229,16 @@ app.controller("formCtrl", function($scope, $http) {
 				
 				if (time == 8) {
 					for (var i in work) {
-						result.push('8-' + (work[i].time+1) + '\n');
+						result.push('8-' + (work[i].time+1) + '\n');		
 					}
 				}
 			}
 			return result.reverse().join('');
 		}
 		function isWork(id, time) {
-			if (id == 6 && [7, 8].indexOf(parseInt(time)) != -1) {
+			var id = parseInt(id);
+			var time = parseInt(time);
+			if (id == 6 && [7, 8].indexOf(time) != -1) {
 				return false;
 			} else {
 				return [1, 9, 10, 11, -1].indexOf(id) == -1;	
@@ -559,9 +566,6 @@ app.controller("formCtrl", function($scope, $http) {
 		init();
 	}
 	$scope.whereIs = function(serial) {
-		if (isInt(serial)) {
-			serial = parseInt(serial);
-		}
 		if ($scope.serials.indexOf(serial) != -1) {
 			return 0;
 		} else if ($scope.rest1.indexOf(serial) != -1) {
@@ -598,9 +602,12 @@ app.controller("formCtrl", function($scope, $http) {
 	$scope.dateD = today.getDate();
 
 	$scope.storeDayWork = function() {
-		buildResult();
 		var result = {
-			result : $scope.result,
+			serials : $scope.serials,
+			btnCss : $scope.btnCss,
+			btnWorkId : $scope.btnWorkId,
+			btnStr : $scope.btnStr,
+			rest1Class : $scope.rest1Class,
 			rest1 : $scope.rest1,
 			rest2 : $scope.rest2,
 			rest3 : $scope.rest3,
@@ -609,14 +616,29 @@ app.controller("formCtrl", function($scope, $http) {
 			rest6 : $scope.rest6,
 			rest7 : $scope.rest7,
 			rest8 : $scope.rest8,
-			rest9 : $scope.rest9
+			rest9 : $scope.rest9,
+			attandArticle : $scope.attandArticle,
+			memoArticle : $scope.memoArticle,
+			analysis : $scope.analysis
 		};
-		util.ajax($scope.host + '/dayWork/store', {
-			date : getNow(),
-			result : result
-		}, function(result) {
-			$scope.lastModifiedTime = result;
-		}, 'post');
+		$.ajax({
+			url : $scope.host + '/dayWork/store',
+			method : 'post',
+			async : false,
+			data : {
+				date : getNow(),
+				result : result,
+				password : $scope.password
+			},
+			success : function(result) {
+				if (result == -1) {
+					alert('密碼錯誤');
+				} else {
+					$scope.lastModifiedTime = result;	
+				}
+				
+			}
+		});
 	}
 	function getNow() {
 		return getDate($scope.dateY, $scope.dateM, $scope.dateD);
@@ -630,17 +652,23 @@ app.controller("formCtrl", function($scope, $http) {
 	
 	
 	$scope.loadNow = function() {		
-		util.ajax('/dayWork/load', {
-			date : getNow()
-		}, function (result) {
-			console.log(result);
-			var result = JSON.parse(result);
-			if (Object.keys(result).length === 0) {
-				return;
+		$.ajax({
+			url : '/dayWork/load',
+			data : {date : getNow()},
+			method : 'post',
+			async : false,
+			success : function (result) {
+				if (Object.keys(result).length === 0) {
+					init();
+					$scope.lastModifiedTime = '無';
+				} else {
+					loadRests(JSON.parse(result.content));	
+					loadSerial(JSON.parse(result.content));
+					$scope.lastModifiedTime = result.updated_at;
+				}
+				
 			}
-			loadRests(result);
-			
-		}, 'post');
+		});
 	}
 	function loadRests(result) {	
 		$scope.rest1 = (result.rest1)? result.rest1 : [];	
@@ -652,6 +680,16 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest7 = (result.rest7)? result.rest7 : [];	
 		$scope.rest8 = (result.rest8)? result.rest8 : [];	
 		$scope.rest9 = (result.rest9)? result.rest9 : [];	
+	}
+	function loadSerial(result) {
+		$scope.serials = result.serials;
+		$scope.btnCss = result.btnCss;
+		$scope.btnWorkId = result.btnWorkId;
+		$scope.btnStr = result.btnStr;
+		$scope.rest1Class = (result.rest1Class) ? result.rest1Class : {};
+		$scope.attandArticle = (result.attandArticle)? result.attandArticle : attandArticle;
+		$scope.memoArticle = (result.memoArticle)? result.memoArticle : memoArticle;		
+		$scope.analysis = result.analysis;
 	}
 
 	$scope.loadNow();

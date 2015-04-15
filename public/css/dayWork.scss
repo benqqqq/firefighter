@@ -58,7 +58,9 @@ $leftMargin: 200px;
 	.dateChoose {
 		input {
 			padding: 5px;
-			width: 40px;
+			margin: 0 5px 5px 0;
+			width: 50px;
+			font-size: 18px;
 			border-radius: 2px;
 		}
 	}
@@ -148,6 +150,7 @@ $leftMargin: 200px;
 	cursor: pointer;
 	border-radius: 3px;
 	font-size: 14px;
+	@extend .none-select;
 }
 
 .red {
@@ -210,6 +213,9 @@ $leftMargin: 200px;
 .bck-white {
 	background: #e3e3e3;
 	color: #313131;
+}
+.bck-white-hover:hover {
+	background: white;
 }
 
 .block {
@@ -282,5 +288,12 @@ $leftMargin: 200px;
 	opacity: 0.6;
 	&:hover {
 		cursor: default;
+	}
+}
+.storeArea {
+	input {
+		height: 20px;
+		width: 100px;
+		margin-bottom: 5px;
 	}
 }

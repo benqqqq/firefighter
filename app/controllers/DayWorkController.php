@@ -5,11 +5,18 @@ class DayWorkController extends BaseController {
 	public function show() {
 		$today = date('Y-m-d');
 		$work = Work::where('date', $today)->first();
-		$time = ($work == null)? '無' : $work->updated_at;
-		return View::make('dayWork', ['lastModifiedTime' => $time]);
+		return View::make('dayWork', ['storable' => false]);
+	}
+	public function showStorable() {
+		$today = date('Y-m-d');
+		$work = Work::where('date', $today)->first();
+		return View::make('dayWork', ['storable' => true]);
 	}
 	
 	public function store() {
+		if (Input::get('password') != 'fireman') {
+			return -1;
+		}
 		$result = Input::get('result');
 		$date = Input::get('date');
 		$work = Work::where('date', $date)->first();
@@ -25,7 +32,6 @@ class DayWorkController extends BaseController {
 	public function load() {
 		$date = Input::get('date');
 		$work = Work::where('date', $date)->first();
-		$content = ($work == null) ? null : $work->content;
-		return Response::json(json_decode($content));
+		return Response::json(json_decode($work));
 	} 
 }

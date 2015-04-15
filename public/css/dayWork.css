@@ -10,7 +10,7 @@ body, div, h1, h2, h3, p, ul, ol, li, img, header, section, aside, footer, butto
   vertical-align: middle;
   height: 100%; }
 
-.none-select, .block, .serial {
+.none-select, .btn, .block, .serial {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -43,7 +43,9 @@ body {
     margin-top: 10px; }
   .workTypeArea .dateChoose input {
     padding: 5px;
-    width: 40px;
+    margin: 0 5px 5px 0;
+    width: 50px;
+    font-size: 18px;
     border-radius: 2px; }
 
 .area-content {
@@ -161,6 +163,9 @@ body {
   background: #e3e3e3;
   color: #313131; }
 
+.bck-white-hover:hover {
+  background: white; }
+
 .block {
   display: inline-block;
   width: 22px;
@@ -219,5 +224,10 @@ body {
   opacity: 0.6; }
   *[data-drag=false]:hover {
     cursor: default; }
+
+.storeArea input {
+  height: 20px;
+  width: 100px;
+  margin-bottom: 5px; }
 
 /*# sourceMappingURL=dayWork.css.map */
