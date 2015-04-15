@@ -634,7 +634,8 @@ app.controller("formCtrl", function($scope, $http) {
 				if (result == -1) {
 					alert('密碼錯誤');
 				} else {
-					$scope.lastModifiedTime = result;	
+					$scope.lastModifiedTime = result;
+					alert('儲存成功');
 				}
 				
 			}
