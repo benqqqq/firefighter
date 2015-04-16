@@ -7,38 +7,71 @@
 @section('content')
 	<span ng-init="url = '{{ URL::to("") }}'"></span>
 	<span ng-init="missionId = {{ $mission->id }}"></span>
-	<span ng-init='initStore({{ $mission->store->items }}  , {{ $mission->store->combos }})'></span>
-	
+	<span ng-init='initStore({{ $mission->store->items }}  , {{ $mission->store->combos }})'></span>	
 
-	<h1>{{{ $mission->name }}} ({{{ $mission->store->name }}}) <small>主揪 : {{{ $mission->user->name }}} {{{ $mission->created_at }}}</small></h1>	
+	<h2>{{{ $mission->name }}} ({{{ $mission->store->name }}}) <small>主揪 : {{{ $mission->user->name }}} {{{ $mission->created_at }}}</small></h2>	
 
-	
-	<div class='row'>
-		<span class='col-md-2 col-md-offset-1'>電話 : {{{ $mission->store->phone }}}</span>
-		<span class='col-md-4'>地址 : {{{ $mission->store->address }}}</span>
-	</div>
-	<div class='row'>
-		<p class='col-md-10 col-md-offset-1'>備註 : {{{ $mission->store->detail }}}</p>
+	<div class='store-info'>
+		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
+		<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $mission->store->address }}}</p>
+		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> {{{ $mission->store->detail }}}</p>
 	</div>
 	
-	<div class='col-md-12'>			
+	<div class='menu'>			
 		<h2>菜單</h2>
 		@foreach ($mission->store->items as $item)
-			<span>{{{ $item->name }}}</span>
-			<span>{{{ $item->price }}}$</span>
-			@if (count($item->opts) > 0)
-				- 
-			@endif
+			<p>
+				@if (count($item->opts) > 0)		
+					<a href="#"><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
+						ng-click=''</span></a>
+				@endif
+				
+				{{{ $item->name }}} 
+
+				@foreach ($item->opts as $opt)
+					<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
+				@endforeach
+
+				<span class='label label-primary label-as-badge'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
+				<a href="#"><span ng-click="orderItem({{ $item->id }})" class="glyphicon glyphicon-plus"></span></a>
+			</p>
 			
-			@foreach ($item->opts as $opt)
-				<input type='checkbox' ng-model='itemOpt[{{ $item->id }}][{{ $opt->id }}]' 
-					ng-change='changeItemPrice({{ $item->id }}, {{ $opt->id }}, {{ $opt->price }})'>
-				<span>{{{ $opt->name }}}</span> 
-				<span>+{{{ $opt->price }}}$</span>
-			@endforeach				
-			> <span ng-bind='iPrice[{{ $item->id }}]'></span>$
-			<span ng-click="orderItem({{ $item->id }})">訂</span>
-			<br>
+			<div class="modal fade" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+								><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">{{{ $item->name }}}</h4>
+						</div>
+						<div class="modal-body">
+							<table class='table table-striped'>
+								<tr>
+									<th></th><th>名稱</th><th>加價</th>
+								</tr>
+								@foreach ($item->opts as $opt)
+									<tr>
+										<td><input type='checkbox' ng-model='itemOpt[{{ $item->id }}][{{ $opt->id }}]' 
+											ng-change='changeItemPrice({{ $item->id }}, {{ $opt->id }}, {{ $opt->price }})'></td>
+										<td><span>{{{ $opt->name }}}</span></td>
+										<td><span class='label label-primary label-as-badge'>+{{{ $opt->price }}}$</span></td>
+									</tr>
+								@endforeach	
+							</table>
+							
+						</div>
+						<div class="modal-footer">
+							{{{ $item->name }}} 
+							@foreach ($item->opts as $opt)
+								<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
+							@endforeach			
+							總共 : <span class='label label-primary label-as-badge'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
+							<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		@endforeach
 		
 		@foreach ($mission->store->combos as $combo)			
@@ -68,21 +101,21 @@
 		@endforeach
 	</div>
 	
-	<div class='col-md-12' ng-init='myOrder = {{ $myOrder }}'>	
+	<div class='myOrder' ng-init='myOrder = {{ $myOrder }}'>	
 		<h2>我的訂單</h2>
 		<div ng-repeat='order in myOrder'>
 			{{ View::make('order.userOrder') }}
 		</div>
 	</div>
 
-	<div class='col-md-12' ng-init='otherOrders = {{ $otherOrders }}'>	
+	<div class='otherOrder' ng-init='otherOrders = {{ $otherOrders }}'>	
 		<h2>其他訂單</h2>
 		<div ng-repeat='order in otherOrders'>
 			{{ View::make('order.userOrder') }}
 		</div>
 	</div>
 	
-	<div class='col-md-12' ng-init='statistic = {{ $statistic }}'>
+	<div class='anylisis' ng-init='statistic = {{ $statistic }}'>
 		<h2>統計</h2>
 		<p ng-repeat='item in statistic.item'>
 			<span ng-bind='item.name'></span>
@@ -111,4 +144,5 @@
 		</p>
 	</div>
 	
+		
 @stop        

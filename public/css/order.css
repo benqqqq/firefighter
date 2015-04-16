@@ -17,6 +17,14 @@ body, div, h1, h2, h3, p, ul, ol, li, img, header, section, aside, footer, butto
   user-select: none; }
 
 body {
-  font-family: "Microsoft JhengHei"; }
+  font-family: "Microsoft JhengHei";
+  padding-top: 70px; }
+
+.label-as-badge {
+  border-radius: 1em; }
+
+.stores-h2, .stores-p, .order-h2, .order-p, .store-info, .menu h2, .analysis h2, .myOrder h2, .otherOrder h2 {
+  padding-top: 5px;
+  padding-bottom: 5px; }
 
 /*# sourceMappingURL=order.css.map */

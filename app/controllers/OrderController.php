@@ -4,7 +4,8 @@ class OrderController extends BaseController {
 
 	public function show() {
 		$missions = Mission::where('isEnding', false)->with('user', 'store')->get();
-		return View::make('order.show', ['missions' => $missions]);
+		$stores = Store::all();
+		return View::make('order.show', ['missions' => $missions, 'stores' => $stores]);
 	}
 	
 	public function showMission($id) {

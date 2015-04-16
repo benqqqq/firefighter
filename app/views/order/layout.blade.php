@@ -30,7 +30,7 @@
     	
     	@yield('head')
     </head>
-    <body ng-app='orderApp' class='container orderBody' ng-controller='orderCtrl'>
+    <body ng-app='orderApp' class='orderBody' ng-controller='orderCtrl'>
     	<nav class='navbar navbar-default navbar-fixed-top'>
     		<div class='container'>
     			<div class='navbar-header'>				
@@ -41,14 +41,14 @@
 					@if (!Auth::check())
 						<li><a href='{{ URL::to("login") }}'>登入</a></li>
 					@else
-						<li>番號 : {{ Auth::user()->serial }}</li>
+						<li><a href='#'>番號 : {{ Auth::user()->serial }}</a></li>
 						<li><a href='{{ URL::to("logout") }}'>登出</a></li>
 					@endif
     				</ul>
     			</div>
     		</div>
     	</nav>
-    	<div>
+    	<div class='container'>
 	    	@yield('content')
     	</div>
     </body>
