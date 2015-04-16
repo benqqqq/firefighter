@@ -54,10 +54,11 @@ app.controller("orderCtrl", function($scope, socket) {
 	    	$scope.comboItemOpt[combo.id] = {};
 		    for (var j in combo.items) {
 			    var item = combos[i].items[j];
+			    $scope.cPrice[combo.id] += item.price;
 			    $scope.comboItemOpt[combo.id][item.id] = {};
 			    for (var k in item.opts) {
 				    var opt = item.opts[k];
-				    $scope.comboItemOpt[combo.id][item.id][opt.id]= (item.pivot.optStr.indexOf(opt.name) != -1);
+				    $scope.comboItemOpt[combo.id][item.id][opt.id] = (item.pivot.optStr.indexOf(opt.name) != -1);
 				    $scope.initComboPrice(combo.id, item.id, opt.id, opt.price);
 			    }
 		    }

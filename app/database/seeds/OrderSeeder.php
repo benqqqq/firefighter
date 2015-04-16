@@ -49,8 +49,8 @@ class OrderSeeder extends Seeder {
 		$drink2->opts()->saveMany([$this->optFactory('冰', 0), $this->optFactory('熱', 0), 
 			$this->optFactory('小杯', 0), $this->optFactory('中杯', 5), $this->optFactory('大杯', 10)]);
 		
-		$combo1 = new Combo(['name' => 'A套餐', 'price' => 50]);
-		$combo2 = new Combo(['name' => 'B套餐', 'price' => 55]);
+		$combo1 = new Combo(['name' => 'A套餐', 'price' => -5]);
+		$combo2 = new Combo(['name' => 'B套餐', 'price' => -5]);
 		$store1->combos()->saveMany([$combo1, $combo2]);
 		
 		$combo1->items()->sync([$drink1->id => ['optPrice' => 10, 'optStr' => '冰 大杯'], $item1->id, $item2->id]);
@@ -70,6 +70,7 @@ class OrderSeeder extends Seeder {
 		$combo1 = Combo::where('name', 'A套餐')->first();
 		
 		$mission = Mission::create(['name' => '週四早餐', 'user_id' => $user1->id, 'store_id' => $store1->id]);
+		$mission = Mission::create(['name' => '週五早餐', 'user_id' => $user2->id, 'store_id' => $store1->id]);
 /*
 		$order = Order::create(['user_id' => $user2->id, 'mission_id' => $mission->id]);
 		$order->items()->sync([$item1->id => ['optPrice' => 5, 'optStr' => '加蛋'], $drink1->id]);
