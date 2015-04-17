@@ -17,7 +17,7 @@
 		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> {{{ $mission->store->detail }}}</p>
 	</div>
 	
-	<div class='menu'>			
+	<div>			
 		<h2>菜單</h2>
 		@foreach ($mission->store->items as $item)
 			<p>
@@ -36,7 +36,7 @@
 				<a href="#"><span ng-click="orderItem({{ $item->id }})" class="glyphicon glyphicon-plus"></span></a>
 			</p>
 			
-			<div class="modal fade" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade optModal" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -101,7 +101,7 @@
 				<a href="#"><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus"></span></a>
 			</p>
 			@foreach ($combo->items as $item)
-				<div class="modal fade" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-sm">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -146,21 +146,21 @@
 		@endforeach
 	</div>
 	
-	<div class='myOrder' ng-init='myOrder = {{ $myOrder }}'>	
+	<div ng-init='myOrder = {{ $myOrder }}'>	
 		<h2>我的訂單</h2>
 		<div ng-repeat='order in myOrder'>
-			{{ View::make('order.userOrder') }}
+			{{ View::make('order.userOrder', ['skipName' => true]) }}
 		</div>
 	</div>
 
-	<div class='otherOrder' ng-init='otherOrders = {{ $otherOrders }}'>	
+	<div ng-init='otherOrders = {{ $otherOrders }}'>	
 		<h2>其他訂單</h2>
 		<div ng-repeat='order in otherOrders'>
-			{{ View::make('order.userOrder') }}
+			{{ View::make('order.userOrder', ['skipName' => false]) }}
 		</div>
 	</div>
 	
-	<div class='anylisis' ng-init='statistic = {{ $statistic }}'>
+	<div ng-init='statistic = {{ $statistic }}'>
 		<h2>統計</h2>
 		<p ng-repeat='item in statistic.item'>
 			<span ng-bind='item.name'></span>

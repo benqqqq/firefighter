@@ -1,27 +1,30 @@
-<p ng-bind='order.user.serial'></p>
+@if (!$skipName)
+	<p ng-bind='order.user.serial'></p>
+@endif
 <p ng-repeat='item in order.items'>
 	<span ng-bind='item.name'></span>
-	(<span ng-bind='item.pivot.optStr'></span>)
+	<span ng-bind='item.pivot.optStr' ng-show='item.pivot.optStr != " "' class="badge"></span>
 	<span> * </span>
 	<span ng-bind='item.pivot.quantity'></span> = 
-	<span ng-bind='(item.price + item.pivot.optPrice) * item.pivot.quantity'></span>$
-	<span ng-click="decrementItem(order.id, item.id, item.pivot.optStr)">刪</span>
+	<span class="label label-primary label-as-badge"><span ng-bind='(item.price + item.pivot.optPrice) * item.pivot.quantity'></span>$</span>
+	<a ng-click="decrementItem(order.id, item.id, item.pivot.optStr)" href="#"><span class="glyphicon glyphicon-minus text-danger"></span></a>
 </p>
 <p ng-repeat='orderCombo in order.order_combos'>
 	<span ng-bind='orderCombo.combo.name'></span>
 	
-	[
+	(
 	<span ng-repeat='item in orderCombo.items'>
 		<span ng-bind='item.name'></span>
-		(<span ng-bind='item.pivot.optStr'></span>)
+		<span ng-bind='item.pivot.optStr' ng-show='item.pivot.optStr != " "' class="badge"></span>
 	</span>
-	] * <span ng-bind='orderCombo.quantity'></span> = 
-	<span ng-bind='(orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity'></span>$
-	<span ng-click="decrementCombo(order.id, orderCombo.id)">刪</span>
+	) * <span ng-bind='orderCombo.quantity'></span> = 
+	<span class="label label-primary label-as-badge"
+		><span ng-bind='(orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity'></span>$</span>
+	<a ng-click="decrementCombo(order.id, orderCombo.id)" href="#"><span class="glyphicon glyphicon-minus text-danger"></span></a>
 </p>
 <p>
-	總共 : <span ng-bind='getOrderPrice(order)'></span>$				
-	已付 : <span ng-bind='order.paid'></span>$
+	總共 : <span class="label label-primary label-as-badge"><span ng-bind='getOrderPrice(order)'></span>$</span>
+	已付 : <span class="label label-success label-as-badge"><span ng-bind='order.paid'></span>$</span>
 	@if (Auth::check())
 	<div ng-show='order.user.id == {{ Auth::id() }}'>
 		<input type='number' ng-model='paid[order.id]' ng-show='showPaid' ng-init='showPaid = false; paid[order.id] = order.paid'>

@@ -18,7 +18,7 @@ class OrderController extends BaseController {
 		return View::make('order.showMission', ['mission' => $mission, 'myOrder' => $this->getMyOrder($id), 
 			'otherOrders' => $this->getOtherOrders($id), 'statistic' => $statistic]);
 	}
-	
+		
 	private function buildOrderStatistic($id) {
 		$orderIds = Mission::find($id)->orders()->lists('id');
 		
@@ -137,31 +137,30 @@ class OrderController extends BaseController {
 	}
 	
 	private function update($missionId) {
-/*
-		if (Auth::check()) {
-			$data['myOrder'] = Order::where(['mission_id' => $missionId, 'user_id' => Auth::id()])->with('user', 'items', 
-			'orderCombos.combo.items', 'orderCombos.items')->get();	
-			$data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 
-			'orderCombos.combo.items', 'orderCombos.items')->get();
-		} else {
-			$data['myOrder'] = null;
-			$data['OtherOrders'] = Order::where('mission_id', $missionId)->with('user', 'items', 
-			'orderCombos.combo.items', 'orderCombos.items')->get();
-		}
-*/
 		$data['myOrder'] = $this->getMyOrder($missionId);		
 		$data['otherOrders'] = $this->getOtherOrders($missionId);
 		$data['statistic'] = $this->buildOrderStatistic($missionId);
 		Event::fire(\Realtime\OrderUpdatedEventHandler::EVENT, json_encode($data));
 	}
 	private function getMyOrder($missionId) {
-		return Auth::check() ? Order::where(['mission_id' => $missionId, 'user_id' => Auth::id()])->with('user', 'items', 
+		$orders = Auth::check() ? Order::where(['mission_id' => $missionId, 'user_id' => Auth::id()])->with('user', 'items', 
 			'orderCombos.combo.items', 'orderCombos.items')->get() : null;	
+		$this->buildComboBasePrice($orders);
+		return $orders;
 	}
 	private function getOtherOrders($missionId) {
 		return Auth::check() ? $data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get() :
 				Order::where('mission_id', $missionId)->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get();				
 	}
+	private function buildComboBasePrice($orders) {
+		foreach ($orders as $order) {
+			foreach ($order->orderCombos as $orderCombo) {
+				$combo = $orderCombo->combo;
+				$combo->basePrice = (int)$combo->basePrice();
+			}
+		}	
+	}
+
 	
 	public function paid() {
 		$order = Order::find(Input::get('orderId'));

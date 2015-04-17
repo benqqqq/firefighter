@@ -1,21 +1,25 @@
-body, div, h1, h2, h3, p, ul, ol, li, img, header, section, aside, footer, button, nav, main, article, input {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none; }
+/*
+body, div, h1, h2, h3, p, ul, ol, li, img, header, section, aside, footer, button, nav, main, article, input
+{	
+	margin: 0;
+	padding: 0;
+	border: 0;
+	list-style: none;
+}
 
 .vertical-middle::before {
-  content: '';
-  display: inline-block;
-  vertical-align: middle;
-  height: 100%; }
-
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+}
 .none-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
-
+  -webkit-user-select: none;  
+  -moz-user-select: none;     
+  -ms-user-select: none;      
+  user-select: none;          
+}
+*/
 body {
   font-family: "Microsoft JhengHei";
   padding-top: 70px; }
@@ -23,8 +27,7 @@ body {
 .label-as-badge {
   border-radius: 1em; }
 
-.stores-h2, .stores-p, .order-h2, .order-p, .store-info, .menu h2, .analysis h2, .myOrder h2, .otherOrder h2 {
-  padding-top: 5px;
-  padding-bottom: 5px; }
+.optModal .checkbox {
+  margin: 0; }
 
 /*# sourceMappingURL=order.css.map */

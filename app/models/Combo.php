@@ -13,4 +13,7 @@ class Combo extends Eloquent {
 		return $this->belongsToMany('Item')->withPivot('optStr', 'optPrice');
 	}
 	
+	public function basePrice() {
+		return $this->items()->sum('price');
+	}
 }

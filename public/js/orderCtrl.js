@@ -137,7 +137,7 @@ app.controller("orderCtrl", function($scope, socket) {
 		}
 		for (var i in order.order_combos) {
 			var orderCombo = order.order_combos[i];
-			price += (orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity;
+			price += (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity;
 		}
 		return price;
 	}
