@@ -149,10 +149,15 @@ class OrderController extends BaseController {
 		return $orders;
 	}
 	private function getOtherOrders($missionId) {
-		return Auth::check() ? $data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get() :
+		$orders = Auth::check() ? $data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get() :
 				Order::where('mission_id', $missionId)->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get();				
+		$this->buildComboBasePrice($orders);
+		return $orders;
 	}
 	private function buildComboBasePrice($orders) {
+		if ($orders == null) {
+			return;
+		}
 		foreach ($orders as $order) {
 			foreach ($order->orderCombos as $orderCombo) {
 				$combo = $orderCombo->combo;

@@ -32,7 +32,7 @@
 					<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
 				@endforeach
 
-				<span class='label label-primary label-as-badge'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
+				<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
 				<a href="#"><span ng-click="orderItem({{ $item->id }})" class="glyphicon glyphicon-plus"></span></a>
 			</p>
 			
@@ -42,7 +42,7 @@
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"
 								><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">{{{ $item->name }}} <span class='label label-primary label-as-badge'>{{{ $item->price }}}$</span></h4>
+							<h4 class="modal-title" id="myModalLabel">{{{ $item->name }}} <span class='label label-primary '>{{{ $item->price }}}$</span></h4>
 						</div>
 						<div class="modal-body">
 							<table class='table table-striped'>
@@ -60,7 +60,7 @@
 												</label>
 											</span>
 										</td>										
-										<td><span class='label label-primary label-as-badge'>+{{{ $opt->price }}}$</span></td>
+										<td><span class='label label-primary '>+{{{ $opt->price }}}$</span></td>
 									</tr>
 								@endforeach	
 							</table>
@@ -71,7 +71,7 @@
 							@foreach ($item->opts as $opt)
 								<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
 							@endforeach			
-							總共 : <span class='label label-primary label-as-badge'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
+							總共 : <span class='label label-primary '><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
 							<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
 						</div>
 					</div>
@@ -97,7 +97,7 @@
 					@endforeach
 				@endforeach
 				)
-				<span class='label label-primary label-as-badge'><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
+				<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
 				<a href="#"><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus"></span></a>
 			</p>
 			@foreach ($combo->items as $item)
@@ -107,7 +107,7 @@
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"
 									><span aria-hidden="true">&times;</span></button>
-								<h4 class="modal-title" id="myModalLabel">{{{ $item->name }}} <span class='label label-primary label-as-badge'>{{{ $item->price }}}$</span></h4>
+								<h4 class="modal-title" id="myModalLabel">{{{ $combo->name }}} - {{{ $item->name }}} <span class='label label-primary '>{{{ $item->price }}}$</span></h4>
 							</div>
 							<div class="modal-body">
 								<table class='table table-striped'>
@@ -125,7 +125,7 @@
 													</label>
 												</div>
 											</td>
-											<td><span class='label label-primary label-as-badge'>+{{{ $opt->price }}}$</span></td>
+											<td><span class='label label-primary '>+{{{ $opt->price }}}$</span></td>
 										</tr>
 									@endforeach	
 								</table>
@@ -135,7 +135,7 @@
 								@foreach ($item->opts as $opt)
 									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
 								@endforeach			
-								套餐總共 : <span class='label label-primary label-as-badge'><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
+								套餐總共 : <span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
 								<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
 							</div>
 						</div>
