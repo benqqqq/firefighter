@@ -8,8 +8,10 @@
 	<span ng-init="url = '{{ URL::to("") }}'"></span>
 	<span ng-init="missionId = {{ $mission->id }}"></span>
 	<span ng-init='initStore({{ $mission->store->items }}  , {{ $mission->store->combos }})'></span>	
-
-	<h2>{{{ $mission->name }}} ({{{ $mission->store->name }}}) <small>主揪 : {{{ $mission->user->name }}} {{{ $mission->created_at }}}</small></h2>	
+	
+	<div class="page-header">
+		<h2>{{{ $mission->name }}} ({{{ $mission->store->name }}}) <small>主揪 : {{{ $mission->user->name }}} {{{ $mission->created_at }}}</small></h2>	
+	</div>
 
 	<div class='store-info'>
 		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
@@ -22,7 +24,7 @@
 		@foreach ($mission->store->items as $item)
 			<p>
 				@if (count($item->opts) > 0)		
-					<a href="#"><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
+					<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
 						ng-click=''</span></a>
 				@endif
 				
@@ -33,7 +35,7 @@
 				@endforeach
 
 				<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
-				<a href="#"><span ng-click="orderItem({{ $item->id }})" class="glyphicon glyphicon-plus"></span></a>
+				<a href=""><span ng-click="orderItem({{ $item->id }})" class="glyphicon glyphicon-plus text-success"></span></a>
 			</p>
 			
 			<div class="modal fade optModal" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -86,7 +88,7 @@
 				(
 				@foreach ($combo->items as $item)
 					@if (count($item->opts) > 0)		
-						<a href="#"><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}" 
+						<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}" 
 							ng-click=''</span></a>
 					@endif
 
@@ -98,7 +100,7 @@
 				@endforeach
 				)
 				<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
-				<a href="#"><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus"></span></a>
+				<a href=""><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus text-success"></span></a>
 			</p>
 			@foreach ($combo->items as $item)
 				<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -164,28 +166,28 @@
 		<h2>統計</h2>
 		<p ng-repeat='item in statistic.item'>
 			<span ng-bind='item.name'></span>
-			(
-			<span ng-bind='item.optStr'></span>
-			) * 
+			
+			<span ng-bind='item.optStr' ng-show='item.optStr != " "'  class="badge"></span>
+			 * 
 			<span ng-bind='item.quantity'></span>
 		</p>
 		<p ng-repeat='combo in statistic.combo'>
 			<span ng-bind='combo.name'></span>
-			[
+			(
 			<span ng-repeat='item in combo.items'>
 				<span ng-bind='item.name'></span>
-				(<span ng-bind='item.optStr'></span>)
+				<span ng-bind='item.optStr' ng-show='item.optStr != " "'  class="badge"></span>
 			</span>
-			] *
+			) *
 			<span ng-bind='combo.quantity'></span>
 		</p>
 		<p>
-			總共 : <span ng-bind='statistic.price.total'></span>$
-			已付 : <span ng-bind='statistic.price.paid'></span>$
+			總共 : <span class="label label-primary"><span ng-bind='statistic.price.total'></span>$</span>
+			已付 : <span class="label label-success"><span ng-bind='statistic.price.paid'></span>$</span>
 			<span ng-show='statistic.price.total - statistic.price.paid > 0'
-				>- 少<span ng-bind='statistic.price.total - statistic.price.paid'></span>$</span>
+				class="label label-danger">少<span ng-bind='statistic.price.total - statistic.price.paid'></span>$</span>
 			<span ng-show='statistic.price.total - statistic.price.paid < 0'
-				>- 退<span ng-bind='statistic.price.paid - statistic.price.total'></span>$</span>
+				class="label label-warning">退<span ng-bind='statistic.price.paid - statistic.price.total'></span>$</span>
 		</p>
 	</div>
 	

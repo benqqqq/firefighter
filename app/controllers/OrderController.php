@@ -48,7 +48,7 @@ class OrderController extends BaseController {
 						array_push($items, ['name' => $item->name, 'optStr' => $item->pivot->optStr]);
 					}
 					array_push($result['combo'], ['name' => $orderCombo->combo->name, 'items' => $items, 'quantity' => $quantity]);
-					$result['price']['total'] += ($orderCombo->combo->price + $orderCombo->optPrice) * $quantity;
+					$result['price']['total'] += ($orderCombo->combo->basePrice() + $orderCombo->combo->price + $orderCombo->optPrice) * $quantity;
 				}				
 			}
 			foreach ($orderIds as $orderId) {
