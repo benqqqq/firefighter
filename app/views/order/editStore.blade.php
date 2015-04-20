@@ -256,8 +256,10 @@
 						<tr>
 							<td class="row">
 								<div class="col-md-5">
-									<input type="text" ng-model="newComboItemName" class="form-control" placeholder="加蛋">							
-								</div>
+									<select class="form-control" ng-model="newComboItemObj" ng-options="item.name for item in items">
+										<option value="">-- 請選擇 --</option>
+									</select>
+								</div>								
 								<div class="col-md-1">
 									<button class="btn btn-primary" ng-click="newComboItem($event)">新增</button>				
 								</div>

@@ -249,5 +249,12 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 			total -= item.pivot.optPrice;
 		}
 		return total;
+	};
+	$scope.newComboItem = function($event) {
+		if ($scope.newComboItemObj) {
+			$scope.editItems.push($scope.newComboItemObj);
+		}
+		
+		$event.preventDefault();
 	}
 });
