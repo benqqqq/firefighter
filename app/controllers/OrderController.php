@@ -179,4 +179,62 @@ class OrderController extends BaseController {
 		$order->save();
 		$this->update($order->mission->id);
 	}	
+	
+	public function createStore() {
+		return View::make('order.createStore');
+	}
+	
+	public function doCreateStore() {
+		$input = Input::only(['name', 'phone', 'address', 'detail']);
+		$validator = $this->validateStoreInfo($input);
+		if ($validator->fails()) {
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
+		Store::create($input);
+		
+		return Redirect::to('order');
+	}
+	private function validateStoreInfo($input) {
+		$rules = [
+            'name' => 'required'
+        ];
+        $messages = [
+			'required' => ':attribute 為必填'
+		];
+		$validator = Validator::make($input, $rules, $messages);
+		$validator->setAttributeNames(['name' => '名稱']);
+		return $validator;
+	}
+	
+	public function createMission($id) {
+		$store = Store::find($id);
+		return View::make('order.createMission', ['store' => $store]);
+	}
+	
+	public function editStore($id) {
+		$store = Store::find($id);
+		$items = $store->items()->with('opts')->get();		
+		$combos = $store->combos()->with('items.opts')->get();
+		foreach ($combos as $combo) {
+			$combo->basePrice = (int)$combo->basePrice();
+		}
+		
+		return View::make('order.editStore', ['store' => $store, 'items' => $items, 'combos' => $combos]);
+	}
+	
+	public function doEditStore($id) {
+		$input = Input::only(['name', 'phone', 'address', 'detail']);
+		$validator = $this->validateStoreInfo($input);
+		if ($validator->fails()) {
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
+		Store::find($id)->update($input);
+		
+		$items = json_decode(Input::get('items'));
+		foreach ($items as $item) {
+			Log::info($item->id . ' ' . $item->name);
+		}
+		
+		return Redirect::back();
+	}
 }

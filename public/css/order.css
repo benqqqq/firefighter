@@ -30,4 +30,10 @@ body {
 .optModal .checkbox {
   margin: 0; }
 
+.right {
+  float: right; }
+
+.left {
+  float: left; }
+
 /*# sourceMappingURL=order.css.map */

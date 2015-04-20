@@ -18,6 +18,11 @@ Route::get('storableDayWork', 'DayWorkController@showStorable');
 Route::post('dayWork/store', 'DayWorkController@store');
 Route::post('dayWork/load', 'DayWorkController@load');
 
+Route::get('order/createMission/{id}', 'OrderController@createMission');
+Route::get('order/createStore', 'OrderController@createStore');
+Route::post('order/createStore', 'OrderController@doCreateStore');
+Route::get('order/editStore/{id}', 'OrderController@editStore');
+Route::post('order/editStore/{id}', 'OrderController@doEditStore');
 Route::get('order/{id}', 'OrderController@showMission');
 Route::get('order', 'OrderController@show');
 

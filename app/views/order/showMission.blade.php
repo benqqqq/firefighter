@@ -13,7 +13,7 @@
 		<h2>{{{ $mission->name }}} ({{{ $mission->store->name }}}) <small>主揪 : {{{ $mission->user->name }}} {{{ $mission->created_at }}}</small></h2>	
 	</div>
 
-	<div class='store-info'>
+	<div>
 		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
 		<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $mission->store->address }}}</p>
 		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> {{{ $mission->store->detail }}}</p>

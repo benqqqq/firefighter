@@ -96,14 +96,14 @@ app.controller("orderCtrl", function($scope, socket) {
 			missionId : $scope.missionId,
 			optIds : optIds
 		}, null, 'post');
-	};
+	}
 	
 	$scope.decrementItem = function(orderId, id, optStr) {
 		decrementOrder('item', orderId, id, optStr);
-	}
+	};
 	$scope.decrementCombo = function(orderId, id) {
 		decrementOrder('combo', orderId, id);
-	}
+	};
 	function decrementOrder(type, orderId, id, optStr) {
 		util.ajax($scope.url + '/api/order/decrease', {
 			type : type,
@@ -111,23 +111,23 @@ app.controller("orderCtrl", function($scope, socket) {
 			id : id,
 			optStr : optStr
 		}, null, 'post');
-	}
+	};
 	
 	$scope.initItemPrice = function(itemId, optId, optPrice) {
 		$scope.iPrice[itemId] += ($scope.itemOpt[itemId][optId]) ? optPrice : 0;
-	}
+	};
 	
 	$scope.changeItemPrice = function(itemId, optId, optPrice) {
 		$scope.iPrice[itemId] += ($scope.itemOpt[itemId][optId]) ? optPrice : -1 * optPrice;
-	}
+	};
 	
 	$scope.initComboPrice = function(comboId, itemId, optId, optPrice) {
 		$scope.cPrice[comboId] += ($scope.comboItemOpt[comboId][itemId][optId]) ? optPrice : 0;
-	}
+	};
 	
 	$scope.changeComboPrice = function(comboId, itemId, optId, optPrice) {
 		$scope.cPrice[comboId] += ($scope.comboItemOpt[comboId][itemId][optId]) ? optPrice : -1 * optPrice;
-	}
+	};
 	
 	$scope.getOrderPrice = function(order) {
 		var price = 0;
@@ -140,7 +140,7 @@ app.controller("orderCtrl", function($scope, socket) {
 			price += (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity;
 		}
 		return price;
-	}
+	};
 	
 	$scope.paid = [];
 	$scope.editPaid = function(orderId) {		
@@ -151,12 +151,22 @@ app.controller("orderCtrl", function($scope, socket) {
 			orderId : orderId,
 			paid : $scope.paid[orderId]
 		}, null, 'post');
-	}
+	};
 	$scope.remark = [];
 	$scope.editRemark = function(orderId) {
 		util.ajax($scope.url + '/api/order/remark', {
 			orderId : orderId,
 			remark : $scope.remark[orderId]
 		}, null, 'post');
-	}
+	};
+	
+	$scope.submitForm = function(url) {
+		var form = document.getElementById('dataForm');
+		$("#items").val(JSON.stringify($scope.items));
+		
+		form.action = url;
+		form.submit();			
+
+	};
+	
 });
