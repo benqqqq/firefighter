@@ -16,4 +16,7 @@ class Combo extends Eloquent {
 	public function basePrice() {
 		return $this->items()->sum('price');
 	}
+	public function baseOptPrice() {
+		return DB::table('combo_item')->where('combo_id', $this->id)->sum('optPrice');
+	}
 }

@@ -74,7 +74,7 @@
 								<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
 							@endforeach			
 							總共 : <span class='label label-primary '><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
-							<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
 						</div>
 					</div>
 				</div>
@@ -138,7 +138,7 @@
 									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
 								@endforeach			
 								套餐總共 : <span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
-								<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
 							</div>
 						</div>
 					</div>

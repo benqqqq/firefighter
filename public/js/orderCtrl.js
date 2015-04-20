@@ -24,7 +24,7 @@ app.factory('socket', function ($rootScope) {
     };
 });
 
-app.controller("orderCtrl", function($scope, socket) {
+app.controller("orderCtrl", function($scope, $compile, socket) {
 	
     socket.on('orders.update', function (data) {
     	var data = JSON.parse(data);    	
@@ -169,17 +169,85 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 
 	$scope.newItem = function($event) {
-		var name = $scope.newItemName;
-		var price = $scope.newItemPrice;
-		var item = {
-			id : -1,
-			name : name,
-			price : price
-		};
-
-		$scope.items.push(item);
-
+		if ($scope.newItemName != "" && typeof $scope.newItemPrice == "number") {
+			$scope.items.push({
+				id : -1,
+				name : $scope.newItemName,
+				price : $scope.newItemPrice
+			});	
+		}		
 		$event.preventDefault();
-	}
+	};
+	$scope.setItemModal = function(item) {
+		$scope.editName = item.name;
+		$scope.editPrice = item.price;		
+		$scope.tmp = item;
+		$scope.editOpts = $.extend(true, [], item.opts);
+		$scope.editOptStr = item.optStr;
+	};
 	
+	$scope.defaultOpt = [];
+	$scope.doSetModal = function() {
+		var item = $scope.tmp;
+		item.name = $scope.editName;
+		item.price = $scope.editPrice;		
+		item.opts = $scope.editOpts;
+		
+		var optStr = '';
+		var optPrice = '';
+		for (var i in item.opts) {
+			if ($scope.defaultOpt[i]) {
+				var opt = item.opts[i];
+				optStr += opt.name + " ";
+				optPrice += opt.price;
+			}
+		}
+		item.optStr = (optStr == '') ? ' ' : optStr;
+		item.optPrice = optPrice;
+	};
+	$scope.newOpt = function($event) {
+		if ($scope.newOptName != "" && typeof $scope.newOptPrice == "number") {
+			$scope.editOpts.push({
+				id : -1,
+				name : $scope.newOptName,
+				price : $scope.newOptPrice
+			});
+		}
+		$event.preventDefault();
+	};
+	$scope.remove = function($event, objs, obj) {
+		objs.splice(objs.indexOf(obj), 1);
+		$event.preventDefault();
+	};
+	$scope.isInStr = function(optStr, name) {
+		return optStr.indexOf(name) != -1;	
+	};
+	
+	$scope.newCombo = function($event) {
+		if ($scope.newComboName != "" && typeof $scope.newComboPrice == "number") {
+			
+			$scope.combos.push({
+				id : -1,
+				name : $scope.newComboName,
+				price : $scope.newComboPrice,
+			});	
+		}		
+		$event.preventDefault();
+	};	
+	$scope.setComboModal = function(combo) {
+		$scope.editName = combo.name;
+		$scope.editPrice = combo.price + combo.basePrice + combo.baseOptPrice;
+		
+		$scope.editItems = $.extend(true, [], combo.items);
+	};
+	
+	function getComboPrice(total, items) {
+		var items = items || [];
+		for (var i in items) {
+			var item = items[i];
+			total -= item.price;
+			total -= item.pivot.optPrice;
+		}
+		return total;
+	}
 });

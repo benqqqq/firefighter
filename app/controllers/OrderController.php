@@ -217,6 +217,7 @@ class OrderController extends BaseController {
 		$combos = $store->combos()->with('items.opts')->get();
 		foreach ($combos as $combo) {
 			$combo->basePrice = (int)$combo->basePrice();
+			$combo->baseOptPrice = (int)$combo->baseOptPrice();
 		}
 		
 		return View::make('order.editStore', ['store' => $store, 'items' => $items, 'combos' => $combos]);
