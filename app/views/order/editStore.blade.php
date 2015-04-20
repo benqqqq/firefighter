@@ -42,7 +42,7 @@
 			<table class="table table-striped">
 				<caption>單點</caption>
 				<tr>
-					<th>名稱</th><th>預設選項</th><th>所有選項</th>
+					<th>名稱</th><th>預設選項</th><th>所有選項</th><th>修改/刪除</th>
 				</tr>
 				<tr ng-repeat="item in items">				
 					<td>
@@ -58,10 +58,31 @@
 							<span class="label label-primary">+<span ng-bind="opt.price"></span>$</span>
 						</span>
 					</td>
+					<td>
+						<span class="glyphicon glyphicon-pencil"></span>						 
+						<span class="glyphicon glyphicon-trash"></span>
+					</td>
 				</tr>
 			</table>
 			<input type="hidden" id="items" name="items">
-			
+			<div class="form-inline">
+				<div class="form-group">
+					<label>名稱</label>
+					<input type="text" ng-model="newItemName" class="form-control" placeholder="奶茶">						
+					
+				</div>
+				<div class="form-group">
+					<label>價格</label>
+					<div class="input-group">
+						<input type="text" ng-model="newItemPrice" class="form-control" placeholder="20">
+						<span class="input-group-addon">$</span>
+					</div>
+				</div>
+				<button class="btn btn-primary" ng-click="newItem($event)">新增</button>				
+			</div>
+
+			<p></p>
+
 			<table class="table table-striped">
 				<caption>套餐</caption>
 				<tr>

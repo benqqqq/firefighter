@@ -166,7 +166,20 @@ app.controller("orderCtrl", function($scope, socket) {
 		
 		form.action = url;
 		form.submit();			
-
 	};
+
+	$scope.newItem = function($event) {
+		var name = $scope.newItemName;
+		var price = $scope.newItemPrice;
+		var item = {
+			id : -1,
+			name : name,
+			price : price
+		};
+
+		$scope.items.push(item);
+
+		$event.preventDefault();
+	}
 	
 });
