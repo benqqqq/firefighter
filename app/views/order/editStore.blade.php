@@ -52,6 +52,7 @@
 					</td>
 					<td>
 						<span class="badge" ng-bind="item.optStr"></span>
+						<span class="badge" ng-bind="item.optPrice" ng-show="debug"></span>
 					</td>
 					<td>
 						<span ng-repeat="opt in item.opts">
@@ -63,12 +64,13 @@
 						<a href=""><span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#itemModal" 
 						ng-click="setItemModal(item)"</span></a>
 
-						<a href=""><span class="glyphicon glyphicon-trash" ng-click="remove($event, items, item)"></span>
+						<a href=""><span class="glyphicon glyphicon-trash" ng-click="remove($event, items, item); refreshCombos()"></span>
 						</a>
 					</td>
 				</tr>
 			</table>
 			<input type="hidden" id="items" name="items">
+			<! -- 新增單點  -->
 			<div class="form-inline">
 				<div class="form-group">
 					<label>名稱</label>
@@ -96,11 +98,15 @@
 						<td>
 							<span ng-bind="combo.name"></span>
 							<span class="label label-primary"><span ng-bind="combo.basePrice + combo.price + combo.baseOptPrice"></span>$</span>
+							<span class="badge" ng-show="debug">baseP <span ng-bind="combo.basePrice"></span>$</span>
+							<span class="badge" ng-show="debug">P <span ng-bind="combo.price"></span>$</span>
+							<span class="badge" ng-show="debug">baseOp <span ng-bind="combo.baseOptPrice"></span>$</span>
 						</td>
 						<td>
 							<span ng-repeat="item in combo.items">
 								<span ng-bind="item.name"></span>							
 								<span ng-bind="item.pivot.optStr" class="badge"></span>
+								<span ng-bind="item.pivot.optPrice" class="badge" ng-show="debug"></span>
 							</span>								
 						</td>
 						<td>
@@ -113,7 +119,7 @@
 					</tr>
 				</tr>
 			</table>
-			
+			<!-- 新增套餐  -->
 			<input type="hidden" id="combos" name="combos">
 			<div class="form-inline">
 				<div class="form-group">
@@ -235,7 +241,8 @@
 						<tr>
 							<td class="row">
 								<strong class="col-md-4">名稱</strong>
-								<strong class="col-md-8">選項(勾選預設)</strong>
+								<strong class="col-md-6">選項(勾選預設)</strong>
+								<strong class="col-md-2">刪除</strong>
 							</td>
 						</tr>
 						<tr ng-repeat="item in editItems">
@@ -243,7 +250,7 @@
 								<div class="col-md-4">
 									<span ng-bind="item.name"></span>
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-6">
 									<span ng-repeat="opt in item.opts">
 										<span ng-bind="opt.name"></span>
 										<input ng-model="defaultComboOpt[$parent.$index][$index]" 
@@ -251,6 +258,8 @@
 											type="checkbox">
 									</span>
 								</div>
+								<a href="" class="col-md-2"><span class="glyphicon glyphicon-trash" 
+									ng-click="remove($event, editItems, item)"></span>
 							</td>
 						</tr>					
 						<tr>
@@ -268,7 +277,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="doSetModal()">確定</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="doSetComboModal()">確定</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>

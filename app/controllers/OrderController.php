@@ -2,6 +2,8 @@
 
 class OrderController extends BaseController {
 
+	private $newItemIdMapping = [];
+
 	public function show() {
 		$missions = Mission::where('isEnding', false)->with('user', 'store')->get();
 		$stores = Store::all();
@@ -232,10 +234,87 @@ class OrderController extends BaseController {
 		Store::find($id)->update($input);
 		
 		$items = json_decode(Input::get('items'));
-		foreach ($items as $item) {
-			Log::info($item->id . ' ' . $item->name);
-		}
-		
+		$combos = json_decode(Input::get('combos'));
+		$this->storeItems($id, $items);
+		$this->storeCombos($id, $combos);
 		return Redirect::back();
+	}
+	private function storeItems($storeId, $items) {
+		DB::transaction(function() use ($storeId, $items) {
+			$inputItemIds = [];
+			$inputOptIds = [];
+			foreach ($items as $item) {
+				if ($item->id == -1) {
+					$createdItem = Item::create(['store_id' => $storeId, 
+						'name' => $item->name, 'price' => $item->price, 'optStr' => '', 'optPrice' => 0]);
+					$this->newItemIdMapping[$item->newItemId] = $createdItem->id;
+					if (isset($item->opts)) {
+						foreach ($item->opts as $opt) {
+							$createdOpt = Opt::create(['item_id' => $createdItem->id, 'name' => $opt->name, 'price' => $opt->price]);
+							array_push($inputOptIds, $createdOpt->id);
+						}
+						$createdItem->optStr = $item->optStr;
+						$createdItem->optPrice = $item->optPrice;
+						$createdItem->save();
+					}
+					array_push($inputItemIds, $createdItem->id);
+				} else {
+					$existItem = Item::find($item->id);
+					$existItem->name = $item->name;
+					$existItem->price = $item->price;
+					$existItem->optStr = $item->optStr;
+					$existItem->optPrice = $item->optPrice;
+					$existItem->save();
+					
+					foreach ($item->opts as $opt) {
+						if ($opt->id == -1) {
+							$createdOpt = Opt::create(['item_id' => $existItem->id, 'name' => $opt->name, 'price' => $opt->price]);
+							array_push($inputOptIds, $createdOpt->id);						
+						} else {
+							$existOpt = Opt::find($opt->id);
+							$existOpt->name = $opt->name;
+							$existOpt->price = $opt->price;
+							$existOpt->save();
+							array_push($inputOptIds, $opt->id);
+						}
+					}
+					array_push($inputItemIds, $existItem->id);
+				}
+			}
+			Item::whereNotIn('id', $inputItemIds)->delete();
+			Opt::whereNotIn('id', $inputOptIds)->delete();
+		});
+	}
+	
+	private function storeCombos($storeId, $combos) {
+		DB::transaction(function() use ($storeId, $combos) {
+			$inputComboIds = [];
+			foreach ($combos as $combo) {
+				if ($combo->id == -1) {
+					Log::info('new combo');
+					Log::info(json_encode($combo));
+					$createdCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price]);
+					if (isset($combo->items)) {
+						foreach($combo->items as $item) {
+							$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;						
+							$createdCombo->items()->attach($item->id, ['optStr' => $item->pivot->optStr, 'optPrice' => $item->pivot->optPrice]);
+						}
+					}
+					array_push($inputComboIds, $createdCombo->id);
+				} else {
+					$existCombo = Combo::find($combo->id);
+					$existCombo->name = $combo->name;
+					$existCombo->price = $combo->price;
+					
+					$existCombo->items()->detach();
+					foreach($combo->items as $item) {
+						$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;						
+						$existCombo->items()->attach($item->id, ['optStr' => $item->pivot->optStr, 'optPrice' => $item->pivot->optPrice]);
+					}
+					array_push($inputComboIds, $existCombo->id);
+				}
+			}
+			Combo::whereNotIn('id', $inputComboIds)->delete();
+		});
 	}
 }

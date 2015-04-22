@@ -25,6 +25,7 @@ app.factory('socket', function ($rootScope) {
 });
 
 app.controller("orderCtrl", function($scope, $compile, socket) {
+	$scope.debug = false;
 	
     socket.on('orders.update', function (data) {
     	var data = JSON.parse(data);    	
@@ -163,17 +164,19 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 	$scope.submitForm = function(url) {
 		var form = document.getElementById('dataForm');
 		$("#items").val(JSON.stringify($scope.items));
-		
+		$("#combos").val(JSON.stringify($scope.combos));
 		form.action = url;
 		form.submit();			
 	};
-
+	
+	var newItemId = 0;
 	$scope.newItem = function($event) {
 		if ($scope.newItemName != "" && typeof $scope.newItemPrice == "number") {
 			$scope.items.push({
 				id : -1,
 				name : $scope.newItemName,
-				price : $scope.newItemPrice
+				price : $scope.newItemPrice,
+				newItemId : newItemId++
 			});	
 		}		
 		$event.preventDefault();
@@ -194,7 +197,7 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 		item.opts = $scope.editOpts;
 		
 		var optStr = '';
-		var optPrice = '';
+		var optPrice = 0;
 		for (var i in item.opts) {
 			if ($scope.defaultOpt[i]) {
 				var opt = item.opts[i];
@@ -202,8 +205,10 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 				optPrice += opt.price;
 			}
 		}
-		item.optStr = (optStr == '') ? ' ' : optStr;
+		item.optStr = optStr;
 		item.optPrice = optPrice;
+		
+		$scope.refreshCombos();
 	};
 	$scope.newOpt = function($event) {
 		if ($scope.newOptName != "" && typeof $scope.newOptPrice == "number") {
@@ -230,6 +235,8 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 				id : -1,
 				name : $scope.newComboName,
 				price : $scope.newComboPrice,
+				basePrice : 0,
+				baseOptPrice : 0
 			});	
 		}		
 		$event.preventDefault();
@@ -239,22 +246,93 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 		$scope.editPrice = combo.price + combo.basePrice + combo.baseOptPrice;
 		
 		$scope.editItems = $.extend(true, [], combo.items);
+		$scope.tmp = combo;
 	};
-	
-	function getComboPrice(total, items) {
-		var items = items || [];
-		for (var i in items) {
-			var item = items[i];
-			total -= item.price;
-			total -= item.pivot.optPrice;
-		}
-		return total;
-	};
+
 	$scope.newComboItem = function($event) {
 		if ($scope.newComboItemObj) {
-			$scope.editItems.push($scope.newComboItemObj);
+			var obj = $.extend(true, {}, $scope.newComboItemObj);
+			obj.pivot = {optStr : ""};
+			$scope.editItems.push(obj);
 		}
 		
 		$event.preventDefault();
+	}
+	$scope.defaultComboOpt = [];
+	$scope.doSetComboModal = function() {
+		var combo = $scope.tmp;
+		combo.name = $scope.editName;		
+		combo.items = $scope.editItems;
+		
+		combo.basePrice = 0;
+		combo.baseOptPrice = 0;
+		for (var i in combo.items) {
+			var item = combo.items[i];
+			var optStr = '';
+			var optPrice = 0;
+			for (var j in item.opts) {
+				if ($scope.defaultComboOpt[i][j]) {
+					var opt = item.opts[j];
+					optStr += opt.name + " ";
+					optPrice += opt.price;
+				}
+			}
+			item.pivot.optStr = optStr;
+			item.pivot.optPrice = optPrice;
+			combo.basePrice += item.price;
+			combo.baseOptPrice += optPrice;
+		}
+		combo.price = $scope.editPrice - combo.basePrice - combo.baseOptPrice;
+	};
+	
+	$scope.refreshCombos = function() {
+		for (var i in $scope.combos) {
+			var combo = $scope.combos[i];
+			var oriPrice = combo.price + combo.basePrice + combo.baseOptPrice;
+			combo.basePrice = 0;
+			combo.baseOptPrice = 0;			
+			for (var j in combo.items) {
+				// refresh item
+				var oldItem = $.extend(true, {}, combo.items[j]);
+				var trueItem = $.grep($scope.items, function(e) {return e.id == oldItem.id})[0];
+				var pivot = $.extend(true, {}, oldItem.pivot);
+				if (typeof trueItem == 'undefined') {
+					// has been removed
+					delete combo.items[j];
+					continue;					
+				}
+				
+				combo.items[j] = $.extend(true, {}, trueItem);
+				combo.items[j].pivot = pivot;
+				
+				// refresh optStr, optPrice
+				var optIds = getOptIdsInOptStr(oldItem);
+				var optStr = '';
+				var optPrice = 0;
+				for (var k in combo.items[j].opts) {
+					var opt = combo.items[j].opts[k];
+					if (optIds.indexOf(opt.id) != -1) {
+						optStr += opt.name;
+						optPrice += opt.price;
+					}
+				}
+				combo.items[j].pivot.optStr = optStr;
+				combo.items[j].pivot.optPrice = optPrice;				
+				// refresh combo
+				combo.basePrice += combo.items[j].price;
+				combo.baseOptPrice += optPrice;
+			}
+			combo.price = oriPrice - combo.basePrice - combo.baseOptPrice;
+		}
+	}
+	function getOptIdsInOptStr(item) {
+		var optIds = [];
+		for (var i in item.opts) {
+			var opt = item.opts[i];
+			if (item.pivot.optStr.indexOf(opt.name) != -1) {
+				optIds.push(opt.id);
+			}
+		}
+		return optIds;
 	}
 });
