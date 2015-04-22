@@ -18,11 +18,14 @@ Route::get('storableDayWork', 'DayWorkController@showStorable');
 Route::post('dayWork/store', 'DayWorkController@store');
 Route::post('dayWork/load', 'DayWorkController@load');
 
+Route::post('order/createMission/{id}', 'OrderController@doCreateMission');
 Route::get('order/createMission/{id}', 'OrderController@createMission');
+Route::get('order/deleteMission/{id}', 'OrderController@deleteMission');
 Route::get('order/createStore', 'OrderController@createStore');
 Route::post('order/createStore', 'OrderController@doCreateStore');
 Route::get('order/editStore/{id}', 'OrderController@editStore');
 Route::post('order/editStore/{id}', 'OrderController@doEditStore');
+Route::get('order/deleteStore/{id}', 'OrderController@deleteStore');
 Route::get('order/{id}', 'OrderController@showMission');
 Route::get('order', 'OrderController@show');
 
@@ -44,3 +47,7 @@ if (file_exists(__DIR__.'/controllers/Server.php')) {
     Route::get('/db/migrate', 'Server@dbMigrate');
     Route::get('/db/seed', 'Server@dbSeed');
 }
+
+View::composer(['order.*'], function($view) {
+	$view->with(['users' => User::all()]);
+});

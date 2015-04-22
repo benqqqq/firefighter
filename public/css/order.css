@@ -36,4 +36,9 @@ body {
   background: #f7f7f7;
   color: #686868; }
 
+.userSelect {
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px; }
+
 /*# sourceMappingURL=order.css.map */

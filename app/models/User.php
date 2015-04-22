@@ -16,5 +16,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function orders() {
 		return $this->hasMany('Order');
 	}
+	
+	public static function isManager() {
+		$manager = User::where('serial', 0)->first();
+		return Auth::check() && Auth::id() == $manager->id;
+	}
 
 }

@@ -5,8 +5,8 @@ class OrderController extends BaseController {
 	private $newItemIdMapping = [];
 
 	public function show() {
-		$missions = Mission::where('isEnding', false)->with('user', 'store')->get();
-		$stores = Store::all();
+		$missions = Mission::where('isEnding', false)->with('user', 'store')->orderBy('created_at', 'desc')->get();
+		$stores = Store::orderBy('created_at', 'desc')->get();
 		return View::make('order.show', ['missions' => $missions, 'stores' => $stores]);
 	}
 	
@@ -15,10 +15,13 @@ class OrderController extends BaseController {
 			'store.combos.items.opts',
 			'orders.user', 'orders.items', 
 			'orders.orderCombos.combo',
-			'orders.orderCombos.items')->find($id);
+			'orders.orderCombos.items',
+			'store.photos')->find($id);
 		$statistic = json_encode($this->buildOrderStatistic($id));
-		return View::make('order.showMission', ['mission' => $mission, 'myOrder' => $this->getMyOrder($id), 
-			'otherOrders' => $this->getOtherOrders($id), 'statistic' => $statistic]);
+		
+		$orders = $this->getOrders($id);
+		
+		return View::make('order.showMission', ['mission' => $mission, 'orders' => $orders, 'statistic' => $statistic]);
 	}
 		
 	private function buildOrderStatistic($id) {
@@ -63,18 +66,20 @@ class OrderController extends BaseController {
 	}
 	
 	public function addOrder() {
-		if (!Auth::check()) {
-			return;
+		$userId = Input::get('userId');
+		if ($userId == null) {
+			return '請選擇番號';
 		}
+		
 		$type = Input::get('type');
 		$missionId = Input::get('missionId');
 		$id = Input::get('id');
 		$opts = Input::get('optIds');
-		
-		$order = Order::where(['user_id' => Auth::id(), 'mission_id' => $missionId])->first();
+		$order = Order::where(['user_id' => $userId, 'mission_id' => $missionId])->first();
 		if ($order == null) {
-			$order = Order::create(['user_id' => Auth::id(), 'mission_id' => $missionId, 'remark' => '']);	
+			$order = Order::create(['user_id' => $userId, 'mission_id' => $missionId, 'remark' => '']);	
 		}		
+		
 		if ($type === 'item') {						
 			$this->orderItem($id, $opts, $order);
 		} else {
@@ -118,17 +123,19 @@ class OrderController extends BaseController {
 	}
 	
 	public function decrementOrder() {
-		if (!Auth::check()) {
-			return;
+		$userId = Input::get('userId');
+		if ($userId == null) {
+			return '請選擇番號';
 		}
+		
 		$type = Input::get('type');
 		$orderId = Input::get('orderId');
 		$id = Input::get('id');
 		$optStr = Input::get('optStr');
 		
 		$order = Order::find($orderId);		
-		if ($order->user->id != Auth::id()) {
-			return;
+		if ($order->user->id != $userId) {
+			/* return '非本人不可刪除'; */
 		}		
 		if ($type === 'item') {
 			$order->decrementItemQuantity($id, $optStr);
@@ -139,23 +146,17 @@ class OrderController extends BaseController {
 	}
 	
 	private function update($missionId) {
-		$data['myOrder'] = $this->getMyOrder($missionId);		
-		$data['otherOrders'] = $this->getOtherOrders($missionId);
+		$data['orders'] = $this->getOrders($missionId);
 		$data['statistic'] = $this->buildOrderStatistic($missionId);
 		Event::fire(\Realtime\OrderUpdatedEventHandler::EVENT, json_encode($data));
 	}
-	private function getMyOrder($missionId) {
-		$orders = Auth::check() ? Order::where(['mission_id' => $missionId, 'user_id' => Auth::id()])->with('user', 'items', 
-			'orderCombos.combo.items', 'orderCombos.items')->get() : null;	
+	private function getOrders($missionId) {
+		$orders = Order::where('mission_id', $missionId)->with('user', 'items', 
+			'orderCombos.combo.items', 'orderCombos.items')->get();	
 		$this->buildComboBasePrice($orders);
 		return $orders;
 	}
-	private function getOtherOrders($missionId) {
-		$orders = Auth::check() ? $data['OtherOrders'] = Order::where('mission_id', $missionId)->where('user_id', '!=', Auth::id())->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get() :
-				Order::where('mission_id', $missionId)->with('user', 'items', 'orderCombos.combo.items', 'orderCombos.items')->get();				
-		$this->buildComboBasePrice($orders);
-		return $orders;
-	}
+
 	private function buildComboBasePrice($orders) {
 		if ($orders == null) {
 			return;
@@ -209,9 +210,10 @@ class OrderController extends BaseController {
 	}
 	
 	public function createMission($id) {
-		$store = Store::find($id)->with('photos')->first();
+		$store = Store::where('id', $id)->with('photos')->first();
 		$items = $store->items()->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
+		Log::info($store->name);
 		foreach ($combos as $combo) {
 			$combo->basePrice = (int)$combo->basePrice();
 			$combo->baseOptPrice = (int)$combo->baseOptPrice();
@@ -219,8 +221,23 @@ class OrderController extends BaseController {
 		return View::make('order.createMission', ['store' => $store, 'items' => $items, 'combos' => $combos]);
 	}
 	
+	public function doCreateMission($id) {
+		$userId = Input::get('userId');
+		if ($userId == null) {
+			return Redirect::back()->withMessage('請選擇番號');
+		}
+		$mission = Mission::create(['user_id' => $userId, 'store_id' => $id, 'name' => Input::get('name')]);
+		
+		return Redirect::to('order/' . $mission->id);
+	}
+	
+	public function deleteMission($id) {
+		Mission::find($id)->delete();
+		return Redirect::to('order');
+	}
+	
 	public function editStore($id) {
-		$store = Store::find($id)->with('photos')->first();
+		$store = Store::where('id', $id)->with('photos')->first();
 		$items = $store->items()->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
 		
@@ -247,6 +264,13 @@ class OrderController extends BaseController {
 		$this->storePhotos($id);
 		return Redirect::back();
 	}
+	
+	public function deleteStore($id) {
+		File::deleteDirectory(public_path() . '/photos/' . $id);
+		Store::find($id)->delete();
+		return Redirect::to('order');
+	}
+	
 	private function storeItems($storeId, $items) {
 		DB::transaction(function() use ($storeId, $items) {
 			$inputItemIds = [];
@@ -289,8 +313,11 @@ class OrderController extends BaseController {
 					array_push($inputItemIds, $existItem->id);
 				}
 			}
-			Item::whereNotIn('id', $inputItemIds)->delete();
-			Opt::whereNotIn('id', $inputOptIds)->delete();
+			
+			$inputItemIds = count($inputItemIds) > 0 ? $inputItemIds : [-1];
+			$inputOptIds = count($inputOptIds) > 0 ? $inputOptIds : [-1];
+			Store::where('id', $storeId)->first()->items()->whereNotIn('id', $inputItemIds)->delete();
+			Store::where('id', $storeId)->first()->opts()->whereNotIn('opts.id', $inputOptIds)->delete();
 		});
 	}
 	
@@ -320,7 +347,8 @@ class OrderController extends BaseController {
 					array_push($inputComboIds, $existCombo->id);
 				}
 			}
-			Combo::whereNotIn('id', $inputComboIds)->delete();
+			$inputComboIds = count($inputComboIds) > 0 ? $inputComboIds : [-1];
+			Store::where('id', $storeId)->first()->combos()->whereNotIn('id', $inputComboIds)->delete();
 		});
 	}
 	

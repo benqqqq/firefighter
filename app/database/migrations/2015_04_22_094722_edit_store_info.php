@@ -19,11 +19,9 @@ class EditStoreInfo extends Migration {
 			
 			$table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');			
 		});
-		
-		Schema::table('missions', function($table) {
-			$table->datetime('deadline');
-			
-		});
+		Schema::table('stores', function($table) {
+			$table->timestamps();
+		});	
 	}
 
 	/**
@@ -34,8 +32,9 @@ class EditStoreInfo extends Migration {
 	public function down()
 	{
 		Schema::drop('photos');
-		Schema::table('missions', function($table) {
-			$table->dropColumn('deadline');			
-		});
+		Schema::table('stores', function($table) {
+			$table->dropColumn('created_at');
+			$table->dropColumn('updated_at');
+		});	
 	}
 }

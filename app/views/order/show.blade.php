@@ -18,9 +18,10 @@
 				@foreach($missions as $mission)
 				<a href='#' class='list-group-item' onclick="util.toUrl('{{ URL::to("order/$mission->id") }}')">
 					<strong>{{{ $mission->name }}}</strong>
-					<strong>({{{ $mission->store->name }}})</strong>
-			    	<span>主揪 : {{{ $mission->user->name }}}</span>
-					<small>{{{ $mission->created_at }}}</small>
+					<strong>({{{ $mission->store->name }}})</strong>			    	
+					<small>主揪 : {{{ $mission->user->serial }}}</small>
+					<small class="pull-right">{{{ $mission->created_at }}}</small>
+					
 				</a>					
 				@endforeach
 			</div>

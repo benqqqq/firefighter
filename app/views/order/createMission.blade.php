@@ -5,12 +5,26 @@
 	<div class="page-header">
 		<h1>新增訂購</h1>
 	</div>
-	<div>
-		<h3>訂購資訊</h3>		
+	<form method="post" action="{{ URL::to('order/createMission/' . $store->id) }}" enctype="multipart/form-data">			
+		<div class="row">
+			<div class="col-md-6 col-sm-8 col-xs-10">
+				<input type="text" name="name" class="form-control" value="訂早餐囉~~">
+			</div>
+			<div class="col-md-1 col-sm-1 col-xs-1">
+				<input class="btn btn-success" type="submit" value="確定">
+			</div>
+		</div>
+		<input name="userId" ng-value="user.id" type="hidden">
+	</form>
+
 		
-	</div>
 	<div>
-		<h3>{{{ $store->name }}} <small><a href="{{ URL::to('order/editStore/' . $store->id) }}"><span class="glyphicon glyphicon-pencil"></span> 修改</a></small></h3>	
+		<h3>{{{ $store->name }}} 
+			<small><a href="{{ URL::to('order/editStore/' . $store->id) }}"><span class="glyphicon glyphicon-pencil"></span> 修改</a></small>
+			@if (User::isManager())
+				<a href="{{ URL::to('order/deleteStore/' . $store->id) }}" class="btn btn-danger">刪除</a>
+			@endif
+		</h3>	
 		
 		<div>
 			<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $store->phone }}}</p>
@@ -83,7 +97,7 @@
 	</div>
 	
 	<!-- Modal -->
-		<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">

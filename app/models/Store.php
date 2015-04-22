@@ -3,7 +3,6 @@
 class Store extends Eloquent {
 	
 	protected $guarded = ['id'];
-	public $timestamps = false;
 	
 	public function items() {
 		return $this->hasMany('Item');
@@ -15,6 +14,10 @@ class Store extends Eloquent {
 
 	public function photos() {
 		return $this->hasMany('Photo');
+	}
+	
+	public function opts() {
+		return $this->hasManyThrough('Opt', 'Item');
 	}
 		
 }

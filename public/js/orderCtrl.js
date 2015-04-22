@@ -29,13 +29,13 @@ app.factory('socket', function ($rootScope) {
     };
 });
 
-app.controller("orderCtrl", function($scope, $compile, socket) {
+app.controller("orderCtrl", function($scope, socket) {
 	$scope.debug = false;
 	
     socket.on('orders.update', function (data) {
     	var data = JSON.parse(data);    	
-		$scope.myOrder = data.myOrder;
-		$scope.otherOrders = data.otherOrders;		
+		$scope.orders = data.orders;
+		$scope.refreshOrders();
 		$scope.statistic = data.statistic;		    	
     });
  
@@ -96,12 +96,19 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 		order('combo', id, optIds);
 	};
 	function order(type, id, optIds) {
+		var userId = ($scope.user) ? $scope.user.id : null;
 		util.ajax($scope.url + '/api/order/add', {
 			type : type,
 			id : id,
 			missionId : $scope.missionId,
-			optIds : optIds
-		}, null, 'post');
+			optIds : optIds,
+			userId : userId
+		}, function(data) {
+			if (data) {
+				$('#message').html(data);
+				$('#messageModal').modal();	
+			}
+		}, 'post');
 	}
 	
 	$scope.decrementItem = function(orderId, id, optStr) {
@@ -111,11 +118,13 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 		decrementOrder('combo', orderId, id);
 	};
 	function decrementOrder(type, orderId, id, optStr) {
+		var userId = ($scope.user) ? $scope.user.id : null;
 		util.ajax($scope.url + '/api/order/decrease', {
 			type : type,
 			orderId : orderId,
 			id : id,
-			optStr : optStr
+			optStr : optStr,
+			userId : userId
 		}, null, 'post');
 	};
 	
@@ -340,4 +349,32 @@ app.controller("orderCtrl", function($scope, $compile, socket) {
 		}
 		return optIds;
 	}
+	
+	$scope.storeUser = function() {
+		if ($scope.user) {
+			$.cookie('user', $scope.user.id, {path : '/order'});			
+		}
+	};
+	$scope.loadUser = function() {
+		return $.grep($scope.users, function(e) {return e.id == $.cookie('user')})[0];
+	};
+	
+	$scope.refreshOrders = function() {
+		if (!$scope.orders) {
+			return;
+		}
+		if ($scope.user) {
+			$scope.myOrder = $.grep($scope.orders, function(e) { return e.user_id == $scope.user.id });
+			$scope.otherOrders = $.grep($scope.orders, function(e) { return e.user_id != $scope.user.id });	
+		} else {
+			$scope.myOrder = [];
+			$scope.otherOrders = $scope.orders;
+		}
+		
+	}
+	
+	$scope.$watch('user', function(oldValue, newValue) {
+		$scope.storeUser();
+		$scope.refreshOrders();
+	});
 });
