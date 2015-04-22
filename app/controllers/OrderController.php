@@ -209,14 +209,21 @@ class OrderController extends BaseController {
 	}
 	
 	public function createMission($id) {
-		$store = Store::find($id);
-		return View::make('order.createMission', ['store' => $store]);
+		$store = Store::find($id)->with('photos')->first();
+		$items = $store->items()->with('opts')->get();		
+		$combos = $store->combos()->with('items.opts')->get();
+		foreach ($combos as $combo) {
+			$combo->basePrice = (int)$combo->basePrice();
+			$combo->baseOptPrice = (int)$combo->baseOptPrice();
+		}
+		return View::make('order.createMission', ['store' => $store, 'items' => $items, 'combos' => $combos]);
 	}
 	
 	public function editStore($id) {
-		$store = Store::find($id);
+		$store = Store::find($id)->with('photos')->first();
 		$items = $store->items()->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
+		
 		foreach ($combos as $combo) {
 			$combo->basePrice = (int)$combo->basePrice();
 			$combo->baseOptPrice = (int)$combo->baseOptPrice();
@@ -237,6 +244,7 @@ class OrderController extends BaseController {
 		$combos = json_decode(Input::get('combos'));
 		$this->storeItems($id, $items);
 		$this->storeCombos($id, $combos);
+		$this->storePhotos($id);
 		return Redirect::back();
 	}
 	private function storeItems($storeId, $items) {
@@ -291,8 +299,6 @@ class OrderController extends BaseController {
 			$inputComboIds = [];
 			foreach ($combos as $combo) {
 				if ($combo->id == -1) {
-					Log::info('new combo');
-					Log::info(json_encode($combo));
 					$createdCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price]);
 					if (isset($combo->items)) {
 						foreach($combo->items as $item) {
@@ -305,7 +311,7 @@ class OrderController extends BaseController {
 					$existCombo = Combo::find($combo->id);
 					$existCombo->name = $combo->name;
 					$existCombo->price = $combo->price;
-					
+					$existCombo->save();
 					$existCombo->items()->detach();
 					foreach($combo->items as $item) {
 						$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;						
@@ -316,5 +322,21 @@ class OrderController extends BaseController {
 			}
 			Combo::whereNotIn('id', $inputComboIds)->delete();
 		});
+	}
+	
+	private function storePhotos($storeId) {
+		$files = Input::file('photos');
+		if ($files[0] != NULL) {
+			$dir =  public_path() . '/photos/' . $storeId;					
+			File::deleteDirectory($dir);
+			File::makeDirectory($dir);									
+			Photo::where('store_id', $storeId)->delete();
+			for ($i = 0; $i < count($files); ++$i) {
+				$file = $files[$i];					
+				$name = $i . '.' . $file->getClientOriginalExtension();
+				$file->move($dir, $name);
+				Photo::create(['store_id' => $storeId, 'src' => "photos/$storeId/" . $name]);
+			}			
+		}
 	}
 }

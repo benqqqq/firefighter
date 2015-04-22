@@ -12,4 +12,9 @@ class Store extends Eloquent {
 	public function combos() {
 		return $this->hasMany('Combo');
 	}
+
+	public function photos() {
+		return $this->hasMany('Photo');
+	}
+		
 }

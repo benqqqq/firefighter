@@ -1,41 +1,56 @@
 @extends('order.layout')
 
 @section('content')
-	<form method='post' id="dataForm" ng-submit="submitForm('{{ URL::to('order/editStore/' . $store->id) }}')">
+	<form method='post' id="dataForm" ng-submit="submitForm('{{ URL::to('order/editStore/' . $store->id) }}')" enctype="multipart/form-data">
 		<div class="page-header">
 			<h1>{{{ $store->name }}} <input type="submit" class="btn btn-success pull-right" value="儲存"></h1>
 		</div>
 		<div>
 			<h3>基本資訊</h3>		
+				
+				<div class="form-inline">
+					<div class="form-group">
+						<label for="name">名稱</label>
+						<input type="text" class="form-control" id="name" name="name" value="{{ $store->name }}">
+					</div>
+					<div class="form-group">
+						<label for="phone">電話</label>
+						<input type="text" class="form-control" id="phone" name="phone" value="{{ $store->phone }}">
+					</div>							
+				</div>
+				<p></p>
+				<div class="alert alert-danger" ng-show="'{{ $errors->first('name') }}' != ''"
+					><strong><span class="glyphicon glyphicon-exclamation-sign"></span> 注意 : </strong>{{ $errors->first('name') }}</div>
+				
+				<div class="form-group">
+					<label for="address">地址</label>
+					<input type="text" class="form-control" id="address" name="address" value="{{ $store->address }}">
+				</div>
+				
+				<div class="form-group">
+					<label for="detail">備註</label>
+					<textarea class="form-control" id="detail" name="detail" rows="4"
+						>{{ $store->detail }}</textarea>
+				</div>					
+		
 			<div>
-				
-					<div class="form-inline">
-						<div class="form-group">
-							<label for="name">名稱</label>
-							<input type="text" class="form-control" id="name" name="name" value="{{ $store->name }}">
-						</div>
-						<div class="form-group">
-							<label for="phone">電話</label>
-							<input type="text" class="form-control" id="phone" name="phone" value="{{ $store->phone }}">
-						</div>							
+				<h4>照片</h4>
+				<div class="row">
+				@foreach ($store->photos as $photo)
+					<div class="col-md-4">
+						<img src="{{{ asset($photo->src) }}}" alt="storePhoto" class="img-rounded img-responsive">
 					</div>
-					<p></p>
-					<div class="alert alert-danger" ng-show="'{{ $errors->first('name') }}' != ''"
-						><strong><span class="glyphicon glyphicon-exclamation-sign"></span> 注意 : </strong>{{ $errors->first('name') }}</div>
-					
-					<div class="form-group">
-						<label for="address">地址</label>
-						<input type="text" class="form-control" id="address" name="address" value="{{ $store->address }}">
-					</div>
-					
-					<div class="form-group">
-						<label for="detail">備註</label>
-						<textarea class="form-control" id="detail" name="detail" rows="4"
-							>{{ $store->detail }}</textarea>
-					</div>		
-				
+				@endforeach
+				</div>
 			</div>
+			
+			<div class="form-group">
+				<label for="photos">上傳</label>
+				<input type="file" name="photos[]" id="photos" multiple>
+			</div>
+			
 		</div>
+		
 		<div ng-init='items = {{ $items }}'></div>
 		<div ng-init='combos = {{ $combos }}'></div>
 			<h3>品項</h3>

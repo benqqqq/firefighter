@@ -1,5 +1,10 @@
 var app = angular.module('orderApp', ['btford.socket-io']);
 
+app.config(function($interpolateProvider) {
+	$interpolateProvider.startSymbol('{[{');
+	$interpolateProvider.endSymbol('}]}');
+});
+
 app.factory('socket', function ($rootScope) {
     var socket = io.connect(host + ':3000/');
     return {
