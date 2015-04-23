@@ -213,7 +213,6 @@ class OrderController extends BaseController {
 		$store = Store::where('id', $id)->with('photos')->first();
 		$items = $store->items()->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
-		Log::info($store->name);
 		foreach ($combos as $combo) {
 			$combo->basePrice = (int)$combo->basePrice();
 			$combo->baseOptPrice = (int)$combo->baseOptPrice();

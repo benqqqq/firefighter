@@ -29,7 +29,9 @@
 		<div>
 			<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $store->phone }}}</p>
 			<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $store->address }}}</p>
-			<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> {{{ $store->detail }}}</p>
+			<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> 
+				<pre>{{{ $store->detail }}}</pre>
+			</p>
 		</div>
 
 		<div class="row">		

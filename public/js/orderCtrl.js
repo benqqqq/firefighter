@@ -30,7 +30,7 @@ app.factory('socket', function ($rootScope) {
 });
 
 app.controller("orderCtrl", function($scope, socket) {
-	$scope.debug = true;
+	$scope.debug = false;
 	
     socket.on('orders.update', function (data) {
     	var data = JSON.parse(data);    	
