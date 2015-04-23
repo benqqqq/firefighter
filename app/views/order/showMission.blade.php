@@ -1,7 +1,15 @@
 @extends('order.layout')
 
 @section('head')
-
+	<script>
+		$(function () {
+			$('.pop').popover().click(function () {
+				setTimeout(function () {
+					$('.pop').popover('hide');
+				}, 500);
+			});
+		})
+	</script>
 @stop
 
 @section('content')
@@ -21,7 +29,9 @@
 	<div>
 		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
 		<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $mission->store->address }}}</p>
-		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> {{{ $mission->store->detail }}}</p>
+		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong>
+			<pre>{{{ $mission->store->detail }}}</pre>
+		</p>
 	</div>
 	
 	<div>
@@ -38,14 +48,14 @@
 	<div class="row">
 		<div class="col-md-4 col-sm-6">			
 			<h2>菜單</h2>
+			<p>點擊來加入訂單</p>
 			@foreach ($mission->store->items as $item)
 				<p>
 					@if (count($item->opts) > 0)		
 						<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
 							ng-click=''</span></a>
 					@endif
-					
-					<span class="btn btn-warning" ng-click="orderItem({{ $item->id }})">
+					<span class="btn btn-warning pop" ng-click="orderItem({{ $item->id }})" data-content="+1">
 						<span>{{{ $item->name }}}</span>
 
 						@foreach ($item->opts as $opt)
@@ -171,6 +181,7 @@
 		<div ng-init='refreshOrders()'></div>
 		<div class="col-md-4 col-sm-6">	
 			<h2>我的訂單</h2>
+			<p>點擊來移出訂單</p>
 			<div ng-repeat='order in myOrder'>
 				{{ View::make('order.userOrder', ['skipName' => true]) }}
 			</div>
@@ -202,6 +213,7 @@
 			) *
 			<span ng-bind='combo.quantity'></span>
 		</p>
+		<hr/>
 		<p>
 			總共 : <span class="label label-primary"><span ng-bind='statistic.price.total'></span>$</span>
 			已付 : <span class="label label-success"><span ng-bind='statistic.price.paid'></span>$</span>

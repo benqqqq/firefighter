@@ -60,12 +60,15 @@
 			<table class="table table-striped">
 				<caption>單點</caption>
 				<tr>
-					<th>名稱</th><th>預設選項</th><th>所有選項</th><th>修改/刪除</th>
+					<th>名稱</th><th>預設選項</th><th>所有選項</th><th>修改/複製/刪除</th>
 				</tr>
 				<tr ng-repeat="item in items">				
 					<td>
-						<span ng-bind="item.name"></span>
-						<span class="label label-primary"><span ng-bind='item.price'></span>$</span>
+						<input type="text" ng-model="item.name">						
+						<span class="label label-primary">
+							<input type="number" ng-model="item.price" class="text-primary">
+							$
+						</span>
 					</td>
 					<td>
 						<span class="badge" ng-bind="item.optStr"></span>
@@ -78,11 +81,18 @@
 						</span>
 					</td>
 					<td>						 
-						<a href=""><span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#itemModal" 
-						ng-click="setItemModal(item)"</span></a>
+						<span class="btn btn-primary btn-xs" data-toggle="modal" data-target="#itemModal" 
+							ng-click="setItemModal(item)">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</span>
 
-						<a href=""><span class="glyphicon glyphicon-trash" ng-click="remove($event, items, item); refreshCombos()"></span>
-						</a>
+						<span class="btn btn-primary btn-xs" ng-click="copyItem(item)">
+							<span class="glyphicon glyphicon-copy"></span>
+						</span>
+
+						<span class="btn btn-primary btn-xs" ng-click="remove(items, item); refreshCombos()">
+							<span class="glyphicon glyphicon-trash"></span>
+						</span>
 					</td>
 				</tr>
 			</table>
@@ -110,11 +120,20 @@
 			<table class="table table-striped">
 				<caption>套餐</caption>
 				<tr>
-					<th>名稱</th><th>組合</th><th>修改/刪除</th>
+					<th>名稱</th><th>組合</th><th>修改/複製/刪除</th>
 					<tr ng-repeat="combo in combos">
 						<td>
-							<span ng-bind="combo.name"></span>
-							<span class="label label-primary"><span ng-bind="combo.basePrice + combo.price + combo.baseOptPrice"></span>$</span>
+<!-- 							<span ng-bind="combo.name"></span> -->
+							<input type="text" ng-model="combo.name">							
+<!-- 							<span class="label label-primary"><span ng-bind="combo.basePrice + combo.price + combo.baseOptPrice"></span>$</span> -->
+<!-- ng-value="combo.basePrice + combo.price + combo.baseOptPrice" -->
+							<span class="label label-primary">
+								<input type="number" 
+									ng-model="combo.editPrice"
+								 	ng-change="refreshComboPrice(combo)" class="text-primary">
+								$
+							</span>
+							
 							<span class="badge" ng-show="debug">baseP <span ng-bind="combo.basePrice"></span>$</span>
 							<span class="badge" ng-show="debug">P <span ng-bind="combo.price"></span>$</span>
 							<span class="badge" ng-show="debug">baseOp <span ng-bind="combo.baseOptPrice"></span>$</span>
@@ -127,11 +146,18 @@
 							</span>								
 						</td>
 						<td>
-							<a href=""><span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#comboModal" 
-								ng-click="setComboModal(combo)"</span></a>
+							<span class="btn btn-primary btn-xs" data-toggle="modal" data-target="#comboModal" 
+								ng-click="setComboModal(combo)">
+								<span class="glyphicon glyphicon-pencil"></span>
+							</span>
 	
-							<a href=""><span class="glyphicon glyphicon-trash" ng-click="remove($event, combos, combo)"></span>
-							</a>
+							<span class="btn btn-primary btn-xs" ng-click="copyCombo(combo)">
+								<span class="glyphicon glyphicon-copy"></span>
+							</span>
+	
+							<span class="btn btn-primary btn-xs" ng-click="remove(combos, combo)">
+								<span class="glyphicon glyphicon-trash"></span>
+							</span>
 						</td>
 					</tr>
 				</tr>

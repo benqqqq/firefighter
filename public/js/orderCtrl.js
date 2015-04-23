@@ -30,15 +30,15 @@ app.factory('socket', function ($rootScope) {
 });
 
 app.controller("orderCtrl", function($scope, socket) {
-	$scope.debug = false;
+	$scope.debug = true;
 	
     socket.on('orders.update', function (data) {
     	var data = JSON.parse(data);    	
 		$scope.orders = data.orders;
 		$scope.refreshOrders();
-		$scope.statistic = data.statistic;		    	
+		$scope.statistic = data.statistic;
     });
- 
+	
     $scope.iPrice = {};
     $scope.cPrice = {};
     $scope.itemOpt = {};
@@ -234,10 +234,25 @@ app.controller("orderCtrl", function($scope, socket) {
 		}
 		$event.preventDefault();
 	};
-	$scope.remove = function($event, objs, obj) {
+	$scope.remove = function(objs, obj) {
 		objs.splice(objs.indexOf(obj), 1);
-		$event.preventDefault();
 	};
+
+	$scope.copyItem = function(item) {
+		var newItem = $.extend(true, {}, item);
+		delete newItem.$$hashKey;
+		newItem.id = -1;
+		newItem.newItemId = newItemId++;
+		$scope.items.push(newItem);
+	};
+	
+	$scope.copyCombo = function(combo) {
+		var newCombo = $.extend(true, {}, combo);
+		delete newCombo.$$hashKey;
+		newCombo.id = -1;
+		$scope.combos.push(newCombo);
+	};
+
 	$scope.isInStr = function(optStr, name) {
 		return optStr.indexOf(name) != -1;	
 	};
@@ -249,6 +264,7 @@ app.controller("orderCtrl", function($scope, socket) {
 				id : -1,
 				name : $scope.newComboName,
 				price : $scope.newComboPrice,
+				editPrice : $scope.newComboPrice,
 				basePrice : 0,
 				baseOptPrice : 0
 			});	
@@ -257,7 +273,7 @@ app.controller("orderCtrl", function($scope, socket) {
 	};	
 	$scope.setComboModal = function(combo) {
 		$scope.editName = combo.name;
-		$scope.editPrice = combo.price + combo.basePrice + combo.baseOptPrice;
+		$scope.editPrice = combo.editPrice;
 		
 		$scope.editItems = $.extend(true, [], combo.items);
 		$scope.tmp = combo;
@@ -297,12 +313,16 @@ app.controller("orderCtrl", function($scope, socket) {
 			combo.baseOptPrice += optPrice;
 		}
 		combo.price = $scope.editPrice - combo.basePrice - combo.baseOptPrice;
+		combo.editPrice = $scope.editPrice;
+	};
+	
+	$scope.refreshComboPrice = function(combo) {
+		combo.price = combo.editPrice - combo.basePrice - combo.baseOptPrice;
 	};
 	
 	$scope.refreshCombos = function() {
 		for (var i in $scope.combos) {
 			var combo = $scope.combos[i];
-			var oriPrice = combo.price + combo.basePrice + combo.baseOptPrice;
 			combo.basePrice = 0;
 			combo.baseOptPrice = 0;			
 			for (var j in combo.items) {
@@ -312,7 +332,7 @@ app.controller("orderCtrl", function($scope, socket) {
 				var pivot = $.extend(true, {}, oldItem.pivot);
 				if (typeof trueItem == 'undefined') {
 					// has been removed
-					delete combo.items[j];
+					combo.items.splice(j, 1);
 					continue;					
 				}
 				
@@ -326,7 +346,7 @@ app.controller("orderCtrl", function($scope, socket) {
 				for (var k in combo.items[j].opts) {
 					var opt = combo.items[j].opts[k];
 					if (optIds.indexOf(opt.id) != -1) {
-						optStr += opt.name;
+						optStr += opt.name + " ";
 						optPrice += opt.price;
 					}
 				}
@@ -336,7 +356,7 @@ app.controller("orderCtrl", function($scope, socket) {
 				combo.basePrice += combo.items[j].price;
 				combo.baseOptPrice += optPrice;
 			}
-			combo.price = oriPrice - combo.basePrice - combo.baseOptPrice;
+			combo.price = combo.editPrice - combo.basePrice - combo.baseOptPrice;
 		}
 	}
 	function getOptIdsInOptStr(item) {
