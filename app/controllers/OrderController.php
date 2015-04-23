@@ -355,7 +355,7 @@ class OrderController extends BaseController {
 	
 	private function storePhotos($storeId) {
 		$files = Input::file('photos');
-		if ($files[0] != NULL) {
+		if ($files[0] != NULL) {			
 			$dir =  public_path() . '/photos/' . $storeId;					
 			File::deleteDirectory($dir);
 			File::makeDirectory($dir);									
@@ -364,6 +364,13 @@ class OrderController extends BaseController {
 				$file = $files[$i];					
 				$name = $i . '.' . $file->getClientOriginalExtension();
 				$file->move($dir, $name);
+				$basePath = base_path();
+				
+				exec("python $basePath/scripts/resize.py -s $dir/$name -n $i -h 700 -o $dir", $output, $return);
+				if ($return) {
+					throw new \Exception("Error executing command - error code: $return");
+				}
+				Log::info($output);
 				Photo::create(['store_id' => $storeId, 'src' => "photos/$storeId/" . $name]);
 			}			
 		}
