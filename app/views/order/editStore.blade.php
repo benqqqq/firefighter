@@ -230,7 +230,9 @@
 										<span class="input-group-addon">$</span>
 									</div>
 								</div>
-								<a href="" class="col-md-2"><span class="glyphicon glyphicon-trash" ng-click="remove($event, editOpts, opt)"></span>
+								<span class="col-md-2 btn btn-primary" ng-click="remove(editOpts, opt)">
+									<span class="glyphicon glyphicon-trash"></span>
+								</span>
 							</td>
 						</tr>					
 						<tr>
@@ -301,8 +303,9 @@
 											type="checkbox">
 									</span>
 								</div>
-								<a href="" class="col-md-2"><span class="glyphicon glyphicon-trash" 
-									ng-click="remove($event, editItems, item)"></span>
+								<span class="col-md-2 btn btn-primary" ng-click="remove(editItems, item)">
+									<span class="glyphicon glyphicon-trash"></span>
+								</span>
 							</td>
 						</tr>					
 						<tr>
