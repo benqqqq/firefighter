@@ -44,7 +44,7 @@ class UserController extends BaseController {
 	
 	public function doLogout() {
 		Auth::logout();
-		return Redirect::back();
+		return Redirect::to('/order');
 	}
 	
 }

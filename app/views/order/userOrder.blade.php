@@ -17,17 +17,25 @@
 <!-- 	<a ng-click="decrementItem(order.id, item.id, item.pivot.optStr)" href="" ng-show="order.user.id == user.id"><span class="glyphicon glyphicon-minus text-danger"></span></a> -->
 </p>
 <p ng-repeat='orderCombo in order.order_combos'>
-	<span ng-bind='orderCombo.combo.name'></span>
-	
-	(
-	<span ng-repeat='item in orderCombo.items'>
-		<span ng-bind='item.name'></span>
-		<span ng-bind='item.pivot.optStr' ng-show='item.pivot.optStr != " "' class="badge"></span>
+	@if ($skipName)
+	<span class="btn btn-default" ng-click="decrementCombo(order.id, orderCombo.id)">
+	@else
+	<span class="">
+	@endif
+		<span ng-bind='orderCombo.combo.name'></span>	
+		(
+		<span ng-repeat='item in orderCombo.items'>
+			<span ng-bind='item.name'></span>
+			<span ng-bind='item.pivot.optStr' ng-show='item.pivot.optStr != " "' class="badge"></span>
+		</span>
+		)
 	</span>
-	) * <span ng-bind='orderCombo.quantity'></span> = 
+	<span> * </span> 
+	<span ng-bind='orderCombo.quantity'></span> = 
 	<span class="label label-primary "
 		><span ng-bind='(orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity'></span>$</span>
-	<a ng-click="decrementCombo(order.id, orderCombo.id)" href="" ng-show="order.user.id == user.id"><span class="glyphicon glyphicon-minus text-danger"></span></a>
+		
+	<!-- <a ng-click="decrementCombo(order.id, orderCombo.id)" href="" ng-show="order.user.id == user.id"><span class="glyphicon glyphicon-minus text-danger"></span></a> -->
 </p>
 <hr/>
 <p>

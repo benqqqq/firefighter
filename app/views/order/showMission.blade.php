@@ -113,12 +113,14 @@
 			
 			@foreach ($mission->store->combos as $combo)			
 				<p>
-					<span>{{{ $combo->name }}}</span>
+					<span class="btn btn-warning pop" ng-click="orderCombo({{ $combo->id }})" data-content="+1">
+						<span>{{{ $combo->name }}}</span>
+					</span>
 					(
 					@foreach ($combo->items as $item)
-						@if (count($item->opts) > 0)		
-							<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}" 
-								ng-click=''</span></a>
+						@if (count($item->opts) > 0)									
+							<a href=""><span class="glyphicon glyphicon-cog" 
+								data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}"></span></a>
 						@endif
 
 						<span>{{{ $item->name }}}</span>
@@ -128,8 +130,9 @@
 						@endforeach
 					@endforeach
 					)
+					
 					<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
-					<a href=""><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus text-success"></span></a>
+<!-- 					<a href=""><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus text-success"></span></a> -->
 				</p>
 				@foreach ($combo->items as $item)
 					<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
