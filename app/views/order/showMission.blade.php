@@ -1,6 +1,7 @@
 @extends('order.layout')
 
 @section('head')
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.0/isotope.pkgd.js"></script>
 	<script>
 		$(function () {
 			$('.pop').popover().click(function () {
@@ -8,7 +9,13 @@
 					$('.pop').popover('hide');
 				}, 500);
 			});
-		})
+		});
+		$(document).ready(function() {
+			$('.menu').isotope({
+				itemSelector : '.menu-item',
+				layoutMode : 'fitRows'
+			});
+		});
 	</script>
 @stop
 
@@ -52,21 +59,22 @@
 			
 			<ul class="list-group menu">
 			@foreach ($mission->store->categories as $category)
-				<li class="list-group-item col-md-6">
-					<h4 class="list-group-item-heading btn btn-block btn-lg dropdown-toggle">{{ $category->name }}						
-						<span class="caret pull-right"></span>
+				<li class="list-group-item col-md-6 menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg" ng-click="categoryToggle({{ $category->id }})" ng-init="categoryIsShow[{{ $category->id }}] = false">{{ $category->name }}						
+						<small><span class="glyphicon glyphicon-triangle-bottom pull-right" ng-show="!categoryIsShow[{{ $category->id }}]"></span></small>
+						<small><span class="glyphicon glyphicon-triangle-top pull-right" ng-show="categoryIsShow[{{ $category->id }}]"></span></small>
 					</h4>
-					{{ View::make('order.itemMenu', ['items' => $category->items]) }}					
-				</li>
+					<div class="hide category{{ $category->id }}">
+						{{ View::make('order.itemMenu', ['items' => $category->items]) }}										
+					</div>
+				</li>				
 			@endforeach
 			
-				<li class="list-group-item col-md-6">
-					{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}
-				</li>
+				<li class="list-group-item col-md-6">{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}</li>
 				
 			
-				<li class="list-group-item col-md-12">
-					<h4 class="list-group-item-heading">套餐</h4>
+				<li class="list-group-item col-md-12 menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg">套餐<span class="caret pull-right"></span></h4>
 					@foreach ($mission->store->combos as $combo)			
 						<p>
 							<span class="btn btn-warning pop" ng-click="orderCombo({{ $combo->id }})" data-content="+1">

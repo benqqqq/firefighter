@@ -22,6 +22,7 @@ class Store extends Eloquent {
 	
 	public function unCategoryItems() {
 		$excludeIds = DB::table('category_item')->lists('item_id');
+		$excludeIds = count($excludeIds) > 0 ? $excludeIds : [-1];
 		return $this->items()->whereNotIn('id', $excludeIds);
 	}
 	
