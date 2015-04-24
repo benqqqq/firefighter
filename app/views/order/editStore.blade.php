@@ -60,14 +60,17 @@
 			<table class="table table-striped">
 				<caption>單點</caption>
 				<tr>
-					<th>名稱</th><th>預設選項</th><th>所有選項</th><th>修改/複製/刪除</th>
+					<th>名稱</th>
+					<th>預設選項</th>
+					<th>所有選項</th>
+					<th>修改/複製/刪除</th>
 				</tr>
 				<tr ng-repeat="item in items">				
-					<td>
-						<input type="text" ng-model="item.name">						
-						<span class="label label-primary">
-							<input type="number" ng-model="item.price" class="text-primary">
-							$
+					<td class="form-inline">
+						<input type="text" ng-model="item.name" class="form-control input-sm col-md-8">											
+						<span class="input-group col-md-4">
+							<input type="number" ng-model="item.price" class="form-control input-sm">
+							<span class="input-group-addon input-sm">$</span>
 						</span>
 					</td>
 					<td>
@@ -122,16 +125,13 @@
 				<tr>
 					<th>名稱</th><th>組合</th><th>修改/複製/刪除</th>
 					<tr ng-repeat="combo in combos">
-						<td>
-<!-- 							<span ng-bind="combo.name"></span> -->
-							<input type="text" ng-model="combo.name">							
-<!-- 							<span class="label label-primary"><span ng-bind="combo.basePrice + combo.price + combo.baseOptPrice"></span>$</span> -->
-<!-- ng-value="combo.basePrice + combo.price + combo.baseOptPrice" -->
-							<span class="label label-primary">
+						<td class="form-inline">
+							<input type="text" ng-model="combo.name" class="form-control input-sm col-md-8">							
+							<span class="input-group col-md-4">
 								<input type="number" 
 									ng-model="combo.editPrice"
-								 	ng-change="refreshComboPrice(combo)" class="text-primary">
-								$
+								 	ng-change="refreshComboPrice(combo)" class="form-control input-sm">
+								<span class="input-group-addon input-sm">$</span>
 							</span>
 							
 							<span class="badge" ng-show="debug">baseP <span ng-bind="combo.basePrice"></span>$</span>

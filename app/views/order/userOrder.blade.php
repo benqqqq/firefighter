@@ -3,7 +3,7 @@
 @endif
 <p ng-repeat='item in order.items'>
 	@if ($skipName)
-	<span class="btn btn-default" ng-click="decrementItem(order.id, item.id, item.pivot.optStr)">
+	<span class="btn btn-default btn-wrap" ng-click="decrementItem(order.id, item.id, item.pivot.optStr)">
 	@else
 	<span class="">
 	@endif
@@ -18,7 +18,7 @@
 </p>
 <p ng-repeat='orderCombo in order.order_combos'>
 	@if ($skipName)
-	<span class="btn btn-default" ng-click="decrementCombo(order.id, orderCombo.id)">
+	<span class="btn btn-default btn-wrap" ng-click="decrementCombo(order.id, orderCombo.id)">
 	@else
 	<span class="">
 	@endif

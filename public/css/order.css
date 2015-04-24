@@ -39,11 +39,5 @@ body {
 .navbar {
   line-height: 35px; }
 
-.userSelect {
-  	/*
-  height: 20px;
-  	line-height: 20px;
-  	font-size: 12px;
-  */ }
-
-/*# sourceMappingURL=order.css.map */
+.btn-wrap {
+  white-space: normal; }
