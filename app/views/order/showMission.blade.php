@@ -46,140 +46,97 @@
 
 	
 	<div class="row">
-		<div class="col-md-4 col-sm-6">			
+		<div class="col-md-8 col-sm-6">			
 			<h2>菜單</h2>
 			<p>點擊來加入訂單</p>
-			@foreach ($mission->store->items as $item)
-				<p>
-					@if (count($item->opts) > 0)		
-						<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
-							ng-click=''</span></a>
-					@endif
-					<span class="btn btn-warning pop" ng-click="orderItem({{ $item->id }})" data-content="+1">
-						<span>{{{ $item->name }}}</span>
-
-						@foreach ($item->opts as $opt)
-							<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
-						@endforeach
-						
-					</span>				
-					<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
-					
-				</p>
-				
-				<div class="modal fade optModal" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-sm">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close"
-									><span aria-hidden="true">&times;</span></button>
-								<h4 class="modal-title" id="myModalLabel">{{{ $item->name }}} <span class='label label-primary '>{{{ $item->price }}}$</span></h4>
-							</div>
-							<div class="modal-body">
-								<table class='table table-striped'>
-									<tr>
-										<th>名稱</th><th>加價</th>
-									</tr>
-									@foreach ($item->opts as $opt)
-										<tr>
-											<td>
-												<span class="checkbox">
-													<label>
-														<input type='checkbox' ng-model='itemOpt[{{ $item->id }}][{{ $opt->id }}]' 
-															ng-change='changeItemPrice({{ $item->id }}, {{ $opt->id }}, {{ $opt->price }})'>
-														{{{ $opt->name }}}
-													</label>
-												</span>
-											</td>										
-											<td><span class='label label-primary '>+{{{ $opt->price }}}$</span></td>
-										</tr>
-									@endforeach	
-								</table>
-								
-							</div>
-							<div class="modal-footer">
-								{{{ $item->name }}} 
-								@foreach ($item->opts as $opt)
-									<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
-								@endforeach			
-								總共 : <span class='label label-primary '><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
-								<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
-							</div>
-						</div>
-					</div>
-				</div>
-
+			
+			<ul class="list-group menu">
+			@foreach ($mission->store->categories as $category)
+				<li class="list-group-item col-md-6">
+					<h4 class="list-group-item-heading btn btn-block btn-lg dropdown-toggle">{{ $category->name }}						
+						<span class="caret pull-right"></span>
+					</h4>
+					{{ View::make('order.itemMenu', ['items' => $category->items]) }}					
+				</li>
 			@endforeach
 			
-			@foreach ($mission->store->combos as $combo)			
-				<p>
-					<span class="btn btn-warning pop" ng-click="orderCombo({{ $combo->id }})" data-content="+1">
-						<span>{{{ $combo->name }}}</span>
-					</span>
-					(
-					@foreach ($combo->items as $item)
-						@if (count($item->opts) > 0)									
-							<a href=""><span class="glyphicon glyphicon-cog" 
-								data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}"></span></a>
-						@endif
-
-						<span>{{{ $item->name }}}</span>
-						
-						@foreach ($item->opts as $opt)
-							<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
-						@endforeach
-					@endforeach
-					)
-					
-					<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
-<!-- 					<a href=""><span ng-click="orderCombo({{ $combo->id }})" class="glyphicon glyphicon-plus text-success"></span></a> -->
-				</p>
-				@foreach ($combo->items as $item)
-					<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-sm">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"
-										><span aria-hidden="true">&times;</span></button>
-									<h4 class="modal-title" id="myModalLabel">{{{ $combo->name }}} - {{{ $item->name }}} <span class='label label-primary '>{{{ $item->price }}}$</span></h4>
-								</div>
-								<div class="modal-body">
-									<table class='table table-striped'>
-										<tr>
-											<th>名稱</th><th>加價</th>
-										</tr>
-										@foreach ($item->opts as $opt)
-											<tr>
-												<td>
-													<div class="checkbox">
-														<label>
-															<input type='checkbox' ng-model='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' 
-																ng-change='changeComboPrice({{ $combo->id }}, {{ $item->id }}, {{ $opt->id }}, {{ $opt->price }})'>
-															{{{ $opt->name }}}
-														</label>
-													</div>
-												</td>
-												<td><span class='label label-primary '>+{{{ $opt->price }}}$</span></td>
-											</tr>
-										@endforeach	
-									</table>
-								</div>
-								<div class="modal-footer">
-									{{{ $item->name }}} 
-									@foreach ($item->opts as $opt)
-										<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
-									@endforeach			
-									套餐總共 : <span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
-									<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
+				<li class="list-group-item col-md-6">
+					{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}
+				</li>
+				
+			
+				<li class="list-group-item col-md-12">
+					<h4 class="list-group-item-heading">套餐</h4>
+					@foreach ($mission->store->combos as $combo)			
+						<p>
+							<span class="btn btn-warning pop" ng-click="orderCombo({{ $combo->id }})" data-content="+1">
+								<span>{{{ $combo->name }}}</span>
+							</span>
+							(
+							@foreach ($combo->items as $item)
+								@if (count($item->opts) > 0)									
+									<a href=""><span class="glyphicon glyphicon-cog" 
+										data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}"></span></a>
+								@endif
+		
+								<span>{{{ $item->name }}}</span>
+								
+								@foreach ($item->opts as $opt)
+									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
+								@endforeach
+							@endforeach
+							)
+							
+							<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
+						</p>
+						@foreach ($combo->items as $item)
+							<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-sm">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+												><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title" id="myModalLabel">{{{ $combo->name }}} - {{{ $item->name }}} <span class='label label-primary '>{{{ $item->price }}}$</span></h4>
+										</div>
+										<div class="modal-body">
+											<table class='table table-striped'>
+												<tr>
+													<th>名稱</th><th>加價</th>
+												</tr>
+												@foreach ($item->opts as $opt)
+													<tr>
+														<td>
+															<div class="checkbox">
+																<label>
+																	<input type='checkbox' 
+																		ng-model='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' 
+																		ng-change='changeComboPrice({{ $combo->id }}, {{ $item->id }}, {{ $opt->id }}, {{ $opt->price }})'>
+																	{{{ $opt->name }}}
+																</label>
+															</div>
+														</td>
+														<td><span class='label label-primary '>+{{{ $opt->price }}}$</span></td>
+													</tr>
+												@endforeach	
+											</table>
+										</div>
+										<div class="modal-footer">
+											{{{ $item->name }}} 
+											@foreach ($item->opts as $opt)
+												<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' 
+													class='badge'>{{{ $opt->name }}}</span>
+											@endforeach			
+											套餐總共 : <span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
+											<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				@endforeach
-
-			@endforeach
+						@endforeach
+					@endforeach
+				</li>
+			</ul>		
 		</div>
-		
 		<div ng-init='orders = {{ $orders }}'></div>
 		<div ng-init='refreshOrders()'></div>
 		<div class="col-md-4 col-sm-6">	

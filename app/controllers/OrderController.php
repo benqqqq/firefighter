@@ -13,6 +13,8 @@ class OrderController extends BaseController {
 	public function showMission($id) {
 		$mission = Mission::with('user', 'store.items.opts', 
 			'store.combos.items.opts',
+			'store.categories.items.opts',
+			'store.unCategoryItems.opts',
 			'orders.user', 'orders.items', 
 			'orders.orderCombos.combo',
 			'orders.orderCombos.items',

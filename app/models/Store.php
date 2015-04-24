@@ -20,6 +20,11 @@ class Store extends Eloquent {
 		return $this->hasMany('Category');
 	}
 	
+	public function unCategoryItems() {
+		$excludeIds = DB::table('category_item')->lists('item_id');
+		return $this->items()->whereNotIn('id', $excludeIds);
+	}
+	
 	public function opts() {
 		return $this->hasManyThrough('Opt', 'Item');
 	}

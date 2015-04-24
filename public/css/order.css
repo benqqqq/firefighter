@@ -42,4 +42,13 @@ body {
 .btn-wrap {
   white-space: normal; }
 
+.menu .list-group-item {
+  border: none; }
+.menu .list-group-item-heading {
+  text-align: left;
+  border-bottom: 1px solid #eee; }
+  .menu .list-group-item-heading:hover {
+    color: #eea236;
+    border-bottom: 1px solid #eea236; }
+
 /*# sourceMappingURL=order.css.map */

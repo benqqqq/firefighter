@@ -47,3 +47,16 @@ body {
 .btn-wrap {
 	white-space: normal;
 }
+.menu {
+	.list-group-item {
+		border: none;	
+	}
+	.list-group-item-heading {
+		text-align: left;
+		border-bottom: 1px solid #eee;
+		&:hover {
+			color: #eea236;
+			border-bottom: 1px solid #eea236;	
+		}
+	}
+}
