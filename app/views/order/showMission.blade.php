@@ -59,22 +59,34 @@
 			
 			<ul class="list-group menu">
 			@foreach ($mission->store->categories as $category)
-				<li class="list-group-item col-md-6 menu-item">
-					<h4 class="list-group-item-heading btn btn-block btn-lg" ng-click="categoryToggle({{ $category->id }})" ng-init="categoryIsShow[{{ $category->id }}] = false">{{ $category->name }}						
-						<small><span class="glyphicon glyphicon-triangle-bottom pull-right" ng-show="!categoryIsShow[{{ $category->id }}]"></span></small>
-						<small><span class="glyphicon glyphicon-triangle-top pull-right" ng-show="categoryIsShow[{{ $category->id }}]"></span></small>
+				<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg" ng-click="categoryToggle({{ $category->id }})" 
+						ng-init="categoryIsShow[{{ $category->id }}] = false">{{ $category->name }}						
+						<small><span class="glyphicon glyphicon-triangle-bottom pull-right" 
+							ng-show="!categoryIsShow[{{ $category->id }}]"></span></small>
+						<small><span class="glyphicon glyphicon-triangle-top pull-right" 
+							ng-show="categoryIsShow[{{ $category->id }}]"></span></small>
 					</h4>
-					<div class="hide category{{ $category->id }}">
+					<div class="menu-item-content menu-item-content-{{ $category->id }}">
 						{{ View::make('order.itemMenu', ['items' => $category->items]) }}										
 					</div>
 				</li>				
 			@endforeach
 			
-				<li class="list-group-item col-md-6">{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}</li>
+				<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item">
+					{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}
+				</li>
 				
 			
-				<li class="list-group-item col-md-12 menu-item">
-					<h4 class="list-group-item-heading btn btn-block btn-lg">套餐<span class="caret pull-right"></span></h4>
+				<li class="list-group-item col-md-12 col-sm-12 col-xs-12  menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg" ng-click="categoryToggle('c')"
+						ng-init="categoryIsShow['c'] = false">套餐
+						<small><span class="glyphicon glyphicon-triangle-bottom pull-right" 
+							ng-show="!categoryIsShow['c']"></span></small>
+						<small><span class="glyphicon glyphicon-triangle-top pull-right" 
+							ng-show="categoryIsShow['c']"></span></small>
+					</h4>
+					<div class="menu-item-content menu-item-content-c">
 					@foreach ($mission->store->combos as $combo)			
 						<p>
 							<span class="btn btn-warning pop" ng-click="orderCombo({{ $combo->id }})" data-content="+1">
@@ -90,7 +102,8 @@
 								<span>{{{ $item->name }}}</span>
 								
 								@foreach ($item->opts as $opt)
-									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
+									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' 
+										class='badge'>{{{ $opt->name }}}</span>
 								@endforeach
 							@endforeach
 							)
@@ -98,13 +111,16 @@
 							<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
 						</p>
 						@foreach ($combo->items as $item)
-							<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" 
+								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-sm">
 									<div class="modal-content">
 										<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close"
 												><span aria-hidden="true">&times;</span></button>
-											<h4 class="modal-title" id="myModalLabel">{{{ $combo->name }}} - {{{ $item->name }}} <span class='label label-primary '>{{{ $item->price }}}$</span></h4>
+											<h4 class="modal-title" id="myModalLabel"
+												>{{{ $combo->name }}} - {{{ $item->name }}} <span class='label label-primary '
+												>{{{ $item->price }}}$</span></h4>
 										</div>
 										<div class="modal-body">
 											<table class='table table-striped'>
@@ -142,6 +158,7 @@
 							</div>
 						@endforeach
 					@endforeach
+					</div>
 				</li>
 			</ul>		
 		</div>

@@ -431,4 +431,18 @@ app.controller("orderCtrl", function($scope, socket) {
 		$scope.storeUser();
 		$scope.refreshOrders();
 	});
+	
+	$scope.categoryIsShow = {};
+	$scope.categoryToggle = function(id) {		
+		var layout = function() {
+			$('.menu').isotope('layout');	
+		};
+	
+		if ($scope.categoryIsShow[id]) {
+			$('.menu-item-content-' + id).slideUp(layout);	
+		} else {
+			$('.menu-item-content-' + id).slideDown(layout);	
+		}	
+		$scope.categoryIsShow[id] = !$scope.categoryIsShow[id];			
+	}
 });
