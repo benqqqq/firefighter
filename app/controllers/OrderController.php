@@ -237,6 +237,7 @@ class OrderController extends BaseController {
 	
 	public function editStore($id) {
 		$store = Store::where('id', $id)->with('photos')->first();
+		$categories = $store->categories()->with('items')->get();
 		$items = $store->items()->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
 		
@@ -246,7 +247,7 @@ class OrderController extends BaseController {
 			$combo->editPrice = $combo->basePrice + $combo->baseOptPrice + $combo->price;
 		}
 		
-		return View::make('order.editStore', ['store' => $store, 'items' => $items, 'combos' => $combos]);
+		return View::make('order.editStore', ['store' => $store, 'items' => $items, 'combos' => $combos, 'categories' => $categories]);
 	}
 	
 	public function doEditStore($id) {
@@ -259,8 +260,11 @@ class OrderController extends BaseController {
 		
 		$items = json_decode(Input::get('items'));
 		$combos = json_decode(Input::get('combos'));
+		$categories = json_decode(Input::get('categories'));
+		// Items must be stored before combo and category
 		$this->storeItems($id, $items);
 		$this->storeCombos($id, $combos);
+		$this->storeCategories($id, $categories);
 		$this->storePhotos($id);
 		return Redirect::back();
 	}
@@ -275,43 +279,37 @@ class OrderController extends BaseController {
 		DB::transaction(function() use ($storeId, $items) {
 			$inputItemIds = [];
 			$inputOptIds = [];
-			foreach ($items as $item) {
+			foreach ($items as $item) {				
 				if ($item->id == -1) {
-					$createdItem = Item::create(['store_id' => $storeId, 
-						'name' => $item->name, 'price' => $item->price, 'optStr' => '', 'optPrice' => 0]);
-					$this->newItemIdMapping[$item->newItemId] = $createdItem->id;
-					if (isset($item->opts)) {
-						foreach ($item->opts as $opt) {
-							$createdOpt = Opt::create(['item_id' => $createdItem->id, 'name' => $opt->name, 'price' => $opt->price]);
-							array_push($inputOptIds, $createdOpt->id);
-						}
-						$createdItem->optStr = $item->optStr;
-						$createdItem->optPrice = $item->optPrice;
-						$createdItem->save();
-					}
-					array_push($inputItemIds, $createdItem->id);
+					$item->optStr = isset($item->optStr) ? $item->optStr : '';
+					$item->optPrice = isset($item->optPrice) ? $item->optPrice : 0;
+					$dbItem = Item::create(['store_id' => $storeId, 
+						'name' => $item->name, 'price' => $item->price, 'optStr' => $item->optStr, 'optPrice' => $item->optPrice]);
+					$this->newItemIdMapping[$item->newItemId] = $dbItem->id;
 				} else {
-					$existItem = Item::find($item->id);
-					$existItem->name = $item->name;
-					$existItem->price = $item->price;
-					$existItem->optStr = $item->optStr;
-					$existItem->optPrice = $item->optPrice;
-					$existItem->save();
-					
+					$dbItem = Item::find($item->id);
+					$dbItem->name = $item->name;
+					$dbItem->price = $item->price;
+					$dbItem->optStr = $item->optStr;
+					$dbItem->optPrice = $item->optPrice;
+					$dbItem->save();
+				}				
+			
+				if (isset($item->opts)) {
 					foreach ($item->opts as $opt) {
 						if ($opt->id == -1) {
-							$createdOpt = Opt::create(['item_id' => $existItem->id, 'name' => $opt->name, 'price' => $opt->price]);
-							array_push($inputOptIds, $createdOpt->id);						
+							$dbOpt = Opt::create(['item_id' => $dbItem->id, 'name' => $opt->name, 'price' => $opt->price]);
+													
 						} else {
-							$existOpt = Opt::find($opt->id);
-							$existOpt->name = $opt->name;
-							$existOpt->price = $opt->price;
-							$existOpt->save();
-							array_push($inputOptIds, $opt->id);
-						}
+							$dbOpt = Opt::find($opt->id);
+							$dbOpt->name = $opt->name;
+							$dbOpt->price = $opt->price;
+							$dbOpt->save();
+						}	
+						array_push($inputOptIds, $dbOpt->id);					
 					}
-					array_push($inputItemIds, $existItem->id);
 				}
+				array_push($inputItemIds, $dbItem->id);
 			}
 			
 			$inputItemIds = count($inputItemIds) > 0 ? $inputItemIds : [-1];
@@ -326,31 +324,52 @@ class OrderController extends BaseController {
 			$inputComboIds = [];
 			foreach ($combos as $combo) {
 				if ($combo->id == -1) {
-					$createdCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price]);
-					if (isset($combo->items)) {
-						foreach($combo->items as $item) {
-							$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;						
-							$createdCombo->items()->attach($item->id, ['optStr' => $item->pivot->optStr, 'optPrice' => $item->pivot->optPrice]);
-						}
-					}
-					array_push($inputComboIds, $createdCombo->id);
+					$dbCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price]);
 				} else {
-					$existCombo = Combo::find($combo->id);
-					$existCombo->name = $combo->name;
-					$existCombo->price = $combo->price;
-					$existCombo->save();
-					$existCombo->items()->detach();
-					foreach($combo->items as $item) {
-						$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;						
-						$existCombo->items()->attach($item->id, ['optStr' => $item->pivot->optStr, 'optPrice' => $item->pivot->optPrice]);
-					}
-					array_push($inputComboIds, $existCombo->id);
+					$dbCombo = Combo::find($combo->id);
+					$dbCombo->name = $combo->name;
+					$dbCombo->price = $combo->price;
+					$dbCombo->save();
+					$dbCombo->items()->detach();
 				}
+			
+				if (isset($combo->items)) {
+					foreach ($combo->items as $item) {
+						$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;						
+						$dbCombo->items()->attach($item->id, ['optStr' => $item->pivot->optStr, 'optPrice' => $item->pivot->optPrice]);
+					}
+				}
+				array_push($inputComboIds, $dbCombo->id);
 			}
 			$inputComboIds = count($inputComboIds) > 0 ? $inputComboIds : [-1];
 			Store::where('id', $storeId)->first()->combos()->whereNotIn('id', $inputComboIds)->delete();
 		});
 	}
+	private function storeCategories($storeId, $categories) {
+		DB::transaction(function() use ($storeId, $categories) {
+			$inputCategoryIds = [];
+			foreach ($categories as $category) {
+				if ($category->id == -1) {
+					$dbCategory = Category::create(['store_id' => $storeId, 'name' => $category->name]);
+				} else {
+					$dbCategory = Category::find($category->id);
+					$dbCategory->name = $category->name;
+					$dbCategory->save();
+					$dbCategory->items()->detach();
+				}				
+				if (isset($category->items)) {
+					foreach ($category->items as $item) {
+						$item->id = ($item->id == -1) ? $this->newItemIdMapping[$item->newItemId] : $item->id;
+						$dbCategory->items()->attach($item->id);
+					}
+				}
+				array_push($inputCategoryIds, $dbCategory->id);
+			}
+			$inputCategoryIds = count($inputCategoryIds) > 0 ? $inputCategoryIds : [-1];
+			Store::where('id', $storeId)->first()->categories()->whereNotIn('id', $inputCategoryIds)->delete();
+		});
+	}
+	
 	
 	private function storePhotos($storeId) {
 		$files = Input::file('photos');

@@ -16,6 +16,10 @@ class Store extends Eloquent {
 		return $this->hasMany('Photo');
 	}
 	
+	public function categories() {
+		return $this->hasMany('Category');
+	}
+	
 	public function opts() {
 		return $this->hasManyThrough('Opt', 'Item');
 	}

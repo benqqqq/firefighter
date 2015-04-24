@@ -179,6 +179,7 @@ app.controller("orderCtrl", function($scope, socket) {
 		var form = document.getElementById('dataForm');
 		$("#items").val(JSON.stringify($scope.items));
 		$("#combos").val(JSON.stringify($scope.combos));
+		$("#categories").val(JSON.stringify($scope.categories));
 		form.action = url;
 		form.submit();			
 	};
@@ -280,12 +281,21 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 
 	$scope.newComboItem = function($event) {
+		// This function also be used for newCategoryItem (Logic are the same)
 		if ($scope.newComboItemObj) {
-			var obj = $.extend(true, {}, $scope.newComboItemObj);
-			obj.pivot = {optStr : ""};
-			$scope.editItems.push(obj);
-		}
-		
+			var isExist = ($.grep($scope.editItems, function(e) { 
+				if (e.id != -1) {
+					return e.id == $scope.newComboItemObj.id 	
+				} else {
+					return e.newItemId == $scope.newComboItemObj.newItemId;
+				}				
+			}).length > 0);
+			if (!isExist) {
+				var obj = $.extend(true, {}, $scope.newComboItemObj);
+				obj.pivot = {optStr : ""};
+				$scope.editItems.push(obj);	
+			}			
+		}		
 		$event.preventDefault();
 	}
 	$scope.defaultComboOpt = [];
@@ -392,6 +402,30 @@ app.controller("orderCtrl", function($scope, socket) {
 		}
 		
 	}
+	
+	$scope.newCategory = function($event) {
+		if ($scope.newCategoryName != "") {
+			$scope.categories.push({
+				id : -1,
+				name : $scope.newCategoryName,
+			});
+		}		
+		$event.preventDefault();
+	};
+	
+	$scope.setCategoryModal = function(category) {
+		$scope.editName = category.name;
+		
+		$scope.editItems = $.extend(true, [], category.items);
+		$scope.tmp = category;
+	};
+	
+	$scope.doSetCategoryModal = function() {
+		var category = $scope.tmp;
+		category.name = $scope.editName;		
+		category.items = $scope.editItems;
+	};
+
 	
 	$scope.$watch('user', function(oldValue, newValue) {
 		$scope.storeUser();
