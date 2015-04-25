@@ -38,7 +38,7 @@
 	
 	
 <p class="form-inline">
-	<span><strong>已付 : </strong><span class="label label-success" ng-show="order.user.id != user.id">{[{ order.paid }]}$</span></span>
+	<span class="form-group"><strong>已付 : </strong><span class="label label-success" ng-show="order.user.id != user.id">{[{ order.paid }]}$</span></span>
 
 	<span ng-show='order.user.id == user.id' class="form-group">
 		<input type='number' ng-model='paid[order.id]' ng-init='paid[order.id] = order.paid' 
