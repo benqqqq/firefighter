@@ -3,25 +3,6 @@
 @section('head')
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.0/isotope.pkgd.js"></script>
 	<script>
-		$(function () {
-			$('.pop').popover().click(function () {
-				setTimeout(function () {
-					$('.pop').popover('hide');
-				}, 500);
-			});
-			$('.pop-input-paid').popover({'trigger' : 'manual'}).on('change paste', function () {
-				$('.pop-input-paid').popover('show');				
-				setTimeout(function () {
-					$('.pop-input-paid').popover('hide');
-				}, 500);
-			});
-			$('.pop-input-remark').popover({'trigger' : 'manual'}).on('change paste', function () {
-				$('.pop-input-remark').popover('show');				
-				setTimeout(function () {
-					$('.pop-input-remark').popover('hide');
-				}, 500);
-			});
-		});
 		$(document).ready(function() {
 			$('.menu').isotope({
 				itemSelector : '.menu-item',
@@ -101,7 +82,9 @@
 					<div class="menu-item-content menu-item-content-c">
 					@foreach ($mission->store->combos as $combo)			
 						<p>
-							<span class="btn btn-warning pop" ng-click="orderCombo({{ $combo->id }})" data-content="+1">
+							<span class="btn btn-warning pop-c-{{ $combo->id }}" 
+								ng-click="orderCombo({{ $combo->id }}, '.pop-c-{{ $combo->id }}')" 
+								 title="我的訂單" data-html="true">
 								<span>{{{ $combo->name }}}</span>
 							</span>
 							(

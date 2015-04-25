@@ -71,7 +71,7 @@ app.controller("orderCtrl", function($scope, socket) {
 	    }
     };
     
-    $scope.orderItem = function(id) {
+    $scope.orderItem = function(id, popTarget) {
     	var optIds = [];
     	if (typeof $scope.itemOpt[id] != 'undefined') {
 	    	for (var i in $scope.itemOpt[id]) {
@@ -80,9 +80,9 @@ app.controller("orderCtrl", function($scope, socket) {
 		    	}
 	    	}	    	
     	}    	
-		order('item', id, optIds);
+		order('item', id, optIds, popTarget);
 	};
-	$scope.orderCombo = function(id) {
+	$scope.orderCombo = function(id, popTarget) {
 		var optIds = {};
 		for (var itemId in $scope.comboItemOpt[id]) {
 			var item = $scope.comboItemOpt[id][itemId];
@@ -93,9 +93,9 @@ app.controller("orderCtrl", function($scope, socket) {
 				}				
 			}
 		}	
-		order('combo', id, optIds);
+		order('combo', id, optIds, popTarget);
 	};
-	function order(type, id, optIds) {
+	function order(type, id, optIds, popTarget) {
 		var userId = ($scope.user) ? $scope.user.id : null;
 		util.ajax($scope.url + '/api/order/add', {
 			type : type,
@@ -106,8 +106,9 @@ app.controller("orderCtrl", function($scope, socket) {
 		}, function(data) {
 			if (data) {
 				$('#message').html(data);
-				$('#messageModal').modal();	
+				$('#messageModal').modal();					
 			}
+			$scope.renewPopContent(popTarget);
 		}, 'post');
 	}
 	
@@ -165,14 +166,18 @@ app.controller("orderCtrl", function($scope, socket) {
 		util.ajax($scope.url + '/api/order/paid', {
 			orderId : orderId,
 			paid : $scope.paid[orderId]
-		}, null, 'post');
+		}, function() {
+			flashPop('.pop-input-paid');
+		}, 'post', false);
 	};
 	$scope.remark = [];
 	$scope.editRemark = function(orderId) {
 		util.ajax($scope.url + '/api/order/remark', {
 			orderId : orderId,
 			remark : $scope.remark[orderId]
-		}, null, 'post');
+		}, function() {
+			flashPop('.pop-input-remark');
+		}, 'post', false);
 	};
 	
 	$scope.submitForm = function(url) {
@@ -444,5 +449,38 @@ app.controller("orderCtrl", function($scope, socket) {
 			$('.menu-item-content-' + id).slideDown(layout);	
 		}	
 		$scope.categoryIsShow[id] = !$scope.categoryIsShow[id];			
+	};
+		
+	function flashPop(target, time) {
+		var time = time | 500;
+		$(target).popover('show');
+		setTimeout(function () {
+			$(target).popover('hide');
+		}, time);
+	}
+	
+	$scope.renewPopContent = function(target) {
+		var menu = '';
+		for (var i in $scope.myOrder[0].items) {
+			var item = $scope.myOrder[0].items[i];
+			menu += "<p>" + item.name;
+			menu += (item.pivot.optStr != ' ')? "<span class='badge'>" + item.pivot.optStr + "</span>" : '';
+			menu += " * " + item.pivot.quantity + " = <span class='label label-primary'>"
+						+ (item.price + item.pivot.optPrice) * item.pivot.quantity  + "$</span></p>";
+		}
+		for (var i in $scope.myOrder[0].order_combos) {
+			var orderCombo = $scope.myOrder[0].order_combos[i];
+			menu += "<p>" + orderCombo.combo.name + "(";
+			for (var j in orderCombo.items) {
+				var item = orderCombo.items[j];
+				menu += item.name;
+				menu += (item.pivot.optStr != ' ')? "<span class='badge'>" + item.pivot.optStr + "</span>" : '';
+			}
+			menu += ") * " + orderCombo.quantity + " = <span class='label label-primary'>"
+					+ (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity + "$</span>";
+		}
+		
+		$(target).attr('data-content', menu);
+		flashPop(target, 3000);
 	}
 });

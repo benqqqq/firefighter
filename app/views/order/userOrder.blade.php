@@ -42,10 +42,7 @@
 
 	<span ng-show='order.user.id == user.id' class="form-group">
 		<input type='number' ng-model='paid[order.id]' ng-init='paid[order.id] = order.paid' 
-			class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom">
-	</span>
-	<span ng-show='order.user.id == user.id' class="form-group">			
-		<button ng-click='editPaid(order.id)' class="btn btn-success btn-xs">送出</button>
+			class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order.id)">
 	</span>
 	
 	<span class="form-group">
@@ -60,11 +57,8 @@
 	<span><strong>備註 : </strong><span ng-bind='order.remark' ng-show='order.user.id != user.id' class="pre"></span></span>
 
 	<div ng-show='order.user.id == user.id' class="form-group">		
-		<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom">
+		<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" ng-blur="editRemark(order.id)">
 		</textarea>		
-	</div>
-	<div ng-show='order.user.id == user.id' class="form-group">
-		<button ng-click='editRemark(order.id)' class="btn btn-success btn-xs">送出</button>
 	</div>
 
 </p>
