@@ -9,6 +9,18 @@
 					$('.pop').popover('hide');
 				}, 500);
 			});
+			$('.pop-input-paid').popover({'trigger' : 'manual'}).on('change paste', function () {
+				$('.pop-input-paid').popover('show');				
+				setTimeout(function () {
+					$('.pop-input-paid').popover('hide');
+				}, 500);
+			});
+			$('.pop-input-remark').popover({'trigger' : 'manual'}).on('change paste', function () {
+				$('.pop-input-remark').popover('show');				
+				setTimeout(function () {
+					$('.pop-input-remark').popover('hide');
+				}, 500);
+			});
 		});
 		$(document).ready(function() {
 			$('.menu').isotope({

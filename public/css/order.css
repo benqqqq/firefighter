@@ -54,5 +54,5 @@ body {
 @media (max-width: 768px) {
   .menu-item-content {
     display: none; } }
-
-/*# sourceMappingURL=order.css.map */
+.pre {
+  white-space: pre; }
