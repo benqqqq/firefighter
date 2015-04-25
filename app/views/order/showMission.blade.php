@@ -168,13 +168,13 @@
 			<h2>我的訂單</h2>
 			<p>點擊來移出訂單</p>
 			<div ng-repeat='order in myOrder'>
-				{{ View::make('order.userOrder', ['skipName' => true]) }}
+				{{ View::make('order.userOrder', ['isMe' => true]) }}
 			</div>
 		</div>		
 		<div class="col-md-4 col-sm-6">	
 			<h2>其他訂單</h2>
 			<div ng-repeat='order in otherOrders'>
-				{{ View::make('order.userOrder', ['skipName' => false]) }}
+				{{ View::make('order.userOrder', ['isMe' => false]) }}
 			</div>
 		</div>
 	</div>
