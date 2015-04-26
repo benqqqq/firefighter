@@ -104,7 +104,7 @@
 			<table class="table table-striped">
 				<caption>單點</caption>
 				<tr>
-					<th class="col-md-3">名稱</th>
+					<th class="col-md-3">名稱(備註)</th>
 					<th class="col-md-1">預設選項</th>
 					<th class="col-md-7">所有選項</th>
 					<th class="col-md-1">修改/複製/刪除</th>
@@ -116,6 +116,7 @@
 							<input type="number" ng-model="item.price" class="form-control input-sm">
 							<span class="input-group-addon input-sm">$</span>
 						</span>
+						<input type="text" ng-model="item.remark" class="form-control input-sm col-md-12" placeholder="備註">
 					</td>
 					<td>
 						<span class="badge" ng-bind="item.optStr"></span>
@@ -169,7 +170,7 @@
 			<table class="table table-striped">
 				<caption>套餐</caption>
 				<tr>
-					<th class="col-md-3">名稱</th>
+					<th class="col-md-3">名稱(備註)</th>
 					<th class="col-md-8">組合</th>
 					<th class="col-md-1">修改/複製/刪除</th>
 				</tr>
@@ -182,6 +183,7 @@
 							 	ng-change="refreshComboPrice(combo)" class="form-control input-sm">
 							<span class="input-group-addon input-sm">$</span>
 						</span>
+						<input type="text" ng-model="combo.remark" class="form-control input-sm col-md-12" placeholder="備註">
 						
 						<span class="badge" ng-show="debug">baseP <span ng-bind="combo.basePrice"></span>$</span>
 						<span class="badge" ng-show="debug">P <span ng-bind="combo.price"></span>$</span>

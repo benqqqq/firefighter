@@ -37,6 +37,8 @@ app.controller("orderCtrl", function($scope, socket) {
 		$scope.orders = data.orders;
 		$scope.refreshOrders();
 		$scope.statistic = data.statistic;
+		
+		releaseUserMenuEvent();
     });
 	
     $scope.iPrice = {};
@@ -80,7 +82,8 @@ app.controller("orderCtrl", function($scope, socket) {
 		    	}
 	    	}	    	
     	}    	
-		order('item', id, optIds, popTarget);
+    	storeUserMenuEvent(popTarget);
+		order('item', id, optIds);		
 	};
 	$scope.orderCombo = function(id, popTarget) {
 		var optIds = {};
@@ -93,23 +96,43 @@ app.controller("orderCtrl", function($scope, socket) {
 				}				
 			}
 		}	
-		order('combo', id, optIds, popTarget);
+		storeUserMenuEvent(popTarget);
+		order('combo', id, optIds);		
 	};
-	function order(type, id, optIds, popTarget) {
+	
+	function order(type, id, optIds) {
 		var userId = ($scope.user) ? $scope.user.id : null;
-		util.ajax($scope.url + '/api/order/add', {
-			type : type,
-			id : id,
-			missionId : $scope.missionId,
-			optIds : optIds,
-			userId : userId
-		}, function(data) {
-			if (data) {
-				$('#message').html(data);
-				$('#messageModal').modal();					
+		
+		$.ajax({
+			url : $scope.url + '/api/order/add',
+			dataType : 'html',
+			data:  {
+				type : type,
+				id : id,
+				missionId : $scope.missionId,
+				optIds : optIds,
+				userId : userId
+			},
+			async : true,
+			type: 'post',
+			success : function(data) {
+				if (data) {
+					$('#message').html(data);
+					$('#messageModal').modal();					
+				}
 			}
-			$scope.renewPopContent(popTarget);
-		}, 'post');
+		});
+	}
+	$scope.orderIsSent = false;
+	function storeUserMenuEvent(popTarget) {
+		$scope.orderIsSent = true;
+		$scope.popTarget = popTarget;
+	}
+	function releaseUserMenuEvent() {
+		if ($scope.orderIsSent) {
+			renewPopContent($scope.popTarget);
+			$scope.orderIsSent = false;
+		}
 	}
 	
 	$scope.decrementItem = function(orderId, id, optStr) {
@@ -163,21 +186,36 @@ app.controller("orderCtrl", function($scope, socket) {
 		if ($scope.paid[orderId] == null) {
 			return;
 		}
-		util.ajax($scope.url + '/api/order/paid', {
-			orderId : orderId,
-			paid : $scope.paid[orderId]
-		}, function() {
-			flashPop('.pop-input-paid');
-		}, 'post', false);
+		$.ajax({
+			url : $scope.url + '/api/order/paid',
+			dataType : 'html',
+			data: {
+				orderId : orderId,
+				paid : $scope.paid[orderId]
+			},
+			async : true,
+			type: 'post',
+			success : function() {
+				flashPop('.pop-input-paid');
+			},
+		});					
 	};
 	$scope.remark = [];
 	$scope.editRemark = function(orderId) {
-		util.ajax($scope.url + '/api/order/remark', {
-			orderId : orderId,
-			remark : $scope.remark[orderId]
-		}, function() {
-			flashPop('.pop-input-remark');
-		}, 'post', false);
+		$.ajax({
+			url : $scope.url + '/api/order/remark',
+			dataType : 'html',
+			data: {
+				orderId : orderId,
+				remark : $scope.remark[orderId]
+			},
+			async : true,
+			type: 'post',
+			success : function() {
+				flashPop('.pop-input-remark');
+			},
+		});			
+
 	};
 	
 	$scope.submitForm = function(url) {
@@ -459,7 +497,7 @@ app.controller("orderCtrl", function($scope, socket) {
 		}, time);
 	}
 	
-	$scope.renewPopContent = function(target) {
+	function renewPopContent(target) {
 		var menu = '';
 		for (var i in $scope.myOrder[0].items) {
 			var item = $scope.myOrder[0].items[i];

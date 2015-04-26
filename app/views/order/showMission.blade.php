@@ -84,7 +84,7 @@
 						<p>
 							<span class="btn btn-warning pop-c-{{ $combo->id }}" 
 								ng-click="orderCombo({{ $combo->id }}, '.pop-c-{{ $combo->id }}')" 
-								 title="我的訂單" data-html="true">
+								 title="我的訂單" data-html="true" data-placement="top">
 								<span>{{{ $combo->name }}}</span>
 							</span>
 							(

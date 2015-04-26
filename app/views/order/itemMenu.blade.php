@@ -5,7 +5,7 @@
 			ng-click=''</span></a>
 	@endif
 	<span class="btn btn-warning pop-i-{{ $item->id }}" 
-		ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" title="我的訂單" data-html="true">
+		ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" title="我的訂單" data-html="true" data-placement="top">
 		<span>{{{ $item->name }}}</span>
 
 		@foreach ($item->opts as $opt)
@@ -14,8 +14,8 @@
 		
 	</span>				
 	<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
-	
 </p>
+<p><small>{{ $item->remark }}</small></p>
 
 <div class="modal fade optModal" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">

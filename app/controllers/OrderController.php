@@ -286,12 +286,14 @@ class OrderController extends BaseController {
 					$item->optStr = isset($item->optStr) ? $item->optStr : '';
 					$item->optPrice = isset($item->optPrice) ? $item->optPrice : 0;
 					$dbItem = Item::create(['store_id' => $storeId, 
-						'name' => $item->name, 'price' => $item->price, 'optStr' => $item->optStr, 'optPrice' => $item->optPrice]);
+						'name' => $item->name, 'price' => $item->price, 'remark' => $item->remark,
+						'optStr' => $item->optStr, 'optPrice' => $item->optPrice]);
 					$this->newItemIdMapping[$item->newItemId] = $dbItem->id;
 				} else {
 					$dbItem = Item::find($item->id);
 					$dbItem->name = $item->name;
 					$dbItem->price = $item->price;
+					$dbItem->remark = $item->remark;
 					$dbItem->optStr = $item->optStr;
 					$dbItem->optPrice = $item->optPrice;
 					$dbItem->save();
@@ -326,11 +328,13 @@ class OrderController extends BaseController {
 			$inputComboIds = [];
 			foreach ($combos as $combo) {
 				if ($combo->id == -1) {
-					$dbCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price]);
+					$dbCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price, 
+						'remark' => $combo->remark]);
 				} else {
 					$dbCombo = Combo::find($combo->id);
 					$dbCombo->name = $combo->name;
 					$dbCombo->price = $combo->price;
+					$dbCombo->remark = $combo->remark;
 					$dbCombo->save();
 					$dbCombo->items()->detach();
 				}
