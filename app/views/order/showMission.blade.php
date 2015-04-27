@@ -104,6 +104,9 @@
 							)
 							
 							<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
+							@if ($combo->remark != '')
+								<small class="remark">({{ $combo->remark }})</small>
+							@endif
 						</p>
 						@foreach ($combo->items as $item)
 							<div class="modal fade optModal" id="myModal{{$combo->id}}-{{ $item->id }}" tabindex="-1" 
@@ -115,7 +118,11 @@
 												><span aria-hidden="true">&times;</span></button>
 											<h4 class="modal-title" id="myModalLabel"
 												>{{{ $combo->name }}} - {{{ $item->name }}} <span class='label label-primary '
-												>{{{ $item->price }}}$</span></h4>
+												>{{{ $item->price }}}$</span>
+												@if ($combo->remark != '')
+													<small class="remark">({{ $combo->remark }})</small>
+												@endif
+											</h4>
 										</div>
 										<div class="modal-body">
 											<table class='table table-striped'>
@@ -152,9 +159,6 @@
 								</div>
 							</div>
 						@endforeach
-						@if ($combo->remark != '')
-							<p><small class="remark">{{ $combo->remark }}</small></p>
-						@endif
 					@endforeach
 					</div>
 				</li>
