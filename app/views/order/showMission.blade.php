@@ -26,13 +26,13 @@
 		
 	</div>
 
-	<div>
+	<address>
 		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
 		<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $mission->store->address }}}</p>
 		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong>
-			<pre>{{{ $mission->store->detail }}}</pre>
+			<p class="pre">{{{ $mission->store->detail }}}</p>
 		</p>
-	</div>
+	</address>
 	
 	<div>
 		<div class="row">
@@ -152,6 +152,9 @@
 								</div>
 							</div>
 						@endforeach
+						@if ($combo->remark != '')
+							<p><small class="remark">{{ $combo->remark }}</small></p>
+						@endif
 					@endforeach
 					</div>
 				</li>

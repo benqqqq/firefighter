@@ -15,7 +15,9 @@
 	</span>				
 	<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
 </p>
-<p><small>{{ $item->remark }}</small></p>
+@if ($item->remark != '')
+	<p><small class="remark">{{ $item->remark }}</small></p>
+@endif
 
 <div class="modal fade optModal" id="myModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
