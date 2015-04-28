@@ -2,12 +2,20 @@
 
 @section('head')
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.0/isotope.pkgd.js"></script>
-	<script>
+	<script src="/lib/bootstrap-switch.min.js"></script>
+	<link rel="stylesheet" href="/lib/bootstrap-switch.min.css">
+
+	<script>		
+
 		$(document).ready(function() {
 			$('.menu').isotope({
 				itemSelector : '.menu-item',
 				layoutMode : 'fitRows'
 			});
+			$('.switchInput').bootstrapSwitch({onSwitchChange: function() {
+				var $scope = angular.element($('.orderBody')).scope();				
+				$scope.changeMissionStatus(this);
+			}});
 		});
 	</script>
 @stop
@@ -25,8 +33,8 @@
 			<a class="btn btn-danger pull" ng-show="{{ $mission->user->id }} == user.id" 
 				href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
 		</h2>	
-		<h4><small>{{{ $mission->created_at }}}</small></h4>
-		
+		<h4><small>{{{ $mission->created_at }}}</small></h4>		
+		<input type="checkbox" name="isOpen" class="switchInput" data-size="mini" data-off-text="訂購完成" data-on-text="訂購中">		
 	</div>
 
 	<address>

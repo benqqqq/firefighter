@@ -6,10 +6,15 @@ class OrderController extends BaseController {
 
 	public function show() {
 		$missions = Mission::where('isEnding', false)->with('user', 'store')->orderBy('created_at', 'desc')->get();
-		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->get();
-		$stores = Store::orderBy('created_at', 'desc')->get();
+		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->get();		
 		
-		return View::make('order.show', ['missions' => $missions, 'stores' => $stores, 'historyMissions' => $historyMissions]);
+		return View::make('order.show', ['missions' => $missions, 'historyMissions' => $historyMissions]);
+	}
+
+	public function showStore() {
+		$stores = Store::orderBy('created_at', 'desc')->get();
+		return View::make('order.showStore', ['stores' => $stores]);
+
 	}
 	
 	public function showMission($id) {
@@ -222,8 +227,8 @@ class OrderController extends BaseController {
 			$combo->baseOptPrice = (int)$combo->baseOptPrice();
 		}
 		return View::make('order.createMission', ['store' => $store, 'items' => $items, 'combos' => $combos]);
-	}
-	
+	}	
+
 	public function doCreateMission($id) {
 		$userId = Input::get('userId');
 		if ($userId == null) {
@@ -237,6 +242,11 @@ class OrderController extends BaseController {
 	public function deleteMission($id) {
 		Mission::find($id)->delete();
 		return Redirect::to('order');
+	}
+
+	public function changeMissionStatus($id) {
+		Log::info($id);
+		Log::info(Input::get('isEnding'));
 	}
 	
 	public function editStore($id) {

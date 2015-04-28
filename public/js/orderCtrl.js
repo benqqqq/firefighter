@@ -523,4 +523,15 @@ app.controller("orderCtrl", function($scope, socket) {
 		$(target).attr('data-content', menu);
 		flashPop(target, 3000);
 	}
+
+	$scope.changeMissionStatus = function(obj) {		
+		$.ajax({
+			url : $scope.url + '/api/order/mission/' + $scope.missionId + '/status',
+			dataType : 'html',
+			data:  {								
+				isEnding : !obj.checked
+			},			
+			type: 'post'
+		});				
+	}
 });

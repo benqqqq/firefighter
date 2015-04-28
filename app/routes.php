@@ -26,6 +26,7 @@ Route::post('order/createStore', 'OrderController@doCreateStore');
 Route::get('order/editStore/{id}', 'OrderController@editStore');
 Route::post('order/editStore/{id}', 'OrderController@doEditStore');
 Route::get('order/deleteStore/{id}', 'OrderController@deleteStore');
+Route::get('order/selectStore', 'OrderController@showStore');
 Route::get('order/{id}', 'OrderController@showMission');
 Route::get('order', 'OrderController@show');
 
@@ -38,6 +39,7 @@ Route::post('api/order/add', 'OrderController@addOrder');
 Route::post('api/order/decrease', 'OrderController@decrementOrder');
 Route::post('api/order/paid', 'OrderController@paid');
 Route::post('api/order/remark', 'OrderController@remark');
+Route::post('api/order/mission/{id}/status', 'OrderController@changeMissionStatus');
 
 if (file_exists(__DIR__.'/controllers/Server.php')) {
     Route::get('/server', 'Server@show');

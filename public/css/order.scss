@@ -42,14 +42,10 @@ body {
 	color: #686868;
 }
 .navbar {
-    line-height: 35px;
-    .navbar-brand {
-	    line-height: 35px;
-    }
     .dropdown-toggle {
 	    margin-top: 5px;
 	    color: #777;
-    }
+    }    
 }
 .btn-wrap {
 	white-space: normal;
@@ -94,4 +90,9 @@ body {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: 200px auto;
+}
+.serial-dropdown {
+	max-height: 500px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }

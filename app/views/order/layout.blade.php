@@ -39,6 +39,7 @@
 	    		@if (Session::has('message'))
     				$('#messageModal').modal();
 				@endif
+
 			});	
     	</script>    	
     	
@@ -63,13 +64,13 @@
 		    						<span ng-show="user.serial == null">尚未選擇</span>
 		    					<b class="caret"></b>
 							</a>
-							<ul class="dropdown-menu" ng-init="user = loadUser();">
+							<ul class="dropdown-menu serial-dropdown" ng-init="user = loadUser();">
 								<li ng-repeat="user in users"><a href="" ng-click="editUser(user)">{[{ user.serial }]}</a>
 								</li>
 							</ul>
 	    				</li>	    				
     				</ul>
-<!--
+
     				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" 
 						aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
@@ -77,8 +78,19 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
--->
+
+                <div class="clearfix hidden-lg hidden-md"></div>
+                <div class="collapse navbar-collapse pull-right" id="navbar">
+                        <ul class="nav navbar-nav top-nav">
+                            <li><a href="{{ URL::to('order') }}">跟團</a></li>
+                            <li><a href="{{ URL::to('order/selectStore') }}">開團</a></li>
+                        </ul>
+                    </div>
+    
+
     			</div>
+                
+
     		</div>
     	</nav>
     	<div class='container'>
