@@ -18,11 +18,14 @@
 	<span ng-init='initStore({{ $mission->store->items }}  , {{ $mission->store->combos }})'></span>	
 	
 	<div class="page-header">
-		<h2>{{{ $mission->name }}} ({{{ $mission->store->name }}}) <small>主揪 : {{{ $mission->user->serial }}}</small>
+		<h2>{{{ $mission->name }}} ({{{ $mission->store->name }}}) 
+			<small class="nowrap">主揪 : 
+				<span class="glyphicon glyphicon-user"></span> {{{ $mission->user->serial }}}
+			</small>
 			<a class="btn btn-danger pull" ng-show="{{ $mission->user->id }} == user.id" 
 				href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
-			<small class="pull-right">{{{ $mission->created_at }}}</small>
 		</h2>	
+		<h4><small>{{{ $mission->created_at }}}</small></h4>
 		
 	</div>
 

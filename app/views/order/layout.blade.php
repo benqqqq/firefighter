@@ -49,36 +49,34 @@
     
     	<nav class='navbar navbar-default navbar-fixed-top'>
     		<div class='container'>
-    			<div class='navbar-header'>	
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" 
+    			<div class='navbar-header pull-left'>	          			
+					<a class="navbar-brand" href="{{ URL::to('/order') }}">訂餐</a>
+    			</div>
+    			
+    			<div class="navbar-header pull-right">
+    				<ul class="nav pull-left">
+	    				<li class="navbar-text pull-left">番號 : </li>
+	    				<li class="dropdown pull-right"> 
+	    					<a href="" data-toggle="dropdown" class="dropdown-toggle">
+		    					<span class="glyphicon glyphicon-user"></span> 
+		    						{[{ user.serial }]} 
+		    						<span ng-show="user.serial == null">尚未選擇</span>
+		    					<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu" ng-init="user = loadUser();">
+								<li ng-repeat="user in users"><a href="" ng-click="editUser(user)">{[{ user.serial }]}</a>
+								</li>
+							</ul>
+	    				</li>	    				
+    				</ul>
+<!--
+    				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" 
 						aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-          			
-					<a class="navbar-brand" href="{{ URL::to('/order') }}">訂餐</a>
-    			</div>
-    			<div id='navbar' class='collapse navbar-collapse'>
-    				<ul class="nav navbar-nav navbar-right">
-    					<li class="navbar-text">番號 : </li>
-    					<li class="navbar-text">
-	    					<select class="form-control userSelect" ng-model="user" ng-options="user.serial for user in users"
-	    						ng-init="user=loadUser()">
-								<option value="">-- 請選擇 --</option>
-							</select>
-    					</li>    					
-    				</ul>
-<!--
-    				<ul class='nav navbar-nav navbar-right'>
-					@if (!Auth::check())
-						<li><a href='{{ URL::to("login") }}'>登入</a></li>
-					@else
-						<li><a href='#'>番號 : {{ Auth::user()->serial }}</a></li>
-						<li><a href='{{ URL::to("logout") }}'>登出</a></li>
-					@endif
-    				</ul>
 -->
     			</div>
     		</div>

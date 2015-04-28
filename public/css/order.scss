@@ -43,6 +43,13 @@ body {
 }
 .navbar {
     line-height: 35px;
+    .navbar-brand {
+	    line-height: 35px;
+    }
+    .dropdown-toggle {
+	    margin-top: 5px;
+	    color: #777;
+    }
 }
 .btn-wrap {
 	white-space: normal;
@@ -69,6 +76,22 @@ body {
 .pre {
 	white-space: pre;
 }
+.nowrap {
+	white-space: nowrap;
+}
 .remark {
 	margin-left: 20px;
+}
+.vertical-middle::before {
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+}
+.center-cropped {
+	width: 100px;
+	height: 100px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 200px auto;
 }

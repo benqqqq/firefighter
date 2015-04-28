@@ -49,5 +49,5 @@ if (file_exists(__DIR__.'/controllers/Server.php')) {
 }
 
 View::composer(['order.*'], function($view) {
-	$view->with(['users' => User::all()]);
+	$view->with(['users' => User::where('serial', '!=', 0)->orderBy('serial')->get()]);
 });

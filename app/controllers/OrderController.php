@@ -6,8 +6,10 @@ class OrderController extends BaseController {
 
 	public function show() {
 		$missions = Mission::where('isEnding', false)->with('user', 'store')->orderBy('created_at', 'desc')->get();
+		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->get();
 		$stores = Store::orderBy('created_at', 'desc')->get();
-		return View::make('order.show', ['missions' => $missions, 'stores' => $stores]);
+		
+		return View::make('order.show', ['missions' => $missions, 'stores' => $stores, 'historyMissions' => $historyMissions]);
 	}
 	
 	public function showMission($id) {

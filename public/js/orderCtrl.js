@@ -198,7 +198,7 @@ app.controller("orderCtrl", function($scope, socket) {
 			success : function() {
 				flashPop('.pop-input-paid');
 			},
-		});					
+		});
 	};
 	$scope.remark = [];
 	$scope.editRemark = function(orderId) {
@@ -432,6 +432,7 @@ app.controller("orderCtrl", function($scope, socket) {
 		return $.grep($scope.users, function(e) {return e.id == $.cookie('user')})[0];
 	};
 	
+	
 	$scope.refreshOrders = function() {
 		if (!$scope.orders) {
 			return;
@@ -470,10 +471,11 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 
 	
-	$scope.$watch('user', function(oldValue, newValue) {
+	$scope.editUser = function(user) {
+		$scope.user = user;
 		$scope.storeUser();
 		$scope.refreshOrders();
-	});
+	};
 	
 	$scope.categoryIsShow = {};
 	$scope.categoryToggle = function(id) {		
