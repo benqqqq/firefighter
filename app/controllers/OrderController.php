@@ -204,7 +204,7 @@ class OrderController extends BaseController {
         }
 		Store::create($input);
 		
-		return Redirect::to('order');
+		return Redirect::to('order/selectStore');
 	}
 	private function validateStoreInfo($input) {
 		$rules = [
