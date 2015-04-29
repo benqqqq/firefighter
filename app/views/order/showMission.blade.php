@@ -10,7 +10,7 @@
 		$(document).ready(function() {
 			$('.menu').isotope({
 				itemSelector : '.menu-item',
-				layoutMode : 'fitRows'
+				layoutMode : 'masonry'
 			});
 			$('.switchInput').bootstrapSwitch({
 				onSwitchChange: function() {
