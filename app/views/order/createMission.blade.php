@@ -1,5 +1,20 @@
 @extends('order.layout')
 
+
+@section('head')
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.0/isotope.pkgd.js"></script>
+	<script>		
+
+		$(document).ready(function() {
+			$('.menu').isotope({
+				itemSelector : '.menu-item',
+				layoutMode : 'fitRows'
+			});
+		});
+	</script>
+@stop
+
+
 @section('content')
 	
 	<div class="page-header">
@@ -30,7 +45,7 @@
 			<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $store->phone }}}</p>
 			<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $store->address }}}</p>
 			<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong> 
-				<pre>{{{ $store->detail }}}</pre>
+				<p class="pre">{{{ $store->detail }}}</p>
 			</p>
 		</div>
 
@@ -45,57 +60,116 @@
 		
 		<div ng-init='items = {{ $items }}'></div>
 		<div ng-init='combos = {{ $combos }}'></div>
-			<h3>品項</h3>
-			<!--  單點  -->
-			<table class="table table-striped">
-				<caption>單點</caption>
-				<tr>
-					<th>名稱</th><th>預設選項</th><th>所有選項</th>
-				</tr>
-				<tr ng-repeat="item in items">				
-					<td>
-						<span ng-bind="item.name"></span>
-						<span class="label label-primary"><span ng-bind='item.price'></span>$</span>
-					</td>
-					<td>
-						<span class="badge" ng-bind="item.optStr"></span>
-						<span class="badge" ng-bind="item.optPrice" ng-show="debug"></span>
-					</td>
-					<td>
-						<span ng-repeat="opt in item.opts">
-							<span ng-bind="opt.name" class="badge"></span>
-							<span class="label label-primary">+<span ng-bind="opt.price"></span>$</span>
-						</span>
-					</td>
-				</tr>
-			</table>
-			
-			<p></p>
-			
-			<!-- 套餐  -->
-			<table class="table table-striped">
-				<caption>套餐</caption>
-				<tr>
-					<th>名稱</th><th>組合</th>
-					<tr ng-repeat="combo in combos">
-						<td>
-							<span ng-bind="combo.name"></span>
-							<span class="label label-primary"><span ng-bind="combo.basePrice + combo.price + combo.baseOptPrice"></span>$</span>
-							<span class="badge" ng-show="debug">baseP <span ng-bind="combo.basePrice"></span>$</span>
-							<span class="badge" ng-show="debug">P <span ng-bind="combo.price"></span>$</span>
-							<span class="badge" ng-show="debug">baseOp <span ng-bind="combo.baseOptPrice"></span>$</span>
-						</td>
-						<td>
-							<span ng-repeat="item in combo.items">
-								<span ng-bind="item.name"></span>							
-								<span ng-bind="item.pivot.optStr" class="badge"></span>
-								<span ng-bind="item.pivot.optPrice" class="badge" ng-show="debug"></span>
-							</span>								
-						</td>
-					</tr>
-				</tr>
-			</table>
+		<div ng-init='categories = {{ $categories }}'></div>
+		<div ng-init='unCategoryItems = {{ $unCategoryItems }}'></div>
+		<div ng-init='initStore(items, combos)'></div>
 		
+		<ul class="list-group menu">		
+			<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item" ng-repeat="category in categories">
+				<h4 class="list-group-item-heading btn btn-block btn-lg" >{[{ category.name }]}</h4>
+				<div>
+					<p ng-repeat="item in category.items">
+						<span class="btn btn-warning">
+							<span>{[{ item.name }]}</span>					
+							<span ng-repeat="opt in item.opts" 
+								ng-show='itemOpt[item.id][opt.id]' class='badge'>{[{ opt.name }]}</span>								
+						</span>				
+						<span class='label label-primary'>{[{ item.price }]}$</span>						
+						<small ng-show="item.remark != ''" class="remark">({[{ item.remark }]})</small>
+					</p>
+				</div>
+			</li>				
+			
+			<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item">
+				<p ng-repeat="item in unCategoryItems">
+					<span class="btn btn-warning">
+						<span>{[{ item.name }]}</span>					
+						<span ng-repeat="opt in item.opts" 
+							ng-show='itemOpt[item.id][opt.id]' class='badge'>{[{ opt.name }]}</span>								
+					</span>				
+					<span class='label label-primary'>{[{ item.price }]}$</span>						
+					<small ng-show="item.remark != ''" class="remark">({[{ item.remark }]})</small>
+				</p>
+			</li>
+			
+			<li class="list-group-item col-md-12 col-sm-12 col-xs-12  menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg">套餐</h4>
+					<div>
+						<p ng-repeat="combo in combos">
+							<span class="btn btn-warning">
+								<span>{[{ combo.name }]}</span>
+							</span>
+							(
+							<span ng-repeat="item in combo.items">		
+								<span>{[{ item.name }]}</span>
+								<span ng-repeat="opt in item.opts"
+									ng-show='comboItemOpt[combo.id][item.id][opt.id]' 
+									class='badge'>{[{ opt.name }]}</span>
+							</span>
+							)
+							
+							<span class='label label-primary '><span ng-bind='cPrice[combo.id]'></span>$</span>
+							<small ng-show="combo.remark != ''" class="remark">({[{ combo.remark }]})</small>
+						</p>
+					</div>
+			</li>
+			
+		</ul>
+		
+<!-- 		<h3>品項</h3> -->
+		<!--  單點  -->
+		<!--
+<table class="table table-striped">
+			<caption>單點</caption>
+			<tr>
+				<th>名稱</th><th>預設選項</th><th>所有選項</th>
+			</tr>
+			<tr ng-repeat="item in items">				
+				<td>
+					<span ng-bind="item.name"></span>
+					<span class="label label-primary"><span ng-bind='item.price'></span>$</span>
+				</td>
+				<td>
+					<span class="badge" ng-bind="item.optStr"></span>
+					<span class="badge" ng-bind="item.optPrice" ng-show="debug"></span>
+				</td>
+				<td>
+					<span ng-repeat="opt in item.opts">
+						<span ng-bind="opt.name" class="badge"></span>
+						<span class="label label-primary">+<span ng-bind="opt.price"></span>$</span>
+					</span>
+				</td>
+			</tr>
+		</table>
+		
+		<p></p>
+-->
+		
+		<!-- 套餐  -->
+		<!--
+<table class="table table-striped">
+			<caption>套餐</caption>
+			<tr>
+				<th>名稱</th><th>組合</th>
+				<tr ng-repeat="combo in combos">
+					<td>
+						<span ng-bind="combo.name"></span>
+						<span class="label label-primary"><span ng-bind="combo.basePrice + combo.price + combo.baseOptPrice"></span>$</span>
+						<span class="badge" ng-show="debug">baseP <span ng-bind="combo.basePrice"></span>$</span>
+						<span class="badge" ng-show="debug">P <span ng-bind="combo.price"></span>$</span>
+						<span class="badge" ng-show="debug">baseOp <span ng-bind="combo.baseOptPrice"></span>$</span>
+					</td>
+					<td>
+						<span ng-repeat="item in combo.items">
+							<span ng-bind="item.name"></span>							
+							<span ng-bind="item.pivot.optStr" class="badge"></span>
+							<span ng-bind="item.pivot.optPrice" class="badge" ng-show="debug"></span>
+						</span>								
+					</td>
+				</tr>
+			</tr>
+		</table>
+-->
 	</div>
 	
 	<!-- Modal -->

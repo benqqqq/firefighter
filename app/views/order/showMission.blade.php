@@ -12,10 +12,12 @@
 				itemSelector : '.menu-item',
 				layoutMode : 'fitRows'
 			});
-			$('.switchInput').bootstrapSwitch({onSwitchChange: function() {
-				var $scope = angular.element($('.orderBody')).scope();				
-				$scope.changeMissionStatus(this);
-			}});
+			$('.switchInput').bootstrapSwitch({
+				onSwitchChange: function() {
+					var $scope = angular.element($('.orderBody')).scope();				
+					$scope.changeMissionStatus(this);
+				}
+			});
 		});
 	</script>
 @stop
@@ -34,7 +36,8 @@
 				href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
 		</h2>	
 		<h4><small>{{{ $mission->created_at }}}</small></h4>		
-		<input type="checkbox" name="isOpen" class="switchInput" data-size="mini" data-off-text="訂購完成" data-on-text="訂購中">		
+		<input type="checkbox" name="isOpen" class="switchInput" data-size="mini" data-off-text="訂購完成" data-on-text="訂購中"
+			@if(!$mission->isEnding) checked @endif>
 	</div>
 
 	<address>

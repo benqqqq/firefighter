@@ -3,7 +3,7 @@
 
 <html>
     <head>
-    	<!-- <title>訂餐 - 基隆消防信二分隊</title> -->
+    	<title>訂餐 - 基隆消防信二分隊</title>
     	
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	
@@ -39,8 +39,20 @@
 	    		@if (Session::has('message'))
     				$('#messageModal').modal();
 				@endif
+	
+				$(".modal").on("shown.bs.modal", function()  { // any time a modal is shown
+					var urlReplace = "#" + $(this).attr('id'); // make the hash the id of the modal shown
+					history.pushState(null, null, urlReplace); // push state that hash into the url
+				});
+					
+				// If a pushstate has previously happened and the back button is clicked, hide any modals.
+				$(window).on('popstate', function() { 
+					$(".modal").modal('hide');
+				});
+			});
 
-			});	
+			
+
     	</script>    	
     	
     	@yield('head')
@@ -51,7 +63,7 @@
     	<nav class='navbar navbar-default navbar-fixed-top'>
     		<div class='container'>
     			<div class='navbar-header pull-left'>	          			
-					<a class="navbar-brand" href="{{ URL::to('/order') }}">訂餐</a>
+					<a class="navbar-brand" href="{{ URL::to('/') }}">信二</a>
     			</div>
     			
     			<div class="navbar-header pull-right">
@@ -82,8 +94,8 @@
                 <div class="clearfix hidden-lg hidden-md"></div>
                 <div class="collapse navbar-collapse pull-right" id="navbar">
                         <ul class="nav navbar-nav top-nav">
-                            <li><a href="{{ URL::to('order') }}">跟團</a></li>
-                            <li><a href="{{ URL::to('order/selectStore') }}">開團</a></li>
+                            <li><a href="{{ URL::to('order') }}">訂餐</a></li>
+                            <li><a href="{{ URL::to('order/selectStore') }}">新增</a></li>
                         </ul>
                     </div>
     
@@ -100,7 +112,7 @@
     	<footer class="footer">
     		<div class="container">
     		
-	    		<p>© 2015 Benqqqq</p>
+	    		<p>© 2015</p>
     		</div>
     	</footer>
     	

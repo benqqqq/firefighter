@@ -71,7 +71,7 @@ body {
   height: 100%; }
 
 .center-cropped {
-  width: 100px;
+  width: 190px;
   height: 100px;
   background-position: center center;
   background-repeat: no-repeat;
@@ -79,5 +79,7 @@ body {
 
 .serial-dropdown {
   max-height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden; }
+
+/*# sourceMappingURL=order.css.map */

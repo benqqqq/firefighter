@@ -6,7 +6,7 @@ class OrderController extends BaseController {
 
 	public function show() {
 		$missions = Mission::where('isEnding', false)->with('user', 'store')->orderBy('created_at', 'desc')->get();
-		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->get();		
+		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->take(5)->get();		
 		
 		return View::make('order.show', ['missions' => $missions, 'historyMissions' => $historyMissions]);
 	}
@@ -222,11 +222,14 @@ class OrderController extends BaseController {
 		$store = Store::where('id', $id)->with('photos')->first();
 		$items = $store->items()->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
+		$categories = $store->categories()->with('items.opts')->get();
+		$unCategoryItems = $store->unCategoryItems()->with('opts')->get();
 		foreach ($combos as $combo) {
 			$combo->basePrice = (int)$combo->basePrice();
 			$combo->baseOptPrice = (int)$combo->baseOptPrice();
 		}
-		return View::make('order.createMission', ['store' => $store, 'items' => $items, 'combos' => $combos]);
+		return View::make('order.createMission', ['store' => $store, 'items' => $items, 'combos' => $combos, 
+			'categories' => $categories, 'unCategoryItems' => $unCategoryItems]);
 	}	
 
 	public function doCreateMission($id) {
@@ -245,8 +248,9 @@ class OrderController extends BaseController {
 	}
 
 	public function changeMissionStatus($id) {
-		Log::info($id);
-		Log::info(Input::get('isEnding'));
+		$mission = Mission::find($id);
+		$mission->isEnding = (Input::get('isEnding') == 'true')? true : false;
+		$mission->save();
 	}
 	
 	public function editStore($id) {
