@@ -8,7 +8,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         
     	<title>基隆消防信二分隊</title>
-    	
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
     	<div class="jumbotron">
