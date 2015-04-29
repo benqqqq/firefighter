@@ -365,8 +365,9 @@
 									<option value="">-- 請選擇 --</option>
 								</select>
 							</td>								
-							<td></td>
-							<td></td>
+							<td>
+								<span class="btn btn-primary" ng-click="newComboItem()">新增</span>											
+							</td>
 						</tr>
 					</table>
 				</div>
@@ -412,7 +413,9 @@
 									<option value="">-- 請選擇 --</option>
 								</select>
 							</td>								
-							<td></td>
+							<td>
+								<span class="btn btn-primary" ng-click="newComboItem()">新增</span>								
+							</td>
 						</tr>
 					</table>
 				</div>
