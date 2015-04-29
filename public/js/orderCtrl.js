@@ -334,8 +334,11 @@ app.controller("orderCtrl", function($scope, socket) {
 		$scope.editItems = $.extend(true, [], combo.items);
 		$scope.tmp = combo;
 	};
-
-	$scope.newComboItem = function($event) {
+	
+	$scope.$watch('newComboItemObj', function(oldValue, newValue) {
+		$scope.newComboItem();
+	});
+	$scope.newComboItem = function() {
 		// This function also be used for newCategoryItem (Logic are the same)
 		if ($scope.newComboItemObj) {
 			var isExist = ($.grep($scope.editItems, function(e) { 
@@ -351,7 +354,6 @@ app.controller("orderCtrl", function($scope, socket) {
 				$scope.editItems.push(obj);	
 			}			
 		}		
-		$event.preventDefault();
 	}
 	$scope.defaultComboOpt = [];
 	$scope.doSetComboModal = function() {

@@ -18,4 +18,10 @@ var util = {
 			success : callback,
 		});			
 	},
+	triggerBtn : function(e, target) {
+		if (e.keyCode == 13) {
+			$(target).click();	
+			e.preventDefault();
+		}		
+	},
 }

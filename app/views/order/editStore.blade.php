@@ -92,9 +92,10 @@
 			<div class="form-inline">
 				<div class="form-group">
 					<label>名稱</label>
-					<input type="text" ng-model="newCategoryName" class="form-control" placeholder="飲料">	
+					<input type="text" ng-model="newCategoryName" class="form-control" placeholder="飲料"
+						onkeydown="util.triggerBtn(event, '#newCategoryBtn')">	
 				</div>
-				<button class="btn btn-primary" ng-click="newCategory($event)">新增</button>	
+				<button class="btn btn-primary" id="newCategoryBtn" ng-click="newCategory($event)">新增</button>	
 			</div>
 		</div>
 		
@@ -149,17 +150,19 @@
 			<div class="form-inline">
 				<div class="form-group">
 					<label>名稱</label>
-					<input type="text" ng-model="newItemName" class="form-control" placeholder="奶茶">						
+					<input type="text" ng-model="newItemName" class="form-control" placeholder="奶茶"
+						onkeydown="util.triggerBtn(event, '#newItemBtn')">						
 					
 				</div>
 				<div class="form-group">
 					<label>價格</label>
 					<div class="input-group">
-						<input type="number" ng-model="newItemPrice" class="form-control" placeholder="20">
+						<input type="number" ng-model="newItemPrice" class="form-control" placeholder="20"
+							onkeydown="util.triggerBtn(event, '#newItemBtn')">
 						<span class="input-group-addon">$</span>
 					</div>
 				</div>
-				<button class="btn btn-primary" ng-click="newItem($event)">新增</button>				
+				<button class="btn btn-primary" id="newItemBtn" ng-click="newItem($event)">新增</button>				
 			</div>
 		</div>
 		
@@ -217,17 +220,19 @@
 			<div class="form-inline">
 				<div class="form-group">
 					<label>名稱</label>
-					<input type="text" ng-model="newComboName" class="form-control" placeholder="A套餐">						
+					<input type="text" ng-model="newComboName" class="form-control" placeholder="A套餐"
+						onkeydown="util.triggerBtn(event, '#newComboBtn')">						
 					
 				</div>
 				<div class="form-group">
 					<label>價格</label>
 					<div class="input-group">
-						<input type="number" ng-model="newComboPrice" class="form-control" placeholder="60">
+						<input type="number" ng-model="newComboPrice" class="form-control" placeholder="60"
+							onkeydown="util.triggerBtn(event, '#newComboBtn')">
 						<span class="input-group-addon">$</span>
 					</div>
 				</div>
-				<button class="btn btn-primary" ng-click="newCombo($event)">新增</button>				
+				<button class="btn btn-primary" id="newComboBtn" ng-click="newCombo($event)">新增</button>				
 			</div>			
 		</div>
 	</form>
@@ -285,17 +290,19 @@
 						<tr>
 							<td></td>
 							<td>
-								<input type="text" ng-model="newOptName" class="form-control" placeholder="加蛋">							
+								<input type="text" ng-model="newOptName" class="form-control" placeholder="加蛋"
+									onkeydown="util.triggerBtn(event, '#newOptBtn')">							
 							</td>
 							<td>
 								<div class="input-group">
 									<span class="input-group-addon">+</span>
-									<input type="number" ng-model="newOptPrice" class="form-control" placeholder="5">
+									<input type="number" ng-model="newOptPrice" class="form-control" placeholder="5"
+										onkeydown="util.triggerBtn(event, '#newOptBtn')">
 									<span class="input-group-addon">$</span>
 								</div>
 							</td>
 							<td>
-								<button class="btn btn-primary" ng-click="newOpt($event)">新增</button>				
+								<button class="btn btn-primary" id="newOptBtn" ng-click="newOpt($event)">新增</button>				
 							</td>
 						</tr>
 					</table>
@@ -353,14 +360,13 @@
 							</td>
 						</tr>					
 						<tr>
-							<td>
+							<td colspan="2">
 								<select class="form-control" ng-model="newComboItemObj" ng-options="item.name for item in items">
 									<option value="">-- 請選擇 --</option>
 								</select>
 							</td>								
-							<td>
-								<button class="btn btn-primary" ng-click="newComboItem($event)">新增</button>				
-							</td>
+							<td></td>
+							<td></td>
 						</tr>
 					</table>
 				</div>
@@ -406,9 +412,7 @@
 									<option value="">-- 請選擇 --</option>
 								</select>
 							</td>								
-							<td>
-								<button class="btn btn-primary" ng-click="newComboItem($event)">新增</button>				
-							</td>
+							<td></td>
 						</tr>
 					</table>
 				</div>
