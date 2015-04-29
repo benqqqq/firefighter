@@ -80,7 +80,7 @@
 					</div>
 				</li>				
 			@endforeach
-			
+
 				<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item">
 					{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}
 				</li>

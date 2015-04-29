@@ -22,7 +22,7 @@
 	</div>
 	<form method="post" action="{{ URL::to('order/createMission/' . $store->id) }}" enctype="multipart/form-data">			
 		<div class="row">
-			<div class="col-md-6 col-sm-8 col-xs-10">
+			<div class="col-md-6 col-sm-8 col-xs-9">
 				<input type="text" name="name" class="form-control" value="訂早餐囉~~">
 			</div>
 			<div class="col-md-1 col-sm-1 col-xs-1">
