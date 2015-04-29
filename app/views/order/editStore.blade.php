@@ -394,6 +394,16 @@
 					</div>
 					<table class="table table-striped">
 						<tr>
+							<td>
+								<select class="form-control" ng-model="newComboItemObj" ng-options="item.name for item in items">
+									<option value="">-- 請選擇 --</option>
+								</select>
+							</td>								
+							<td>
+								<span class="btn btn-primary" ng-click="newComboItem()">新增</span>								
+							</td>
+						</tr>
+						<tr>
 							<th class="col-md-4">品項名稱</th>
 							<th class="col-md-2">刪除</th>
 						</tr>
@@ -407,16 +417,7 @@
 								</span>
 							</td>
 						</tr>					
-						<tr>
-							<td>
-								<select class="form-control" ng-model="newComboItemObj" ng-options="item.name for item in items">
-									<option value="">-- 請選擇 --</option>
-								</select>
-							</td>								
-							<td>
-								<span class="btn btn-primary" ng-click="newComboItem()">新增</span>								
-							</td>
-						</tr>
+						
 					</table>
 				</div>
 				<div class="modal-footer">
