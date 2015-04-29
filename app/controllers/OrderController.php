@@ -301,6 +301,7 @@ class OrderController extends BaseController {
 				if ($item->id == -1) {
 					$item->optStr = isset($item->optStr) ? $item->optStr : '';
 					$item->optPrice = isset($item->optPrice) ? $item->optPrice : 0;
+					$item->remark = isset($item->remark) ? $item->remark : '';
 					$dbItem = Item::create(['store_id' => $storeId, 
 						'name' => $item->name, 'price' => $item->price, 'remark' => $item->remark,
 						'optStr' => $item->optStr, 'optPrice' => $item->optPrice]);
@@ -344,6 +345,7 @@ class OrderController extends BaseController {
 			$inputComboIds = [];
 			foreach ($combos as $combo) {
 				if ($combo->id == -1) {
+					$combo->remark = isset($combo->remark) ? $combo->remark : '';
 					$dbCombo = Combo::create(['store_id' => $storeId, 'name' => $combo->name, 'price' => $combo->price, 
 						'remark' => $combo->remark]);
 				} else {
