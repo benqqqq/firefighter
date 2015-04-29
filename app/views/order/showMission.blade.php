@@ -32,7 +32,8 @@
 			<small class="nowrap">主揪 : 
 				<span class="glyphicon glyphicon-user"></span> {{{ $mission->user->serial }}}
 			</small>
-			<a class="btn btn-danger pull" ng-show="{{ $mission->user->id }} == user.id" 
+			<a class="btn btn-danger pull" data-toggle="confirmation" title="確定要刪除嗎?"
+				ng-show="{{ $mission->user->id }} == user.id" 
 				href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
 		</h2>	
 		<h4><small>{{{ $mission->created_at }}}</small></h4>		
@@ -101,8 +102,10 @@
 								 title="我的訂單" data-html="true" data-placement="top">
 								<span>{{{ $combo->name }}}</span>
 							</span>
+							
 							(
 							@foreach ($combo->items as $item)
+								<span class="nowrap">
 								@if (count($item->opts) > 0)									
 									<a href=""><span class="glyphicon glyphicon-cog" 
 										data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}"></span></a>
@@ -114,6 +117,7 @@
 									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' 
 										class='badge'>{{{ $opt->name }}}</span>
 								@endforeach
+								</span>
 							@endforeach
 							)
 							

@@ -27,6 +27,7 @@
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		{{ HTML::script('lib/bootstrap-confirmation.js') }}
 
     	{{ HTML::style('css/order.css') }}
     	
@@ -49,6 +50,14 @@
 				$(window).on('popstate', function() { 
 					$(".modal").modal('hide');
 				});
+				
+				$('[data-toggle="confirmation"]').confirmation({
+					btnOkLabel : '確定',
+					btnCancelLabel : '取消',
+					popout : true
+				});
+				$
+				
 			});
 
 			
@@ -59,7 +68,6 @@
     </head>
     <body ng-app='orderApp' class='orderBody' ng-controller='orderCtrl'>
     	<span ng-init='users = {{ $users }}'></span>
-    
     	<nav class='navbar navbar-default navbar-fixed-top'>
     		<div class='container'>
     			<div class='navbar-header pull-left'>	          			
@@ -77,7 +85,8 @@
 		    					<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu serial-dropdown" ng-init="user = loadUser();">
-								<li ng-repeat="user in users"><a href="" ng-click="editUser(user)">{[{ user.serial }]}</a>
+								<li ng-repeat="user in users | orderBy:mySortFunc"
+									><a href="" ng-click="editUser(user)">{[{ user.serial }]}</a>
 								</li>
 							</ul>
 	    				</li>	    				

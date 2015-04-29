@@ -38,7 +38,8 @@ app.controller("orderCtrl", function($scope, socket) {
 		$scope.refreshOrders();
 		$scope.statistic = data.statistic;
 		
-		releaseUserMenuEvent();
+		removeLoadingIcon();
+		releaseUserMenuEvent();		
     });
 	
     $scope.iPrice = {};
@@ -83,6 +84,7 @@ app.controller("orderCtrl", function($scope, socket) {
 	    	}	    	
     	}    	
     	storeUserMenuEvent(popTarget);
+    	addLoadingIcon(popTarget);
 		order('item', id, optIds);		
 	};
 	$scope.orderCombo = function(id, popTarget) {
@@ -97,6 +99,7 @@ app.controller("orderCtrl", function($scope, socket) {
 			}
 		}	
 		storeUserMenuEvent(popTarget);
+		addLoadingIcon(popTarget);
 		order('combo', id, optIds);		
 	};
 	
@@ -123,6 +126,7 @@ app.controller("orderCtrl", function($scope, socket) {
 			}
 		});
 	}
+	
 	$scope.orderIsSent = false;
 	function storeUserMenuEvent(popTarget) {
 		$scope.orderIsSent = true;
@@ -133,6 +137,14 @@ app.controller("orderCtrl", function($scope, socket) {
 			renewPopContent($scope.popTarget);
 			$scope.orderIsSent = false;
 		}
+	}
+	
+	function addLoadingIcon(obj) {
+		var loadingIcon = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>';
+		$(obj).append(loadingIcon);
+	}
+	function removeLoadingIcon() {
+		$('.glyphicon-refresh-animate').remove();
 	}
 	
 	$scope.decrementItem = function(orderId, id, optStr) {
@@ -533,5 +545,12 @@ app.controller("orderCtrl", function($scope, socket) {
 			},			
 			type: 'post'
 		});				
-	}
+	};
+	$scope.mySortFunc = function(user) {
+		if (isNaN(parseInt(user.serial))) {
+			return 1000 + user.serial.charCodeAt(0);
+		} else {
+			return parseInt(user.serial);
+		}
+	};
 });
