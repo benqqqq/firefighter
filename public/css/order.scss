@@ -126,3 +126,13 @@ body {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
 }
+
+.store-list {
+	.list-group-item {
+		border: none;
+	}
+	.store-list-item {
+		background: #f7f7f7;		
+		border-radius: 5px;
+	}
+}
