@@ -187,12 +187,8 @@
 	<div ng-init='orders = {{ $orders }}'></div>
 	<div ng-init='refreshOrders()'></div>
 	
-	<div class="col-md-4 col-sm-6 col-xs-12">
-		<h2>我的訂單</h2>
-		<p>點擊來移出訂單</p>
-		<div ng-repeat='order in myOrder'>
-			{{ View::make('order.userOrder', ['isMe' => true]) }}
-		</div>
+	<div ng-repeat='order in myOrder' class="col-md-4 col-sm-6 col-xs-12">
+		{{ View::make('order.userOrder', ['isMe' => true]) }}
 	</div>
 	
 	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12">

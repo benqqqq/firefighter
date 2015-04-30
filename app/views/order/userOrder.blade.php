@@ -1,5 +1,8 @@
 @if (!$isMe)
 	<h4><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></h4>
+@else
+	<h2>我的訂單 <small><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></small></h2>
+	<p>點擊來移出訂單</p>	
 @endif
 <p ng-repeat='item in order.items'>
 	@if ($isMe)
