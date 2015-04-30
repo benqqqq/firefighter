@@ -53,7 +53,7 @@ app.controller("orderCtrl", function($scope, socket) {
 	    	$scope.itemOpt[item.id] = {};	    	
 	    	for (var j in item.opts) {
 		    	var opt = item.opts[j];
-		    	$scope.itemOpt[item.id][opt.id] = (item.optStr.indexOf(opt.name) != -1);
+		    	$scope.itemOpt[item.id][opt.id] = (item.optStr.indexOf(opt.name) != -1);		    	
 		    	$scope.initItemPrice(item.id, opt.id, opt.price);
 	    	}
     	}

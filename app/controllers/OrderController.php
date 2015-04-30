@@ -19,6 +19,7 @@ class OrderController extends BaseController {
 	
 	public function showMission($id) {
 		$mission = Mission::with(['user', 
+			'store.items.opts',
 			'store.categories.items' => function($q) {
 				$q->where('isOrderable', true);
 			},
@@ -225,7 +226,7 @@ class OrderController extends BaseController {
 	
 	public function createMission($id) {
 		$store = Store::where('id', $id)->with('photos')->first();
-		$items = $store->items()->where('isOrderable', true)->with('opts')->get();		
+		$items = $store->items()->where('isOrderable', true)->with('opts')->get();
 		$combos = $store->combos()->with('items.opts')->get();
 		$categories = $store->categories()->with('items.opts')->get();
 		$unCategoryItems = $store->unCategoryItems()->where('isOrderable', true)->with('opts')->get();
@@ -324,9 +325,8 @@ class OrderController extends BaseController {
 			
 				if (isset($item->opts)) {
 					foreach ($item->opts as $opt) {
-						if ($opt->id == -1) {
-							$dbOpt = Opt::create(['item_id' => $dbItem->id, 'name' => $opt->name, 'price' => $opt->price]);
-													
+						if ($opt->id == -1 || $item->id == -1) {
+							$dbOpt = Opt::create(['item_id' => $dbItem->id, 'name' => $opt->name, 'price' => $opt->price]);													
 						} else {
 							$dbOpt = Opt::find($opt->id);
 							$dbOpt->name = $opt->name;
