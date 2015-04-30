@@ -4,7 +4,7 @@
 		<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
 			ng-click=''</span></a>
 	@endif
-	<span class="btn btn-warning pop-i-{{ $item->id }}" 
+	<span class="btn btn-default pop-i-{{ $item->id }}" 
 		ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" title="我的訂單" data-html="true" data-placement="top">
 		<span>{{{ $item->name }}}</span>
 

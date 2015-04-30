@@ -61,14 +61,14 @@
 
 	
 	<div class="row">
-		<div class="col-md-8 col-sm-6">			
+		<div class="col-md-12 col-sm-12">			
 			<h2>菜單</h2>
 			<p>點擊來加入訂單</p>
 			
 			<ul class="list-group menu">
 			@foreach ($mission->store->categories as $category)
-				<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item">
-					<h4 class="list-group-item-heading btn btn-block btn-lg" ng-click="categoryToggle({{ $category->id }})" 
+				<li class="list-group-item col-md-4 col-sm-6 col-xs-12 menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg text-danger" ng-click="categoryToggle({{ $category->id }})" 
 						ng-init="categoryIsShow[{{ $category->id }}] = false">{{ $category->name }}						
 						<small><span class="glyphicon glyphicon-triangle-bottom pull-right" 
 							ng-show="!categoryIsShow[{{ $category->id }}]"></span></small>
@@ -81,13 +81,13 @@
 				</li>				
 			@endforeach
 
-				<li class="list-group-item col-md-6 col-sm-12 col-xs-12 menu-item">
+				<li class="list-group-item col-md-4 col-sm-6 col-xs-12 menu-item">
 					{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}
 				</li>
 				
 			
-				<li class="list-group-item col-md-12 col-sm-12 col-xs-12  menu-item">
-					<h4 class="list-group-item-heading btn btn-block btn-lg" ng-click="categoryToggle('c')"
+				<li class="list-group-item col-md-8 col-sm-12 col-xs-12  menu-item">
+					<h4 class="list-group-item-heading btn btn-block btn-lg text-danger" ng-click="categoryToggle('c')"
 						ng-init="categoryIsShow['c'] = false">套餐
 						<small><span class="glyphicon glyphicon-triangle-bottom pull-right" 
 							ng-show="!categoryIsShow['c']"></span></small>
@@ -97,7 +97,7 @@
 					<div class="menu-item-content menu-item-content-c">
 					@foreach ($mission->store->combos as $combo)			
 						<p>
-							<span class="btn btn-warning pop-c-{{ $combo->id }}" 
+							<span class="btn btn-default pop-c-{{ $combo->id }}" 
 								ng-click="orderCombo({{ $combo->id }}, '.pop-c-{{ $combo->id }}')" 
 								 title="我的訂單" data-html="true" data-placement="top">
 								<span>{{{ $combo->name }}}</span>
@@ -182,24 +182,24 @@
 				</li>
 			</ul>		
 		</div>
-		<div ng-init='orders = {{ $orders }}'></div>
-		<div ng-init='refreshOrders()'></div>
-		<div class="col-md-4 col-sm-6">	
-			<h2>我的訂單</h2>
-			<p>點擊來移出訂單</p>
-			<div ng-repeat='order in myOrder'>
-				{{ View::make('order.userOrder', ['isMe' => true]) }}
-			</div>
-		</div>		
-		<div class="col-md-4 col-sm-6">	
-			<h2>其他訂單</h2>
-			<div ng-repeat='order in otherOrders'>
-				{{ View::make('order.userOrder', ['isMe' => false]) }}
-			</div>
+	</div>
+	
+	<div ng-init='orders = {{ $orders }}'></div>
+	<div ng-init='refreshOrders()'></div>
+	
+	<div class="col-md-4 col-sm-6 col-xs-12">
+		<h2>我的訂單</h2>
+		<p>點擊來移出訂單</p>
+		<div ng-repeat='order in myOrder'>
+			{{ View::make('order.userOrder', ['isMe' => true]) }}
 		</div>
 	</div>
 	
-	<div ng-init='statistic = {{ $statistic }}'>
+	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12">
+		{{ View::make('order.userOrder', ['isMe' => false]) }}
+	</div>
+			
+	<div ng-init='statistic = {{ $statistic }}' class="col-md-6 col-sm-6 col-xs-12">
 		<h2>統計</h2>
 		<p ng-repeat='item in statistic.item'>
 			<span ng-bind='item.name'></span>

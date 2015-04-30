@@ -458,8 +458,7 @@ app.controller("orderCtrl", function($scope, socket) {
 		} else {
 			$scope.myOrder = [];
 			$scope.otherOrders = $scope.orders;
-		}
-		
+		}		
 	}
 	
 	$scope.newCategory = function($event) {
