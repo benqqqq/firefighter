@@ -4,9 +4,15 @@
 	<form method='post' id="dataForm" ng-submit="submitForm('{{ URL::to('order/editStore/' . $store->id) }}')" enctype="multipart/form-data">
 		<div class="page-header">
 			<h1>{{{ $store->name }}} 
-				<input type="submit" class="btn btn-success pull-right" value="儲存">				
+				
 			</h1>
 		</div>
+		<nav class='navbar navbar-default navbar-fixed-bottom'>
+			<div class='container'>
+				<p></p>
+				<input type="submit" class="btn btn-success pull-right" value="儲存">				
+			</div>
+		</nav>
 		<div>
 			<h3>基本資訊</h3>		
 				

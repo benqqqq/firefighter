@@ -20,6 +20,7 @@ class OrderController extends BaseController {
 	public function showMission($id) {
 		$mission = Mission::with(['user', 
 			'store.items.opts',
+			'store.combos.items.opts',
 			'store.categories.items' => function($q) {
 				$q->where('isOrderable', true);
 			},

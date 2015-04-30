@@ -78,7 +78,7 @@ body {
   background-size: 200px auto; }
 
 .serial-dropdown {
-  max-height: 400px;
+  max-height: 350px;
   overflow-y: auto;
   overflow-x: hidden; }
 
