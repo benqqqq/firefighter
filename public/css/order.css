@@ -56,7 +56,7 @@ body {
   .menu-item-content {
     display: none; } }
 .pre {
-  white-space: pre; }
+  white-space: pre-wrap; }
 
 .nowrap {
   white-space: nowrap; }
