@@ -69,7 +69,7 @@
 				<tr>
 					<th class="col-md-2">名稱</th>
 					<th class="col-md-9">品項</th>
-					<th class="col-md-1">修改/刪除</th>
+					<th class="col-md-1">修改/新增/刪除</th>
 				</tr>
 				<tr ng-repeat="category in categories">
 					<td>
@@ -84,7 +84,10 @@
 					<td>						 
 						<span class="btn btn-primary btn-xs" data-toggle="modal" data-target="#categoryModal" 
 							ng-click="setCategoryModal(category)">
-							<span class="glyphicon glyphicon-pencil"></span>
+							<span class="glyphicon glyphicon-edit"></span>
+						</span>
+						<span class="btn btn-primary btn-xs" id="categoryBtn-{[{ category.id }]}" ng-click="startInsertItem(category)">
+							<span class="glyphicon glyphicon-tint"></span>
 						</span>
 
 						<span class="btn btn-primary btn-xs" ng-click="remove(categories, category)">
@@ -108,7 +111,7 @@
 		<div ng-init='items = {{ $items }}'>
 			<h3>品項</h3>
 			<!--  單點  -->
-			<table class="table table-striped">
+			<table class="table table-striped" id="item-table">
 				<caption>單點 
 					<p><small>* 備註 : 顯示於名稱底下用來提醒，例如 - 至少選擇一種醬料</small></p>
 					<p><small>* 公開 : 可以給使用者選擇的品項，預設為公開，在套餐內的組合如果不能被單點時，可以將公開取消</small></p>					
@@ -119,7 +122,7 @@
 					<th class="col-md-7">所有選項</th>
 					<th class="col-md-1">修改/複製/刪除</th>
 				</tr>
-				<tr ng-repeat="item in items">				
+				<tr ng-repeat="item in items" ng-click="insertItemToCategory(item)" class="itemRow">				
 					<td class="form-inline">
 						<input type="text" ng-model="item.name" class="form-control input-sm col-md-8">											
 						<span class="input-group col-md-4">
@@ -145,7 +148,7 @@
 					<td>						 
 						<span class="btn btn-primary btn-xs" data-toggle="modal" data-target="#itemModal" 
 							ng-click="setItemModal(item)">
-							<span class="glyphicon glyphicon-pencil"></span>
+							<span class="glyphicon glyphicon-edit"></span>
 						</span>
 
 						<span class="btn btn-primary btn-xs" ng-click="copyItem(item)">
@@ -215,7 +218,7 @@
 					<td>
 						<span class="btn btn-primary btn-xs" data-toggle="modal" data-target="#comboModal" 
 							ng-click="setComboModal(combo)">
-							<span class="glyphicon glyphicon-pencil"></span>
+							<span class="glyphicon glyphicon-edit"></span>
 						</span>
 
 						<span class="btn btn-primary btn-xs" ng-click="copyCombo(combo)">

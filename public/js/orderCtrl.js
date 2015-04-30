@@ -556,4 +556,41 @@ app.controller("orderCtrl", function($scope, socket) {
 			return parseInt(user.serial);
 		}
 	};
+	
+	var insertInfo = {
+		isInserting : false,
+		category : null
+	};
+	$scope.startInsertItem = function(category) {
+		if (!insertInfo.isInserting) {
+			$('#categoryBtn-' + category.id).removeClass('btn-primary').addClass('btn-success');
+			insertInfo.isInserting = true;
+			insertInfo.category = category;			
+			$('#item-table').removeClass('table-striped').addClass('table-hover');
+			$('.itemRow').css('cursor', 'pointer');
+		} else {
+			$('#categoryBtn-' + category.id).removeClass('btn-success').addClass('btn-primary');	
+			insertInfo.isInserting = false;			
+			$('#item-table').removeClass('table-hover').addClass('table-striped');
+			$('.itemRow').css('cursor', 'auto');
+		}
+	};
+	$scope.insertItemToCategory = function(item) {		
+		if (!insertInfo.isInserting) {
+			return;
+		}
+		var category = insertInfo.category;
+		var isExist = ($.grep(category.items, function(e) { 
+			if (e.id != -1) {
+				return e.id == item.id 	
+			} else {
+				return e.newItemId == item.newItemId;
+			}				
+		}).length > 0);
+		if (!isExist) {
+			var obj = $.extend(true, {}, item);
+			obj.pivot = {optStr : ""};
+			category.items.push(obj);
+		}
+	};
 });
