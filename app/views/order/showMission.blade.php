@@ -199,7 +199,7 @@
 		{{ View::make('order.userOrder', ['isMe' => false]) }}
 	</div>
 			
-	<div ng-init='statistic = {{ $statistic }}' class="col-md-6 col-sm-6 col-xs-12">
+	<div ng-init='statistic = {{ $statistic }}' class="col-md-12 col-sm-12 col-xs-12">
 		<h2>統計</h2>
 		<p ng-repeat='item in statistic.item'>
 			<span ng-bind='item.name'></span>
