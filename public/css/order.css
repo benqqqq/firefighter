@@ -78,10 +78,18 @@ body {
   background-size: 200px auto; }
 
 .serial-dropdown {
-  max-height: 350px;
   overflow-y: auto;
   overflow-x: hidden; }
 
+@media (max-height: 700px) {
+  .serial-dropdown {
+    max-height: 500px; } }
+@media (max-height: 550px) {
+  .serial-dropdown {
+    max-height: 300px; } }
+@media (max-height: 350px) {
+  .serial-dropdown {
+    max-height: 200px; } }
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -webkit-animation: spin2 .7s infinite linear; }
@@ -89,12 +97,13 @@ body {
 @-webkit-keyframes spin2 {
   from {
     -webkit-transform: rotate(0deg); }
+
   to {
     -webkit-transform: rotate(360deg); } }
+
 @keyframes spin {
   from {
     transform: scale(1) rotate(0deg); }
+
   to {
     transform: scale(1) rotate(360deg); } }
-
-/*# sourceMappingURL=order.css.map */
