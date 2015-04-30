@@ -80,7 +80,7 @@
 	    				<li class="dropdown pull-right"> 
 	    					<a href="" data-toggle="dropdown" class="dropdown-toggle">
 		    					<span class="glyphicon glyphicon-user"></span> 
-		    						{[{ user.serial }]} 
+		    						<span ng-bind="user.serial"></span>
 		    						<span ng-show="user.serial == null">尚未選擇</span>
 		    					<b class="caret"></b>
 							</a>

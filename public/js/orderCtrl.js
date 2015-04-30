@@ -246,6 +246,7 @@ app.controller("orderCtrl", function($scope, socket) {
 				id : -1,
 				name : $scope.newItemName,
 				price : $scope.newItemPrice,
+				isOrderable : true,
 				newItemId : newItemId++
 			});	
 		}		

@@ -18,14 +18,19 @@ class OrderController extends BaseController {
 	}
 	
 	public function showMission($id) {
-		$mission = Mission::with('user', 'store.items.opts', 
-			'store.combos.items.opts',
+		$mission = Mission::with(['user', 
+			'store.categories.items' => function($q) {
+				$q->where('isOrderable', true);
+			},
 			'store.categories.items.opts',
-			'store.unCategoryItems.opts',
+			'store.unCategoryItems' => function($q) {
+				$q->where('isOrderable', true);
+			},
+			'store.unCategoryItems.opts',		
 			'orders.user', 'orders.items', 
 			'orders.orderCombos.combo',
 			'orders.orderCombos.items',
-			'store.photos')->find($id);
+			'store.photos'])->find($id);
 		$statistic = json_encode($this->buildOrderStatistic($id));
 		
 		$orders = $this->getOrders($id);
@@ -220,10 +225,10 @@ class OrderController extends BaseController {
 	
 	public function createMission($id) {
 		$store = Store::where('id', $id)->with('photos')->first();
-		$items = $store->items()->with('opts')->get();		
+		$items = $store->items()->where('isOrderable', true)->with('opts')->get();		
 		$combos = $store->combos()->with('items.opts')->get();
 		$categories = $store->categories()->with('items.opts')->get();
-		$unCategoryItems = $store->unCategoryItems()->with('opts')->get();
+		$unCategoryItems = $store->unCategoryItems()->where('isOrderable', true)->with('opts')->get();
 		foreach ($combos as $combo) {
 			$combo->basePrice = (int)$combo->basePrice();
 			$combo->baseOptPrice = (int)$combo->baseOptPrice();
@@ -301,9 +306,9 @@ class OrderController extends BaseController {
 				if ($item->id == -1) {
 					$item->optStr = isset($item->optStr) ? $item->optStr : '';
 					$item->optPrice = isset($item->optPrice) ? $item->optPrice : 0;
-					$item->remark = isset($item->remark) ? $item->remark : '';
+					$item->remark = isset($item->remark) ? $item->remark : '';					
 					$dbItem = Item::create(['store_id' => $storeId, 
-						'name' => $item->name, 'price' => $item->price, 'remark' => $item->remark,
+						'name' => $item->name, 'price' => $item->price, 'remark' => $item->remark, 'isOrderable' => $item->isOrderable,
 						'optStr' => $item->optStr, 'optPrice' => $item->optPrice]);
 					$this->newItemIdMapping[$item->newItemId] = $dbItem->id;
 				} else {
@@ -311,6 +316,7 @@ class OrderController extends BaseController {
 					$dbItem->name = $item->name;
 					$dbItem->price = $item->price;
 					$dbItem->remark = $item->remark;
+					$dbItem->isOrderable = $item->isOrderable;
 					$dbItem->optStr = $item->optStr;
 					$dbItem->optPrice = $item->optPrice;
 					$dbItem->save();
