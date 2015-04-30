@@ -17,13 +17,13 @@
 		@foreach($stores as $store)			
 			<a class='list-group-item col-md-4 col-sm-6 col-xs-12' href='{{ URL::to("order/createMission/" . $store->id) }}'>
 				<div class="clearfix store-list-item">
-					<div class="col-md-4 col-sm-4 col-xs-4">
+					<div class="col-md-5 col-sm-5 col-xs-5">
 					@if (isset($store->photos[0]))
 						<div class="img-rounded img-responsive center-cropped" 
 							style="background-image: url('{{ asset($store->photos[0]->src) }}')"></div>
 					@endif
 					</div>
-					<div class="col-md-8 col-sm-8 col-xs-8">
+					<div class="col-md-7 col-sm-7 col-xs-7">
 						<h4>{{{ $store->name }}}</h4>
 						<p class="pre">{{{ $store->detail }}}</p>
 					</div>
