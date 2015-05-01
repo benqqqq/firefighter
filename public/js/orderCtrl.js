@@ -600,14 +600,12 @@ app.controller("orderCtrl", function($scope, socket) {
 		}
 	};
 	$('.optModal').on('hidden.bs.modal', function() {
-/* 		var target = '[data-target="#' +  $(this).attr('id') + '"]'; */
-		var target = '[data-target="#' +  $(this).attr('id') + '"]';
-		target = $(target).parent
+ 		var target = $('[data-target="#' +  $(this).attr('id') + '"]').parent('a'); 
 		flashPop(target, 3000, {
 			trigger : 'manual',
 			placement : 'top',
 			title : '注意 !',
-			content : '您已更改了選項，記得要再點一次才會新增'
+			content : '您已更改了選項，記得要點品項名稱才會新增到訂單'
 		})
 	});
 });
