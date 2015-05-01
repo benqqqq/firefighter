@@ -84,9 +84,7 @@ app.controller("orderCtrl", function($scope, socket) {
 		    	}
 	    	}	    	
     	}    	
-    	storeUserMenuEvent(popTarget);
-    	addLoadingIcon(popTarget);
-		order('item', id, optIds);		
+		order('item', id, optIds, popTarget);		
 	};
 	$scope.orderCombo = function(id, popTarget) {
 		var optIds = {};
@@ -99,13 +97,17 @@ app.controller("orderCtrl", function($scope, socket) {
 				}				
 			}
 		}	
-		storeUserMenuEvent(popTarget);
-		addLoadingIcon(popTarget);
-		order('combo', id, optIds);		
+		order('combo', id, optIds, popTarget);		
 	};
 	
-	function order(type, id, optIds) {
+	function order(type, id, optIds, popTarget) {
+		if ($scope.orderIsSent) {
+			return;
+		}
+	
 		var userId = ($scope.user) ? $scope.user.id : null;
+		storeUserMenuEvent(popTarget);
+		addLoadingIcon(popTarget);
 		
 		$.ajax({
 			url : $scope.url + '/api/order/add',
