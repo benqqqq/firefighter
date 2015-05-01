@@ -181,7 +181,7 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 	
 	$scope.getOrderPrice = function(order) {
-		var price = 0;
+		var price = 0;		
 		for (var i in order.items) {
 			var item = order.items[i];
 			price += (item.price + item.pivot.optPrice) * item.pivot.quantity;

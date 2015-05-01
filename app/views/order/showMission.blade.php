@@ -194,7 +194,7 @@
 		{{ View::make('order.userOrder', ['isMe' => true]) }}
 	</div>
 	
-	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12" ng-show="order.items.length > 0 || order.order_combos > 0">
+	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12" ng-show="order.items.length > 0 || order.order_combos.length > 0">
 		{{ View::make('order.userOrder', ['isMe' => false]) }}
 	</div>
 			
@@ -224,7 +224,19 @@
 			<span ng-show='statistic.price.total - statistic.price.paid > 0'
 				class="label label-danger">少<span ng-bind='statistic.price.total - statistic.price.paid'></span>$</span>
 			<span ng-show='statistic.price.total - statistic.price.paid < 0'
-				class="label label-warning">退<span ng-bind='statistic.price.paid - statistic.price.total'></span>$</span>
+				class="label label-warning">退<span ng-bind='statistic.price.paid - statistic.price.total'></span>$</span>			
+		</p>
+		<p>
+			<small>
+				<span ng-repeat="order in orders" ng-show="(order.items.length > 0 || order.order_combos.length > 0) && getOrderPrice(order) - order.paid != 0">
+					<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}				
+
+					<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
+						>少 {[{ getOrderPrice(order) - order.paid }]} $</span>
+					<span ng-show='getOrderPrice(order) - order.paid < 0' class="label label-warning"
+						>退 {[{ order.paid - getOrderPrice(order) }]} $</span>	
+				</span>
+			</small>
 		</p>
 	</div>
 	

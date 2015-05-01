@@ -50,7 +50,7 @@
 	
 	<span class="form-group">
 		<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
-			>欠 {[{ getOrderPrice(order) - order.paid }]} $</span>
+			>少 {[{ getOrderPrice(order) - order.paid }]} $</span>
 		<span ng-show='getOrderPrice(order) - order.paid < 0' class="label label-warning"
 			>退 {[{ order.paid - getOrderPrice(order) }]} $</span>	
 	</span>
