@@ -609,20 +609,10 @@ app.controller("orderCtrl", function($scope, socket) {
 			content : '如果您更改了選項，記得要點品項名稱才會新增到訂單'
 		})
 	});
-/*
-	$('.order-btn').on('mouseenter', function() {
-		var id = $(this).attr('data-item-id');
-		$(this).popover('show');
-	});
-	$('.order-btn').on('mouseleave', function() {
-		var id = $(this).attr('data-item-id');
-		$(this).popover('hide');
-	});
-*/
 	
 	$('.order-btn').popover({
 		trigger : 'hover',
-		title : '選項',
+		title : '所有選項',
 		html : true,
 		placement : 'bottom',
 		content : function() {
