@@ -53,20 +53,24 @@
 			<p></p>
 			<div class="collapse" id="explain-image">
 				<p>
-					<h4>1. 找到想訂的餐點 (黑底白字是預設選項，點藍色齒輪修改)</h4>
+					<h4>1. 進入目前正在進行的訂餐團</h4>
 					<img src="{{{ asset('images/1.png') }}}" alt="explain-image" class="img-rounded img-responsive">
 				</p>
 				<p>
-					<h4>2. 修改好選項</h4>
+					<h4>2. 找到想訂的餐點 (黑底白字是預設選項，點藍色齒輪修改)</h4>
 					<img src="{{{ asset('images/2.png') }}}" alt="explain-image" class="img-rounded img-responsive">
 				</p>
 				<p>
-					<h4>3. 點選</h4>
+					<h4>3. 修改好選項</h4>
 					<img src="{{{ asset('images/3.png') }}}" alt="explain-image" class="img-rounded img-responsive">
 				</p>
 				<p>
-					<h4>4. 完成囉 拉到最底下看看自己的訂單</h4>
+					<h4>4. 點選</h4>
 					<img src="{{{ asset('images/4.png') }}}" alt="explain-image" class="img-rounded img-responsive">
+				</p>
+				<p>
+					<h4>5. 完成囉 拉到最底下看看自己的訂單</h4>
+					<img src="{{{ asset('images/5.png') }}}" alt="explain-image" class="img-rounded img-responsive">
 				</p>
 			</div>
 		</div>
