@@ -610,24 +610,26 @@ app.controller("orderCtrl", function($scope, socket) {
 		})
 	});
 	
-	$('.order-btn').popover({
-		trigger : 'hover',
-		title : '所有選項',
-		html : true,
-		placement : 'bottom',
-		content : function() {
-			var id = $(this).attr('data-item-id');
-			var item = $.grep($scope.items, function(e) {
-				return e.id == id;
-			})[0];
-			var html = '';
-			for (var i in item.opts) {
-				var opt = item.opts[i];
-				html += '<p>' + opt.name;
-				html += ' <span class="label label-primary">+' + opt.price + '$</span>';
-				html += '</p>';
+	if (!window.mobileAndTabletcheck()) {
+		$('.order-btn').popover({
+			trigger : 'hover',
+			title : '所有選項',
+			html : true,
+			placement : 'bottom',
+			content : function() {
+				var id = $(this).attr('data-item-id');
+				var item = $.grep($scope.items, function(e) {
+					return e.id == id;
+				})[0];
+				var html = '';
+				for (var i in item.opts) {
+					var opt = item.opts[i];
+					html += '<p>' + opt.name;
+					html += ' <span class="label label-primary">+' + opt.price + '$</span>';
+					html += '</p>';
+				}
+				return html;
 			}
-			return html;
-		}
-	});
+		});
+	}
 });

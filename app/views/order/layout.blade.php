@@ -28,6 +28,8 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 		{{ HTML::script('lib/bootstrap-confirmation.js') }}
+		
+		{{ HTML::script('lib/mobileCheck.js') }}
 
     	{{ HTML::style('css/order.css') }}
     	
