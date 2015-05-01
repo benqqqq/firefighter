@@ -77,7 +77,8 @@
     			<div class="navbar-header pull-right">
     				<ul class="nav pull-left">
 	    				<li class="navbar-text pull-left">番號 : </li>
-	    				<li class="dropdown pull-right"> 
+	    				<li class="dropdown pull-right"
+	    					id="nav-serial" title="選擇後即可訂餐、新增" data-toggle="tooltip" data-placement="bottom"> 
 	    					<a href="" data-toggle="dropdown" class="dropdown-toggle">
 		    					<span class="glyphicon glyphicon-user"></span> 
 		    						<span ng-bind="user.serial"></span>
@@ -103,8 +104,12 @@
                 <div class="clearfix hidden-lg hidden-md"></div>
                 <div class="collapse navbar-collapse pull-right" id="navbar">
                         <ul class="nav navbar-nav top-nav">
-                            <li><a href="{{ URL::to('order') }}">訂餐</a></li>
-                            <li><a href="{{ URL::to('order/selectStore') }}">新增</a></li>
+                            <li id="nav-order" title="訂購已新增的餐點" data-toggle="tooltip" data-placement="bottom">
+                            	<a href="{{ URL::to('order') }}">訂餐</a>
+                            </li>
+                            <li id="nav-new" title="選擇你想訂的店家" data-toggle="tooltip" data-placement="bottom">
+                            	<a href="{{ URL::to('order/selectStore') }}">新增</a>
+                            </li>
                         </ul>
                     </div>
     

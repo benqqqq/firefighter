@@ -18,6 +18,9 @@
 					$scope.changeMissionStatus(this);
 				}
 			});
+			$("input[type='number']").on("click", function () {
+			   $(this).select();
+			});
 		});
 	</script>
 @stop
@@ -99,7 +102,7 @@
 						<p>
 							<span class="btn btn-default pop-c-{{ $combo->id }}" 
 								ng-click="orderCombo({{ $combo->id }}, '.pop-c-{{ $combo->id }}')" 
-								 title="我的訂單" data-html="true" data-placement="top">
+								 data-html="true">
 								<span>{{{ $combo->name }}}</span>
 							</span>
 							
@@ -191,7 +194,7 @@
 		{{ View::make('order.userOrder', ['isMe' => true]) }}
 	</div>
 	
-	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12">
+	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12" ng-show="order.items.length > 0 || order.order_combos > 0">
 		{{ View::make('order.userOrder', ['isMe' => false]) }}
 	</div>
 			

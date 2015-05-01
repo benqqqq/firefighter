@@ -2,7 +2,7 @@
 	<h4><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></h4>
 @else
 	<h2>我的訂單 <small><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></small></h2>
-	<p>點擊來移出訂單</p>	
+	<p>點擊來移出訂單</p>
 @endif
 <p ng-repeat='item in order.items'>
 	@if ($isMe)
@@ -57,10 +57,13 @@
 </p>
 
 <p>
-	<span><strong>備註 : </strong><span ng-bind='order.remark' ng-show='order.user.id != user.id' class="pre"></span></span>
+	<span><strong>備註 : </strong>
+		<small ng-show='order.user.id == user.id'>自行打上菜單沒有的品項或特殊需求</small>
+		<span ng-show='order.user.id != user.id' ng-bind='order.remark' class="pre"></span>
+	</span>
 
 	<div ng-show='order.user.id == user.id' class="form-group">		
-		<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" ng-blur="editRemark(order.id)">
+		<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" ng-blur="editRemark(order.id)" placeholder="培根牛肉堡要加辣">
 		</textarea>		
 	</div>
 

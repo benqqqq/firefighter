@@ -505,8 +505,11 @@ app.controller("orderCtrl", function($scope, socket) {
 		$scope.categoryIsShow[id] = !$scope.categoryIsShow[id];			
 	};
 		
-	function flashPop(target, time) {
+	function flashPop(target, time, opt) {
 		var time = time | 500;
+		if (opt) {
+			$(target).popover(opt);
+		}
 		$(target).popover('show');
 		setTimeout(function () {
 			$(target).popover('hide');
@@ -534,8 +537,12 @@ app.controller("orderCtrl", function($scope, socket) {
 					+ (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity + "$</span>";
 		}
 		
-		$(target).attr('data-content', menu);
-		flashPop(target, 3000);
+		flashPop(target, 3000, {
+			trigger : 'manual',
+			placement : 'top',
+			title : '我的訂單',
+			content : menu
+		});
 	}
 
 	$scope.changeMissionStatus = function(obj) {		
@@ -592,4 +599,15 @@ app.controller("orderCtrl", function($scope, socket) {
 			category.items.push(obj);
 		}
 	};
+	$('.optModal').on('hidden.bs.modal', function() {
+/* 		var target = '[data-target="#' +  $(this).attr('id') + '"]'; */
+		var target = '[data-target="#' +  $(this).attr('id') + '"]';
+		target = $(target).parent
+		flashPop(target, 3000, {
+			trigger : 'manual',
+			placement : 'top',
+			title : '注意 !',
+			content : '您已更改了選項，記得要再點一次才會新增'
+		})
+	});
 });

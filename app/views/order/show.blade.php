@@ -2,8 +2,45 @@
 
 @section('head')
 	<script>
+		function flashTooltip(target, opt) {
+			if (opt) {
+				$(target).tooltip(opt);
+			}
+			$(target).tooltip('show');			
+			setTimeout(function() {
+				$(target).tooltip('hide');	
+			}, 3000);
+		}
+		function initTooltip() {
+			$('[data-toggle="tooltip"]').tooltip();
+			
+			var $scope = angular.element($('.orderBody')).scope();
+			if (!$scope.user) {
+				flashTooltip('#nav-serial');	
+			} else if ({{ count($missions) > 0 ? 1 : 0}}) {
+				if ($('.navbar-collapse').css('display') == 'none') {
+					flashTooltip('.navbar-toggle', {
+						placement : 'bottom',
+						title : '訂購已新增的餐點'
+					});					
+				}				
+				flashTooltip('#nav-order');
+			} else {
+				if ($('.navbar-collapse').css('display') == 'none') {
+					flashTooltip('.navbar-toggle', {
+						placement : 'bottom',
+						title : '選擇你想訂的店家'
+					});					
+				}
+				flashTooltip('#nav-new');
+			}
+		}
+		
 		$(document).ready(function() {
 			$('.top-nav li:nth-child(1)').addClass('active');
+			
+			initTooltip();
+			
 		});
 	</script>
 @stop
