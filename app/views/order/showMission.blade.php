@@ -1,7 +1,7 @@
 @extends('order.layout')
 
 @section('head')
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.0/isotope.pkgd.js"></script>
+	
 	<script src="/lib/bootstrap-switch.min.js"></script>
 	<link rel="stylesheet" href="/lib/bootstrap-switch.min.css">
 

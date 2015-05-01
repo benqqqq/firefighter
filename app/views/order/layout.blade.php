@@ -29,6 +29,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 		{{ HTML::script('lib/bootstrap-confirmation.js') }}
 		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.0/isotope.pkgd.js"></script>
+		
 		{{ HTML::script('lib/mobileCheck.js') }}
 
     	{{ HTML::style('css/order.css') }}
