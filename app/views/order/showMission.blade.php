@@ -114,7 +114,8 @@
 										data-toggle="modal" data-target="#myModal{{ $combo->id }}-{{ $item->id }}"></span></a>
 								@endif
 		
-								<span>{{{ $item->name }}}</span>
+								<span class='{{ count($item->opts) > 0 ? "order-btn" : "" }}' data-item-id={{ $item->id }}
+									>{{{ $item->name }}}</span>
 								
 								@foreach ($item->opts as $opt)
 									<span ng-show='comboItemOpt[{{ $combo->id }}][{{ $item->id }}][{{ $opt->id }}]' 
@@ -226,17 +227,16 @@
 			<span ng-show='statistic.price.total - statistic.price.paid < 0'
 				class="label label-warning">退<span ng-bind='statistic.price.paid - statistic.price.total'></span>$</span>			
 		</p>
+		<hr>
 		<p>
-			<small>
-				<span ng-repeat="order in orders" ng-show="(order.items.length > 0 || order.order_combos.length > 0) && getOrderPrice(order) - order.paid != 0">
-					<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}				
+			<span ng-repeat="order in orders" ng-show="(order.items.length > 0 || order.order_combos.length > 0) && getOrderPrice(order) - order.paid != 0">
+				<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}
 
-					<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
-						>少 {[{ getOrderPrice(order) - order.paid }]} $</span>
-					<span ng-show='getOrderPrice(order) - order.paid < 0' class="label label-warning"
-						>退 {[{ order.paid - getOrderPrice(order) }]} $</span>	
-				</span>
-			</small>
+				<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
+					>少 {[{ getOrderPrice(order) - order.paid }]} $</span>
+				<span ng-show='getOrderPrice(order) - order.paid < 0' class="label label-warning"
+					>退 {[{ order.paid - getOrderPrice(order) }]} $</span>	
+			</span>
 		</p>
 	</div>
 	

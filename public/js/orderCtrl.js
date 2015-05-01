@@ -47,6 +47,7 @@ app.controller("orderCtrl", function($scope, socket) {
     $scope.itemOpt = {};
     $scope.comboItemOpt = {};
     $scope.initStore = function(items, combos) {
+    	$scope.items = items;
     	for (var i in items) {
 	    	var item = items[i];
 	    	$scope.iPrice[item.id] = item.price;
@@ -605,7 +606,38 @@ app.controller("orderCtrl", function($scope, socket) {
 			trigger : 'manual',
 			placement : 'top',
 			title : '注意 !',
-			content : '您已更改了選項，記得要點品項名稱才會新增到訂單'
+			content : '如果您更改了選項，記得要點品項名稱才會新增到訂單'
 		})
+	});
+/*
+	$('.order-btn').on('mouseenter', function() {
+		var id = $(this).attr('data-item-id');
+		$(this).popover('show');
+	});
+	$('.order-btn').on('mouseleave', function() {
+		var id = $(this).attr('data-item-id');
+		$(this).popover('hide');
+	});
+*/
+	
+	$('.order-btn').popover({
+		trigger : 'hover',
+		title : '選項',
+		html : true,
+		placement : 'bottom',
+		content : function() {
+			var id = $(this).attr('data-item-id');
+			var item = $.grep($scope.items, function(e) {
+				return e.id == id;
+			})[0];
+			var html = '';
+			for (var i in item.opts) {
+				var opt = item.opts[i];
+				html += '<p>' + opt.name;
+				html += ' <span class="label label-primary">+' + opt.price + '$</span>';
+				html += '</p>';
+			}
+			return html;
+		}
 	});
 });

@@ -1,19 +1,19 @@
 @foreach ($items as $item)
 <p>
 	@if (count($item->opts) > 0)		
-		<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}" 
-			ng-click=''</span></a>
+		<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}"></span></a>
 	@endif
-	<span class="btn btn-default pop-i-{{ $item->id }}" 
-		ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" data-html="true">
-		<span>{{{ $item->name }}}</span>
-
-		@foreach ($item->opts as $opt)
-			<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
-		@endforeach
-		
-	</span>				
-	<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span>
+	<span class='{{ count($item->opts) > 0 ? "order-btn" : "" }}' data-item-id={{ $item->id }}>
+		<span class="btn btn-default pop-i-{{ $item->id }}"
+			ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" data-html="true">
+			<span>{{{ $item->name }}}</span>
+	
+			@foreach ($item->opts as $opt)
+				<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
+			@endforeach			
+		</span>			
+	</span>	
+	<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span></span>
 	@if ($item->remark != '')
 	<small class="remark">({{ $item->remark }})</small>
 @endif
