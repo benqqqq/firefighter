@@ -297,7 +297,7 @@ class OrderController extends BaseController {
 	public function deleteStore($id) {
 		File::deleteDirectory(public_path() . '/photos/' . $id);
 		Store::find($id)->delete();
-		return Redirect::to('order');
+		return Redirect::to('order/selectStore');
 	}
 	
 	private function storeItems($storeId, $items) {

@@ -35,7 +35,7 @@
 			<small class="nowrap">主揪 : 
 				<span class="glyphicon glyphicon-user"></span> {{{ $mission->user->serial }}}
 			</small>
-			<a class="btn btn-danger pull" data-toggle="confirmation" title="確定要刪除嗎?"
+			<a class="btn btn-danger pull-right" data-toggle="confirmation" title="確定要刪除嗎?"
 				ng-show="{{ $mission->user->id }} == user.id" 
 				href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
 		</h2>	

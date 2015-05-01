@@ -519,32 +519,33 @@ app.controller("orderCtrl", function($scope, socket) {
 		}, time);
 	}
 	
-	function renewPopContent(target) {
-		var menu = '';
-		for (var i in $scope.myOrder[0].items) {
-			var item = $scope.myOrder[0].items[i];
-			menu += "<p>" + item.name;
-			menu += (item.pivot.optStr != ' ')? "<span class='badge'>" + item.pivot.optStr + "</span>" : '';
-			menu += " * " + item.pivot.quantity + " = <span class='label label-primary'>"
-						+ (item.price + item.pivot.optPrice) * item.pivot.quantity  + "$</span></p>";
-		}
-		for (var i in $scope.myOrder[0].order_combos) {
-			var orderCombo = $scope.myOrder[0].order_combos[i];
-			menu += "<p>" + orderCombo.combo.name + "(";
-			for (var j in orderCombo.items) {
-				var item = orderCombo.items[j];
-				menu += item.name;
-				menu += (item.pivot.optStr != ' ')? "<span class='badge'>" + item.pivot.optStr + "</span>" : '';
-			}
-			menu += ") * " + orderCombo.quantity + " = <span class='label label-primary'>"
-					+ (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity + "$</span>";
-		}
-		
+	function renewPopContent(target) {		
 		flashPop(target, 3000, {
 			trigger : 'manual',
 			placement : 'top',
 			title : '我的訂單',
-			content : menu
+			content : function() {
+				var menu = '';
+				for (var i in $scope.myOrder[0].items) {
+					var item = $scope.myOrder[0].items[i];
+					menu += "<p>" + item.name;
+					menu += (item.pivot.optStr != ' ')? "<span class='badge'>" + item.pivot.optStr + "</span>" : '';
+					menu += " * " + item.pivot.quantity + " = <span class='label label-primary'>"
+								+ (item.price + item.pivot.optPrice) * item.pivot.quantity  + "$</span></p>";
+				}
+				for (var i in $scope.myOrder[0].order_combos) {
+					var orderCombo = $scope.myOrder[0].order_combos[i];
+					menu += "<p>" + orderCombo.combo.name + "(";
+					for (var j in orderCombo.items) {
+						var item = orderCombo.items[j];
+						menu += item.name;
+						menu += (item.pivot.optStr != ' ')? "<span class='badge'>" + item.pivot.optStr + "</span>" : '';
+					}
+					menu += ") * " + orderCombo.quantity + " = <span class='label label-primary'>"
+							+ (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity + "$</span>";
+				}
+				return menu;
+			}
 		});
 	}
 

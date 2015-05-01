@@ -31,14 +31,18 @@
 		</div>
 		<input name="userId" ng-value="user.id" type="hidden">
 	</form>
-
-		
+	<h4><small>* 取一個這次訂餐的名字，就可以開始訂囉 !</small></h4>
+	
+	<hr>
 	<div>
 		<h3>{{{ $store->name }}} 
-			<small><a href="{{ URL::to('order/editStore/' . $store->id) }}"><span class="glyphicon glyphicon-pencil"></span> 修改</a></small>
 			@if (User::isManager())
-				<a href="{{ URL::to('order/deleteStore/' . $store->id) }}" class="btn btn-danger">刪除</a>
+				<a href="{{ URL::to('order/deleteStore/' . $store->id) }}" class="btn btn-danger pull-right"
+					data-toggle="confirmation" title="確定要刪除嗎?">刪除</a>
+				<a class="btn btn-primary pull-right" 
+					href="{{ URL::to('order/editStore/' . $store->id) }}"><span class="glyphicon glyphicon-edit"></span> 修改</a>
 			@endif
+				
 		</h3>	
 		
 		<div>
