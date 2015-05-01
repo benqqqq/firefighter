@@ -109,10 +109,10 @@
                 <div class="collapse navbar-collapse pull-right" id="navbar">
                         <ul class="nav navbar-nav top-nav">
                             <li id="nav-order" title="訂購已新增的餐點" data-toggle="tooltip" data-placement="bottom">
-                            	<a href="{{ URL::to('order') }}">訂餐</a>
+                            	<a href="{{ URL::to('order') }}">跟團</a>
                             </li>
                             <li id="nav-new" title="選擇你想訂的店家" data-toggle="tooltip" data-placement="bottom">
-                            	<a href="{{ URL::to('order/selectStore') }}">新增</a>
+                            	<a href="{{ URL::to('order/selectStore') }}">主揪</a>
                             </li>
                         </ul>
                     </div>

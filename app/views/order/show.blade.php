@@ -73,7 +73,7 @@
 
 		<div>
 			@if (count($missions) > 0)
-				<h2>訂餐中</h2>
+				<h2>跟團</h2>
 				<p>正在進行的訂購</p>
 				<div class='list-group'>						
 					@foreach($missions as $mission)
@@ -101,7 +101,7 @@
 				<div class="jumbotron">
 					<h2>目前沒有進行中的訂購</h2>
 					<p></p>
-					<p><a class="btn btn-primary btn-lg" href="{{ URL::to('order/selectStore') }}">新增訂購</a></p>
+					<p><a class="btn btn-primary btn-lg" href="{{ URL::to('order/selectStore') }}">主揪 - 新增訂購</a></p>
 				</div>
 			@endif
 		</div>
