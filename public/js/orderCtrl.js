@@ -42,6 +42,15 @@ app.controller("orderCtrl", function($scope, socket) {
 		releaseUserMenuEvent();		
     });
 	
+	socket.on('mission.end', function (data) {
+		var data = JSON.parse(data);
+		if (data.missionId == $scope.missionId) {
+			$('#message').html('即將在' + data.time + '分鐘後結束訂購');
+			$('#messageModal').modal();	
+		}
+		
+	});
+	
     $scope.iPrice = {};
     $scope.cPrice = {};
     $scope.itemOpt = {};
@@ -158,13 +167,24 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 	function decrementOrder(type, orderId, id, optStr) {
 		var userId = ($scope.user) ? $scope.user.id : null;
-		util.ajax($scope.url + '/api/order/decrease', {
-			type : type,
-			orderId : orderId,
-			id : id,
-			optStr : optStr,
-			userId : userId
-		}, null, 'post');
+		$.ajax({
+			url : $scope.url + '/api/order/decrease', 
+			dataType : 'html',
+			data : {
+				type : type,
+				orderId : orderId,
+				id : id,
+				optStr : optStr,
+				userId : userId,
+				}, 
+			success : function(data) {
+				if (data) {
+					$('#message').html(data);
+					$('#messageModal').modal();					
+				}
+			}, 
+			type: 'post'
+		});
 	};
 	
 	$scope.initItemPrice = function(itemId, optId, optPrice) {
@@ -633,6 +653,16 @@ app.controller("orderCtrl", function($scope, socket) {
 				}
 				return html;
 			}
+		});
+	}
+	
+	$scope.endMission = function() {
+		$.ajax({
+			url : $scope.url + '/api/order/mission/' + $scope.missionId + '/end',
+			data : {
+				time : $scope.endMissionTime
+			},
+			type: 'post'
 		});
 	}
 });

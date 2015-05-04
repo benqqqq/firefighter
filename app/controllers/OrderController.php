@@ -86,9 +86,13 @@ class OrderController extends BaseController {
 		if ($userId == null) {
 			return '請選擇番號';
 		}
+		$missionId = Input::get('missionId');
+		$mission = Mission::find($missionId);
+		if ($mission->isEnding) {
+			return '抱歉 ! 訂購已經結束';	
+		}		
 		
 		$type = Input::get('type');
-		$missionId = Input::get('missionId');
 		$id = Input::get('id');
 		$opts = Input::get('optIds');
 		$order = Order::where(['user_id' => $userId, 'mission_id' => $missionId])->first();
@@ -144,6 +148,7 @@ class OrderController extends BaseController {
 			return '請選擇番號';
 		}
 		
+		
 		$type = Input::get('type');
 		$orderId = Input::get('orderId');
 		$id = Input::get('id');
@@ -151,8 +156,12 @@ class OrderController extends BaseController {
 		
 		$order = Order::find($orderId);		
 		if ($order->user->id != $userId) {
-			/* return '非本人不可刪除'; */
+			return '非本人不可刪除';
+		}
+		if ($order->mission->isEnding) {
+			return '抱歉 ! 訂購已經結束';
 		}		
+		
 		if ($type === 'item') {
 			$order->decrementItemQuantity($id, $optStr);
 		} else {
@@ -423,5 +432,11 @@ class OrderController extends BaseController {
 				Photo::create(['store_id' => $storeId, 'src' => "photos/$storeId/" . $name]);
 			}			
 		}
+	}
+	
+	public function endMission($id) {
+		$mission = Mission::find($id);
+		$data = ['missionId' => $id, 'time' => Input::get('time')];
+		Event::fire(\Realtime\MissionEndEventHandler::EVENT, json_encode($data));
 	}
 }

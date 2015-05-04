@@ -15,6 +15,7 @@ io.listen(server).on('connection', function(client) {
     const redisClient = redis.createClient();
 
     redisClient.subscribe('orders.update');
+    redisClient.subscribe('mission.end');
 
     console.log("Redis server running.....");
 

@@ -41,7 +41,20 @@
 		</h2>	
 		<h4><small>{{{ $mission->created_at }}}</small></h4>		
 		<input type="checkbox" name="isOpen" class="switchInput" data-size="mini" data-off-text="訂購完成" data-on-text="訂購中"
-			@if(!$mission->isEnding) checked @endif>
+				@if(!$mission->isEnding) checked @endif>
+		
+		<p></p>
+		<div class="form-inline" ng-show="user.serial == {{ $mission->user->serial }}">
+			<div class="input-group">
+				<span class="input-group-addon">通知</span>
+				<input type="number" name="deadline" class="form-control" ng-model="endMissionTime" ng-init="endMissionTime = 1">
+				<span class="input-group-addon">分鐘後</span>
+				<span class="input-group-btn">
+					<button class="btn btn-default" ng-click="endMission()">結束訂購</button>
+				</span>
+			</div>
+		</div>
+		
 	</div>
 
 	<address>
