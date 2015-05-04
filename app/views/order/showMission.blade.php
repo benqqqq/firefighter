@@ -44,7 +44,7 @@
 				@if(!$mission->isEnding) checked @endif>
 		
 		<p></p>
-		<div class="form-inline" ng-show="user.serial == {{ $mission->user->serial }}">
+		<div class="form-inline" ng-show="user.id == {{ $mission->user->id }}">
 			<div class="input-group">
 				<span class="input-group-addon">通知</span>
 				<input type="number" name="deadline" class="form-control" ng-model="endMissionTime" ng-init="endMissionTime = 1">
