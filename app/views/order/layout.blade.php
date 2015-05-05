@@ -52,7 +52,7 @@
 					
 				// If a pushstate has previously happened and the back button is clicked, hide any modals.
 				$(window).on('popstate', function() { 
-					$(".modal").modal('hide');
+					$(".optModal").modal('hide');
 				});
 				
 				$('[data-toggle="confirmation"]').confirmation({
@@ -60,7 +60,6 @@
 					btnCancelLabel : '取消',
 					popout : true
 				});
-				$
 				
 			});
 

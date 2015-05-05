@@ -5,9 +5,15 @@ class OrderController extends BaseController {
 	private $newItemIdMapping = [];
 
 	public function show() {
-		$missions = Mission::where('isEnding', false)->with('user', 'store')->orderBy('created_at', 'desc')->get();
-		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->take(5)->get();			
+		$missions = Mission::where(['isDelete' => false, 'isEnding' => false])->with('user', 'store')->orderBy('created_at', 'desc')->get();
+		$historyMissions = 
+			Mission::where(['isDelete' => false, 'isEnding' => true])->with('user', 'store')->orderBy('created_at', 'desc')->take(5)->get();
 		return View::make('order.show', ['missions' => $missions, 'historyMissions' => $historyMissions]);
+	}
+
+	public function showDelete() {
+		$missions = Mission::where('isDelete', true)->with('user', 'store')->orderBy('created_at', 'desc')->get();
+		return View::make('order.showDelete', ['missions' => $missions]);
 	}
 
 	public function showStore() {
@@ -264,9 +270,18 @@ class OrderController extends BaseController {
 	
 	public function deleteMission($id) {
 		$mission = Mission::find($id);
-/* 		if ($mission->isEnding && new Date() -  */
-		
-		$mission->delete();
+		if ($mission->isReadOnly()) {
+			return Redirect::back()->withMessage('抱歉，此團已經結束，不可刪除');
+		}
+		$mission->isDelete = true;
+		$mission->save();		
+		return Redirect::to('order');
+	}
+	
+	public function recoverMission($id) {
+		$mission = Mission::find($id);
+		$mission->isDelete = false;
+		$mission->save();		
 		return Redirect::to('order');
 	}
 

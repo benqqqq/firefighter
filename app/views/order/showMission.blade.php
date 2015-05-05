@@ -35,9 +35,13 @@
 			<small class="nowrap">主揪 : 
 				<span class="glyphicon glyphicon-user"></span> {{{ $mission->user->serial }}}
 			</small>
-			<a class="btn btn-danger pull-right" data-toggle="confirmation" title="確定要刪除嗎?"
-				ng-show="{{ $mission->user->id }} == user.id" 
-				href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
+			@if (!$mission->isDelete)
+				<a class="btn btn-danger pull-right" data-toggle="confirmation" title="確定要刪除嗎?"
+					ng-show="{{ $mission->user->id }} == user.id" 
+					href='{{ URL::to("order/deleteMission/" . $mission->id) }}'>刪除</a>
+			@else
+				<a class="btn btn-success pull-right" href='{{ URL::to("order/recoverMission/" . $mission->id) }}'>復原</a>
+			@endif
 		</h2>	
 		<h4><small>{{{ $mission->created_at }}}</small></h4>		
 		<input type="checkbox" name="isOpen" class="switchInput" data-size="mini" data-off-text="訂購完成" data-on-text="訂購中"

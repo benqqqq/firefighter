@@ -135,5 +135,8 @@
 				@endforeach
 			</div>
 		</div>
+		<div>
+			<h5><a href="{{ URL::to('order/trash') }}"><span class="glyphicon glyphicon-trash"></span> 已刪除的訂單</a></h5>			
+		</div>
 	</div>
 @stop        
