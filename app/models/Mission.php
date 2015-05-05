@@ -23,4 +23,9 @@ class Mission extends Eloquent {
 	public function orderCombos() {
 		return $this->hasManyThrough('OrderCombo', 'Order');
 	}
+
+	public function isReadOnly() {		
+		$isPast = new Date($this->updated_at) < new Date('-30 min');
+		return $this->isEnding && $isPast;
+	}
 }

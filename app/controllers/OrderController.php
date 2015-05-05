@@ -31,9 +31,7 @@ class OrderController extends BaseController {
 			'orders.user', 'orders.items', 
 			'orders.orderCombos.combo',
 			'orders.orderCombos.items',
-			'store.photos'])->find($id);
-		Log::info((new Date('-1 hour'))->diff(new Date($mission->updated_at))->hours);
-		
+			'store.photos'])->find($id);				
 		
 		$statistic = json_encode($this->buildOrderStatistic($id));
 		
@@ -274,6 +272,9 @@ class OrderController extends BaseController {
 
 	public function changeMissionStatus($id) {
 		$mission = Mission::find($id);
+		if ($mission->isReadOnly()) {
+			return '抱歉，此團已經結束，不可再修改';
+		}
 		$mission->isEnding = (Input::get('isEnding') == 'true')? true : false;
 		$mission->save();
 	}

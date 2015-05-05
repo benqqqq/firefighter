@@ -576,7 +576,13 @@ app.controller("orderCtrl", function($scope, socket) {
 			data:  {								
 				isEnding : !obj.checked
 			},			
-			type: 'post'
+			type: 'post',
+			success: function(data) {
+				if (data) {
+					$('#message').html(data);
+					$('#messageModal').modal();					
+				}
+			}
 		});				
 	};
 	$scope.mySortFunc = function(user) {
@@ -662,7 +668,7 @@ app.controller("orderCtrl", function($scope, socket) {
 			data : {
 				time : $scope.endMissionTime
 			},
-			type: 'post'
+			type: 'post'			
 		});
 	}
 });
