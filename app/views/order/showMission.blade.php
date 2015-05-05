@@ -220,6 +220,8 @@
 			<span ng-bind='item.optStr' ng-show='item.optStr != " "'  class="badge"></span>
 			 * 
 			<span ng-bind='item.quantity'></span>
+			=
+			<span class="label label-primary">{[{ item.totalPrice }]}$</span>
 		</p>
 		<p ng-repeat='combo in statistic.combo'>
 			<span ng-bind='combo.name'></span>
@@ -230,6 +232,8 @@
 			</span>
 			) *
 			<span ng-bind='combo.quantity'></span>
+			=
+			<span class="label label-primary">{[{ combo.totalPrice }]}$</span>
 		</p>
 		<hr/>
 		<p>

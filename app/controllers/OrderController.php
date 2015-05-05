@@ -54,8 +54,10 @@ class OrderController extends BaseController {
 					$item = Item::find($data->item_id);
 					$quantity = DB::table('item_order')->whereIn('order_id', $orderIds)
 						->where(['item_id' => $itemId, 'optStr' => $data->optStr])->sum('quantity');
-					array_push($result['item'], ['name' => $item->name, 'optStr' => $data->optStr, 'quantity' => $quantity]);
-					$result['price']['total'] += ($item->price + $data->optPrice) * $quantity;
+					$totalPrice = ($item->price + $data->optPrice) * $quantity;
+					array_push($result['item'], ['name' => $item->name, 'optStr' => $data->optStr, 'quantity' => $quantity, 
+						'totalPrice' => $totalPrice]);
+					$result['price']['total'] += $totalPrice;
 				}						
 			}	
 			$comboIds = OrderCombo::whereIn('order_id', $orderIds)->groupBy('combo_id')->lists('combo_id');
@@ -68,8 +70,10 @@ class OrderController extends BaseController {
 					foreach ($orderCombo->items as $item) {
 						array_push($items, ['name' => $item->name, 'optStr' => $item->pivot->optStr]);
 					}
-					array_push($result['combo'], ['name' => $orderCombo->combo->name, 'items' => $items, 'quantity' => $quantity]);
-					$result['price']['total'] += ($orderCombo->combo->basePrice() + $orderCombo->combo->price + $orderCombo->optPrice) * $quantity;
+					$totalPrice = ($orderCombo->combo->basePrice() + $orderCombo->combo->price + $orderCombo->optPrice) * $quantity;
+					array_push($result['combo'], ['name' => $orderCombo->combo->name, 'items' => $items, 'quantity' => $quantity,
+						'totalPrice' => $totalPrice]);
+					$result['price']['total'] += $totalPrice;
 				}				
 			}
 			foreach ($orderIds as $orderId) {
