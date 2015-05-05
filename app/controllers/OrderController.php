@@ -6,8 +6,7 @@ class OrderController extends BaseController {
 
 	public function show() {
 		$missions = Mission::where('isEnding', false)->with('user', 'store')->orderBy('created_at', 'desc')->get();
-		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->take(5)->get();		
-		
+		$historyMissions = Mission::where('isEnding', true)->with('user', 'store')->orderBy('created_at', 'desc')->take(5)->get();			
 		return View::make('order.show', ['missions' => $missions, 'historyMissions' => $historyMissions]);
 	}
 
@@ -33,6 +32,9 @@ class OrderController extends BaseController {
 			'orders.orderCombos.combo',
 			'orders.orderCombos.items',
 			'store.photos'])->find($id);
+		Log::info((new Date('-1 hour'))->diff(new Date($mission->updated_at))->hours);
+		
+		
 		$statistic = json_encode($this->buildOrderStatistic($id));
 		
 		$orders = $this->getOrders($id);
@@ -263,7 +265,10 @@ class OrderController extends BaseController {
 	}
 	
 	public function deleteMission($id) {
-		Mission::find($id)->delete();
+		$mission = Mission::find($id);
+/* 		if ($mission->isEnding && new Date() -  */
+		
+		$mission->delete();
 		return Redirect::to('order');
 	}
 
