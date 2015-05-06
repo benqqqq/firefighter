@@ -77,7 +77,7 @@
 
 		<div>
 			@if (count($missions) > 0)
-				<h2>跟團</h2>
+			<div class="jumbotron">
 				<p>正在進行的訂購</p>
 				<div class='list-group'>						
 					@foreach($missions as $mission)
@@ -101,6 +101,7 @@
 					</a>					
 					@endforeach
 				</div>
+			</div>
 			@else
 				<div class="jumbotron">
 					<h2>目前沒有進行中的訂購</h2>
@@ -110,9 +111,10 @@
 			@endif
 		</div>
 		<div>
-			<h2>歷史訂單</h2>
-			<p>以前的訂購資訊</p>
-			<div class='list-group'>						
+			<h4 class="btn btn-lg" data-toggle="collapse" data-target="#history-missions"
+				>歷史訂單 <small>以前的訂購資訊 <span class="caret"></span></small></h4>
+			
+			<div class='list-group collapse' id="history-missions">						
 				@foreach($historyMissions as $mission)
 				<a class='list-group-item' href='{{ URL::to("order/$mission->id") }}'>
 					<div class="row">
