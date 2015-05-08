@@ -65,7 +65,7 @@
 		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
 		<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $mission->store->address }}}</p>
 		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong>
-			<p class="pre">{{{ $mission->store->detail }}}</p>
+			<p class="pre">{{ $mission->store->detail }}</p>
 		</p>
 	</address>
 	
