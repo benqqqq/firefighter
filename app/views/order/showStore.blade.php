@@ -32,7 +32,7 @@
 					</div>
 					<div class="col-md-7 col-sm-7 col-xs-7">
 						<h4>{{{ $store->name }}}</h4>
-						<p class="pre">{{ $store->detail }}</p>
+						<p class="pre">{{{ $store->detail }}}</p>
 					</div>
 				</div>
 			</a>					
