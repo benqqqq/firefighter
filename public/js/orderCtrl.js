@@ -532,6 +532,10 @@ app.controller("orderCtrl", function($scope, socket) {
 		var time = time | 500;
 		if (opt) {
 			$(target).popover(opt);
+		} else {
+			$(target).popover({
+				trigger : 'manual'
+			});
 		}
 		$(target).popover('show');
 		setTimeout(function () {

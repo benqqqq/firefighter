@@ -45,7 +45,8 @@
 
 	<span ng-show='order.user.id == user.id' class="form-group">
 		<input type='number' ng-model='paid[order.id]' ng-init='paid[order.id] = order.paid' 
-			class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order.id)">
+			class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order.id)"
+			onclick="$(this).select()">
 	</span>
 	
 	<span class="form-group">

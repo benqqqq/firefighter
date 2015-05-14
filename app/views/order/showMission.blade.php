@@ -18,9 +18,6 @@
 					$scope.changeMissionStatus(this);
 				}
 			});
-			$("input[type='number']").on("click", function () {
-			   $(this).select();
-			});
 		});
 	</script>
 @stop
@@ -248,7 +245,7 @@
 			<span class="label label-primary">{[{ combo.totalPrice }]}$</span>
 		</p>
 		<p>
-			<span ng-repeat="order in orders"ng-show="order.items.length > 0 || order.order_combos.length > 0">
+			<span ng-repeat="order in orders" ng-show="order.remark != ''">
 				<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}
 				<span class="label label-info">{[{ order.remark }]}</span>
 			</span>
