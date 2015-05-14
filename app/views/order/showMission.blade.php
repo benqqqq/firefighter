@@ -302,7 +302,7 @@
 @stop     
 
 @section('nav-header')
-	<li class="pull-left visible-xs-block">
+	<li class="pull-left visible-xs-block" ng-show="user != null">
 		<a href="" onclick="util.moveTo('#myOrder')"><span class="glyphicon glyphicon-shopping-cart"></span></a>		
 	</li>
 @stop
