@@ -303,6 +303,6 @@
 
 @section('nav-header')
 	<li class="pull-left visible-xs-block">
-		<a href="#" onclick="util.moveTo('#myOrder')"><span class="glyphicon glyphicon-shopping-cart"></span></a>		
+		<a href="" onclick="util.moveTo('#myOrder')"><span class="glyphicon glyphicon-shopping-cart"></span></a>		
 	</li>
 @stop
