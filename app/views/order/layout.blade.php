@@ -78,8 +78,8 @@
     			</div>
     			
     			<div class="navbar-header pull-right">
-    				<ul class="nav pull-left">
-	    				<li class="navbar-text pull-left">番號 : </li>
+    				<ul class="nav navbar-nav pull-left navbar-fixed-left">
+						@yield('nav-header')
 	    				<li class="dropdown pull-right"
 	    					id="nav-serial" title="選擇後即可訂餐、新增" data-toggle="tooltip" data-placement="bottom"> 
 	    					<a href="" data-toggle="dropdown" class="dropdown-toggle">
@@ -104,8 +104,7 @@
 						<span class="icon-bar"></span>
 					</button>
 
-                <div class="clearfix hidden-lg hidden-md"></div>
-                <div class="collapse navbar-collapse pull-right" id="navbar">
+					<div class="collapse navbar-collapse pull-right" id="navbar">
                         <ul class="nav navbar-nav top-nav">
                             <li id="nav-order" title="訂購已新增的團" data-toggle="tooltip" data-placement="bottom">
                             	<a href="{{ URL::to('order') }}">跟團</a>
@@ -116,14 +115,13 @@
                         </ul>
                     </div>
     
-
     			</div>
                 
 
     		</div>
     	</nav>
-    	<div class='container'>
-	    	@yield('content')	    	
+    	<div class="container">
+	    	@yield('content')
     	</div>
     	
     	<footer class="footer">

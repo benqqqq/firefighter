@@ -1,8 +1,7 @@
 @if (!$isMe)
 	<h4><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></h4>
 @else
-	<h2>我的訂單 <small><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></small></h2>
-	<p>點擊來移出訂單</p>
+	
 @endif
 <p ng-repeat='item in order.items'>
 	@if ($isMe)
@@ -12,10 +11,11 @@
 	@endif
 		<span ng-bind='item.name'></span>
 		<span ng-bind='item.pivot.optStr' ng-show='item.pivot.optStr != " "' class="badge"></span>
-	</span>
-		<span> * </span>
-		<span ng-bind='item.pivot.quantity'></span> = 
+		
+		* <span ng-bind='item.pivot.quantity'></span> = 
 		<span class="label label-primary "><span ng-bind='(item.price + item.pivot.optPrice) * item.pivot.quantity'></span>$</span>
+	</span>
+		 
 </p>
 <p ng-repeat='orderCombo in order.order_combos'>
 	@if ($isMe)
@@ -30,14 +30,14 @@
 			<span ng-bind='item.pivot.optStr' ng-show='item.pivot.optStr != " "' class="badge"></span>
 		</span>
 		)
+		* <span ng-bind='orderCombo.quantity'></span> = 
+		<span class="label label-primary "
+			><span ng-bind='(orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity'></span>$</span>
 	</span>
-	<span> * </span> 
-	<span ng-bind='orderCombo.quantity'></span> = 
-	<span class="label label-primary "
-		><span ng-bind='(orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity'></span>$</span>
+	 
 </p>
 
-<p><strong>總共 : </strong><span class="label label-primary "><span ng-bind='getOrderPrice(order)'></span>$</span></p>
+<p><strong>總共 : </strong><span class="label label-primary border-light"><span ng-bind='getOrderPrice(order)'></span>$</span></p>
 	
 	
 <p class="form-inline">

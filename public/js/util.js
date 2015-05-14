@@ -24,4 +24,10 @@ var util = {
 			e.preventDefault();
 		}		
 	},
+	
+	moveTo : function(id) {
+		$('html, body').animate({
+			scrollTop: $(id).offset().top-70
+		}, 300);
+	}
 }

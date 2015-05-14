@@ -41,11 +41,8 @@ body {
 	background: #f7f7f7;
 	color: #686868;
 }
-.navbar {
-    .dropdown-toggle {
-	    margin-top: 5px;
-	    color: #777;
-    }    
+.navbar-fixed-left {
+	margin-right: 5px;
 }
 .btn-wrap {
 	white-space: normal;
@@ -138,4 +135,23 @@ body {
 }
 .glyphicon-cog {
 	font-size: 18px;
+}
+
+.right-nav {
+	position: fixed;
+	height: 100%;
+	right: 0;
+	top: 0;
+	padding-top: 50px;
+	overflow: auto;
+}
+
+#myOrder {
+	border-radius: 10px;
+	padding: 20px;
+	background-color: #f5f5f5;
+}
+
+.border-light {
+	border: 3px solid lighten(#f0ad4e, 10%);
 }

@@ -26,6 +26,8 @@
 @stop
 
 @section('content')
+
+<div class="col-md-10 col-sm-9 col-xs-12">
 	<span ng-init="url = '{{ URL::to("") }}'"></span>
 	<span ng-init="missionId = {{ $mission->id }}"></span>
 	<span ng-init='initStore({{ $mission->store->items }}  , {{ $mission->store->combos }})'></span>	
@@ -65,7 +67,7 @@
 		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
 		<p><span class='glyphicon glyphicon-home' aria-hidden="true"></span> <strong>地址 :</strong> {{{ $mission->store->address }}}</p>
 		<p><span class='glyphicon glyphicon-info-sign' aria-hidden="true"></span> <strong>備註 :</strong>
-			<p class="pre">{{ $mission->store->detail }}</p>
+			<p class="pre">{{{ $mission->store->detail }}}</p>
 		</p>
 	</address>
 	
@@ -208,8 +210,14 @@
 	<div ng-init='orders = {{ $orders }}'></div>
 	<div ng-init='refreshOrders()'></div>
 	
-	<div ng-repeat='order in myOrder' class="col-md-4 col-sm-6 col-xs-12">
-		{{ View::make('order.userOrder', ['isMe' => true]) }}
+	<div class="visible-xs-block" id="myOrder">
+		<h2>我的訂單 <small><span class="glyphicon glyphicon-user"></span> <span ng-bind='user.serial'></span></small></h2>
+		<p ng-show="user == null">請先選擇番號</p>
+		<hr/>	
+		<div ng-repeat='order in myOrder'>				
+			<p>點擊來移出訂單</p>
+			{{ View::make('order.userOrder', ['isMe' => true]) }}		
+		</div>
 	</div>
 	
 	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12" ng-show="order.items.length > 0 || order.order_combos.length > 0">
@@ -239,9 +247,15 @@
 			=
 			<span class="label label-primary">{[{ combo.totalPrice }]}$</span>
 		</p>
+		<p>
+			<span ng-repeat="order in orders"ng-show="order.items.length > 0 || order.order_combos.length > 0">
+				<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}
+				<span class="label label-info">{[{ order.remark }]}</span>
+			</span>
+		</p>
 		<hr/>
 		<p>
-			總共 : <span class="label label-primary"><span ng-bind='statistic.price.total'></span>$</span>
+			總共 : <span class="label label-primary border-light"><span ng-bind='statistic.price.total'></span>$</span>
 			已付 : <span class="label label-success"><span ng-bind='statistic.price.paid'></span>$</span>
 			<span ng-show='statistic.price.total - statistic.price.paid > 0'
 				class="label label-danger">少<span ng-bind='statistic.price.total - statistic.price.paid'></span>$</span>
@@ -276,4 +290,22 @@
 			</div>
 		</div>
 	</div>
-@stop        
+</div>
+
+<div class="navbar navbar-default right-nav col-md-2 col-sm-3 hidden-xs">
+	<h2>我的訂單 <small><span class="glyphicon glyphicon-user"></span> <span ng-bind='user.serial'></span></small></h2>
+	<p ng-show="user == null">請先選擇番號</p>
+	<hr/>	
+	<div ng-repeat='order in myOrder'>				
+		<p>點擊來移出訂單</p>
+		{{ View::make('order.userOrder', ['isMe' => true]) }}		
+	</div>
+</div>
+
+@stop     
+
+@section('nav-header')
+	<li class="pull-left visible-xs-block">
+		<a href="#" onclick="util.moveTo('#myOrder')"><span class="glyphicon glyphicon-shopping-cart"></span></a>		
+	</li>
+@stop
