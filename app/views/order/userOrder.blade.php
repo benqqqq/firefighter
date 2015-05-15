@@ -1,5 +1,7 @@
-@if (!$isMe)
-	<h4><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></h4>
+@if (!$isMe)	
+	<h4 ng-show="order.user.id == user.id" class="text-info" 
+		><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></h4>
+	<h4 ng-show="order.user.id != user.id"><span class="glyphicon glyphicon-user"></span> <span ng-bind='order.user.serial'></span></h4>
 @else
 	
 @endif
@@ -41,14 +43,16 @@
 	
 	
 <p class="form-inline">
-	<span class="form-group"><strong>已付 : </strong><span class="label label-success" ng-show="order.user.id != user.id">{[{ order.paid }]}$</span></span>
-
-	<span ng-show='order.user.id == user.id' class="form-group">
-		<input type='number' ng-model='paid[order.id]' ng-init='paid[order.id] = order.paid' 
-			class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order.id)"
-			onclick="$(this).select()">
+	<span class="form-group"><strong>已付 : </strong>
+		@if ($isMe)
+			<input type='number' ng-model='paid[order.id]' ng-init='paid[order.id] = order.paid' 
+				class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order.id)"
+				onclick="$(this).select()">		
+		@else
+			<span class="label label-success">{[{ order.paid }]}$</span>
+		@endif
 	</span>
-	
+		
 	<span class="form-group">
 		<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
 			>少 {[{ getOrderPrice(order) - order.paid }]} $</span>
@@ -58,15 +62,25 @@
 </p>
 
 <p>
-	<span><strong>備註 : </strong>
-		<small ng-show='order.user.id == user.id'>自行打上菜單沒有的品項或特殊需求</small>
-		<span ng-show='order.user.id != user.id' ng-bind='order.remark' class="pre"></span>
-	</span>
-
-	<div ng-show='order.user.id == user.id' class="form-group">		
-		<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" ng-blur="editRemark(order.id)" placeholder="培根牛肉堡要加辣">
-		</textarea>		
+	<div>
+		<div class="inline-block pull-left">
+			<strong>備註 : </strong>
+		</div>
+		@if ($isMe)
+			<br/>
+			<small>自行打上菜單沒有的品項或特殊需求</small>
+			<div class="form-group">		
+				<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' 
+				class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" 
+				ng-blur="editRemark(order.id)" placeholder="培根牛肉堡要加辣">
+				</textarea>		
+			</div>
+		@else
+			<div ng-bind='order.remark' class="inline-block pre remark-word"></div>
+		@endif		
 	</div>
+
+	
 
 </p>
 <hr/>

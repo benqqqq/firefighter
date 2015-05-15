@@ -217,7 +217,8 @@
 		</div>
 	</div>
 	
-	<div ng-repeat='order in otherOrders' class="col-md-4 col-sm-6 col-xs-12" ng-show="order.items.length > 0 || order.order_combos.length > 0">
+	<div ng-repeat='order in orders' class="col-md-4 col-sm-6 col-xs-12" 
+		ng-show="order.items.length > 0 || order.order_combos.length > 0">
 		{{ View::make('order.userOrder', ['isMe' => false]) }}
 	</div>
 			
