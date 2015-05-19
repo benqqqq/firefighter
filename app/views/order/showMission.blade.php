@@ -233,6 +233,10 @@
 			<span ng-bind='item.quantity'></span>
 			=
 			<span class="label label-primary">{[{ item.totalPrice }]}$</span>
+
+			<span ng-repeat="user in item.users">
+				<span class="glyphicon glyphicon-user"></span> {[{ user.serial }]}
+			</span>
 		</p>
 		<p ng-repeat='combo in statistic.combo'>
 			<span ng-bind='combo.name'></span>
@@ -245,6 +249,10 @@
 			<span ng-bind='combo.quantity'></span>
 			=
 			<span class="label label-primary">{[{ combo.totalPrice }]}$</span>
+			
+			<span ng-repeat="user in combo.users">
+				<span class="glyphicon glyphicon-user"></span> {[{ user.serial }]}
+			</span>
 		</p>
 		<p>
 			<span ng-repeat="order in orders" ng-show="order.remark != ''">
