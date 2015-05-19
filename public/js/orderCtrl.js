@@ -658,7 +658,7 @@ app.controller("orderCtrl", function($scope, socket) {
 				for (var i in item.opts) {
 					var opt = item.opts[i];
 					html += '<p>' + opt.name;
-					html += ' <span class="label label-primary">+' + opt.price + '$</span>';
+					html += ' <span class="label label-primary">' + opt.price + '$</span>';
 					html += '</p>';
 				}
 				return html;

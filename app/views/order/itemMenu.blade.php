@@ -49,7 +49,7 @@
 									</label>
 								</span>
 							</td>										
-							<td><span class='label label-primary '>+{{{ $opt->price }}}$</span></td>
+							<td><span class='label label-primary '>{{{ $opt->price }}}$</span></td>
 						</tr>
 					@endforeach	
 				</table>
