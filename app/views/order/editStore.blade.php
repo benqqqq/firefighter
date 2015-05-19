@@ -122,7 +122,7 @@
 					<th class="col-md-7">所有選項</th>
 					<th class="col-md-1">修改/複製/刪除</th>
 				</tr>
-				<tr ng-repeat="item in items" ng-click="insertItemToCategory(item)" class="itemRow">				
+				<tr ng-repeat="item in items" ng-click="insertItemToCategory(item); copyItemTo(item)" class="itemRow">				
 					<td class="form-inline">
 						<input type="text" ng-model="item.name" class="form-control input-sm col-md-8">											
 						<span class="input-group col-md-4">
@@ -153,6 +153,10 @@
 
 						<span class="btn btn-primary btn-xs" ng-click="copyItem(item)">
 							<span class="glyphicon glyphicon-copy"></span>
+						</span>
+
+						<span class="btn btn-primary btn-xs" id="itemBtn-{[{ item.id }]}" ng-click="startCopyItem(item)">
+							<span class="glyphicon glyphicon-tint"></span>
 						</span>
 
 						<span class="btn btn-primary btn-xs" ng-click="remove(items, item); refreshCombos()">

@@ -104,7 +104,7 @@
 					{{ View::make('order.itemMenu', ['items' => $mission->store->unCategoryItems]) }}
 				</li>
 				
-			
+				@if (count($mission->store->combos) > 0)
 				<li class="list-group-item col-md-8 col-sm-12 col-xs-12  menu-item">
 					<h4 class="list-group-item-heading btn btn-block btn-lg text-danger" ng-click="categoryToggle('c')"
 						ng-init="categoryIsShow['c'] = false">套餐
@@ -200,6 +200,7 @@
 					@endforeach
 					</div>
 				</li>
+				@endif
 			</ul>		
 		</div>
 	</div>

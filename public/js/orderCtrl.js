@@ -633,6 +633,35 @@ app.controller("orderCtrl", function($scope, socket) {
 			category.items.push(obj);
 		}
 	};
+	
+	copyInfo = {
+		isCopying : false,
+		item : null
+	};
+	$scope.startCopyItem = function(item) {
+		if (!copyInfo.isCopying) {
+			$('#itemBtn-' + item.id).removeClass('btn-primary').addClass('btn-success');
+			copyInfo.isCopying = true;
+			copyInfo.item = item;			
+			$('#item-table').removeClass('table-striped').addClass('table-hover');
+			$('.itemRow').css('cursor', 'pointer');
+		} else {
+			$('#itemBtn-' + item.id).removeClass('btn-success').addClass('btn-primary');	
+			copyInfo.isCopying = false;			
+			$('#item-table').removeClass('table-hover').addClass('table-striped');
+			$('.itemRow').css('cursor', 'auto');
+		}
+	};
+	$scope.copyItemTo = function(item) {		
+		if (!copyInfo.isCopying) {
+			return;
+		}
+		item.opts = $.extend(true, [], copyInfo.item.opts);
+		for (var i in item.opts) {
+			item.opts[i].id = -1;
+		}
+	};
+	
 	$('.optModal').on('hidden.bs.modal', function() {
  		var target = $('[data-target="#' +  $(this).attr('id') + '"]').parent('a'); 
 		flashPop(target, 3000, {
