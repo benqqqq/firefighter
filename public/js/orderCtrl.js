@@ -657,8 +657,9 @@ app.controller("orderCtrl", function($scope, socket) {
 				var html = '';
 				for (var i in item.opts) {
 					var opt = item.opts[i];
+					var plusSign = (opt.price >= 0)? '+' : '';
 					html += '<p>' + opt.name;
-					html += ' <span class="label label-primary">' + opt.price + '$</span>';
+					html += ' <span class="label label-primary">' + plusSign + opt.price + '$</span>';
 					html += '</p>';
 				}
 				return html;
