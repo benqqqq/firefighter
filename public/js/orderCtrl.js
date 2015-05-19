@@ -657,6 +657,8 @@ app.controller("orderCtrl", function($scope, socket) {
 			return;
 		}
 		item.opts = $.extend(true, [], copyInfo.item.opts);
+		item.optPrice = copyInfo.item.optPrice;
+		item.optStr = copyInfo.item.optStr;
 		for (var i in item.opts) {
 			item.opts[i].id = -1;
 		}
