@@ -45,8 +45,8 @@
 <p class="form-inline">
 	<span class="form-group"><strong>已付 : </strong>
 		@if ($isMe)
-			<input type='number' ng-model='paid[order.id]' ng-init='paid[order.id] = order.paid' 
-				class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order.id)"
+			<input type='number' ng-model='order.paid'
+				class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order)"
 				onclick="$(this).select()">		
 		@else
 			<span class="label label-success">{[{ order.paid }]}$</span>
@@ -70,13 +70,27 @@
 			<br/>
 			<small>自行打上菜單沒有的品項或特殊需求</small>
 			<div class="form-group">		
-				<textarea ng-model='remark[order.id]' ng-init='showRemark = false; remark[order.id] = order.remark' 
+				<textarea ng-model='order.remark'
 				class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" 
-				ng-blur="editRemark(order.id)" placeholder="培根牛肉堡要加辣">
+				ng-blur="editRemark(order)" placeholder="培根牛肉堡要加辣">
 				</textarea>		
+			</div>
+			<div class="form-group">
+				<label>調整總價格 : </label>
+				<br/>
+				<small>備註中品項的價錢</small>
+				<span class="input-group">
+					<span class="input-group-addon input-sm">±</span>
+					<input class="form-control input-sm pop-input-deviation" type="number" ng-model='order.deviation' 
+						data-content="已儲存" data-placement="bottom" ng-blur="editDeviation(order)" onclick="$(this).select()">
+					<span class="input-group-addon input-sm">$</span>
+				</span>
 			</div>
 		@else
 			<div ng-bind='order.remark' class="inline-block pre remark-word"></div>
+			<br>
+			<span class="label label-primary" ng-show="order.deviation != 0">調整總價格 : 
+				<span ng-show="order.deviation > 0">+</span>{[{ order.deviation }]} $</span>
 		@endif		
 	</div>
 

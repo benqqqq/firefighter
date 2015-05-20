@@ -41,6 +41,7 @@ Route::post('api/order/add', 'OrderController@addOrder');
 Route::post('api/order/decrease', 'OrderController@decrementOrder');
 Route::post('api/order/paid', 'OrderController@paid');
 Route::post('api/order/remark', 'OrderController@remark');
+Route::post('api/order/deviation', 'OrderController@deviation');
 Route::post('api/order/mission/{id}/end', 'OrderController@endMission');
 Route::post('api/order/mission/{id}/status', 'OrderController@changeMissionStatus');
 

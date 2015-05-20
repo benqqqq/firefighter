@@ -255,10 +255,14 @@
 			</span>
 		</p>
 		<p>
-			<span ng-repeat="order in orders" ng-show="order.remark != ''">
-				<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}
-				<span class="label label-info">{[{ order.remark }]}</span>
-			</span>
+			<span ng-repeat="order in orders">
+				<span ng-show="order.remark != '' || order.deviation != 0">
+					<span class="glyphicon glyphicon-user"></span> {[{ order.user.serial }]}
+				</span>
+				<span class="label label-info" ng-show="order.remark != ''">{[{ order.remark }]}</span>
+				<span class="label label-primary" ng-show="order.deviation != 0"
+					><span ng-show="order.deviation > 0">+</span>{[{ order.deviation }]}$</span>
+			</span>			
 		</p>
 		<hr/>
 		<p>

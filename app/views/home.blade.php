@@ -15,10 +15,15 @@
     		<div class="container">
 		    	<h1>基隆消防信二分隊</h1>	
 		    	<hr>			
+		    			    	
 				<a class="btn btn-warning btn-lg" href={{ URL::to('order') }}>訂餐</a>
 				<hr>
+				
 				<a class="btn btn-primary btn-lg" href={{ URL::to('storableDayWork') }}>勤務分配表</a>
-				<h5>僅供參考，實際依值班台為準</h5>
+				<h5>僅供參考，實際依值班台為準</h5>				
+				
+		    	<a class="btn btn-default btn-lg" href={{ URL::to('login') }}>登入</a>
+		    	<hr>
     		</div>
     	</div>
     </body>

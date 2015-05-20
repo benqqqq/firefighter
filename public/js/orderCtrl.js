@@ -213,20 +213,20 @@ app.controller("orderCtrl", function($scope, socket) {
 			var orderCombo = order.order_combos[i];
 			price += (orderCombo.combo.basePrice + orderCombo.combo.price + orderCombo.optPrice) * orderCombo.quantity;
 		}
+		price += order.deviation;
 		return price;
 	};
 	
-	$scope.paid = [];
-	$scope.editPaid = function(orderId) {		
-		if ($scope.paid[orderId] == null) {
+	$scope.editPaid = function(order) {		
+		if (order.paid == null) {
 			return;
 		}
 		$.ajax({
 			url : $scope.url + '/api/order/paid',
 			dataType : 'html',
 			data: {
-				orderId : orderId,
-				paid : $scope.paid[orderId]
+				orderId : order.id,
+				paid : order.paid
 			},
 			async : true,
 			type: 'post',
@@ -235,14 +235,14 @@ app.controller("orderCtrl", function($scope, socket) {
 			},
 		});
 	};
-	$scope.remark = [];
-	$scope.editRemark = function(orderId) {
+	
+	$scope.editRemark = function(order) {
 		$.ajax({
 			url : $scope.url + '/api/order/remark',
 			dataType : 'html',
 			data: {
-				orderId : orderId,
-				remark : $scope.remark[orderId]
+				orderId : order.id,
+				remark : order.remark
 			},
 			async : true,
 			type: 'post',
@@ -253,6 +253,26 @@ app.controller("orderCtrl", function($scope, socket) {
 
 	};
 	
+	$scope.editDeviation = function(order) {		
+		if (order.deviation == null) {
+			return;
+		}
+		$.ajax({
+			url : $scope.url + '/api/order/deviation',
+			dataType : 'html',
+			data: {
+				orderId : order.id,
+				deviation : order.deviation
+			},
+			async : true,
+			type: 'post',
+			success : function() {
+				flashPop('.pop-input-deviation');
+			},
+		});
+	};
+
+
 	$scope.submitForm = function(url) {
 		var form = document.getElementById('dataForm');
 		$("#items").val(JSON.stringify($scope.items));

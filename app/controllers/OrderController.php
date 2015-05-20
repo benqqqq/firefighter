@@ -97,6 +97,7 @@ class OrderController extends BaseController {
 			foreach ($orderIds as $orderId) {
 				$order = Order::find($orderId);
 				$result['price']['paid'] += $order->paid;
+				$result['price']['total'] += $order->deviation;
 			}
 		}
 		
@@ -229,6 +230,12 @@ class OrderController extends BaseController {
 		$order->save();
 		$this->update($order->mission->id);
 	}	
+	public function deviation() {
+		$order = Order::find(Input::get('orderId'));
+		$order->deviation = Input::get('deviation');
+		$order->save();
+		$this->update($order->mission->id);
+	}
 	
 	public function createStore() {
 		return View::make('order.createStore');
