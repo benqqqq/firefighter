@@ -492,7 +492,7 @@ app.controller("formCtrl", function($scope, $http) {
 			$scope.changeWork(time, serial);
 		}		
 	};
-	
+		
 	$scope.outputForm = function() {
 		$scope.output = 
 			"function fillWork(data) {	\
@@ -506,6 +506,7 @@ app.controller("formCtrl", function($scope, $http) {
 				document.getElementById(objId).value = data;	\
 			}";
 		buildResult();
+		$scope.output += "fillWork(" + JSON.stringify(getEmptyResult()) + ");";
 		$scope.output += "fillWork(" + JSON.stringify($scope.result) + ");";
 		$scope.output += "fillOther('" + $scope.rest1.toString() + "', '_txtVTYPE_A');";
 		$scope.output += "fillOther('" + $scope.rest2.toString() + "', '_txtVTYPE_B');";
@@ -552,6 +553,25 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest6result = $scope.rest6.concat($scope.rest9);
 		$scope.rest6result.sort(mySortFunc);
 	}
+
+	function getEmptyResult() {
+		var emptyResult = {};
+		var emptyTimes = {};
+		for (var i = 0; i < $scope.times.length; ++i) {
+			var time = $scope.times[i];
+			emptyTimes[time] = [];
+		}
+			
+		for (var j in $scope.mapping) {
+			var map = $scope.mapping[j];
+			var workId = map.id;
+			if (workId != -1) {					
+				emptyResult[workId] = $.extend({}, emptyTimes);
+			}
+		}		
+		return emptyResult;
+	}
+
 	function mySortFunc(a, b) {
 		if (!isNaN(parseInt(a))) {
 			a = parseInt(a);

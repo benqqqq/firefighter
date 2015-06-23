@@ -6,10 +6,14 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     	<script src="lib/angular-dragdrop.min.js"></script>
+    	
+
     	<script src="js/util.js"></script>
     	<script src="js/formCtrl.js"></script>
     	<link rel="stylesheet" href="css/dayWork.css">
     	
+
+
     </head>
     <body ng-app='workApp' ng-controller='formCtrl' ng-mousedown="press = true" ng-mouseup="press = false">
     	<span ng-init='host = "<?php echo URL::to("/") ?>"'></span>
@@ -199,8 +203,8 @@
 			</div>
 			
 			<button class='btn bck-red bck-red-hover' ng-click='outputForm()'>輸出為文字</button>
-			<span class='btn bck-orange' ng-click="restart()">重置</span>
-			
+			<span class='btn bck-orange' ng-click="restart()">重置</span>			
+
 			<span ng-show="output">複製以下文字至Console貼上</span>				
 			<p class='output'>{{ output }}</p>
 			
