@@ -291,13 +291,13 @@ app.controller("formCtrl", function($scope, $http) {
 			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0},
 			memberTimes : {}
 		};
-		for (var i = 1; i < 21; ++i) {
+		for (var i = 1; i < 22; ++i) {
 			$scope.analysis.memberTimes[i] = 0;
 		}
 	}
 	
 	function insertMembers() {
-		for (var i = 1; i < 21; ++i) {
+		for (var i = 1; i < 22; ++i) {
 			$scope.rest1.push(i + '');
 		}
 		$scope.rest1 = $scope.rest1.concat(us);
