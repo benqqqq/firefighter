@@ -8,7 +8,7 @@ var attandArticle = "第一梯次\n\
 分隊通訊 ";
 var memoInit = "空氣複合瓶 可使用量21支  52車複合瓶6支 61車複合瓶8支 71車複合瓶7支\n\
 救生艇2艘 橡皮艇2艘  分隊通訊22時後燈火管制\n";
-var memoPeople = "20號公假(警大受訓)\n"
+var memoPeople = "21號公假(警大受訓)\n"
 var memoArticle = memoInit + memoPeople;
 
 
