@@ -137,7 +137,9 @@ app.controller("formCtrl", function($scope, $http) {
 		for (var i in $scope.serials) {
 			var serial = $scope.serials[i];
 			var article = $scope.attandArticle.replace(/[35679][12]/gm, '');
-			if (article.indexOf(serial) == -1) {
+			var reg = RegExp('[^0-9]' + serial + '[^0-9]', 'g');
+			var count = (article.match(reg) || []).length;			
+			if (count != 1) {
 				$scope.serialColor[serial] = 'red';
 			} else {
 				delete $scope.serialColor[serial];
@@ -253,6 +255,7 @@ app.controller("formCtrl", function($scope, $http) {
 	};		
 	
 	createTimes();
+	$scope.serialColor = {};
 	
 	function init() {		
 		loadDefaults();
@@ -261,7 +264,7 @@ app.controller("formCtrl", function($scope, $http) {
 		insertMembers();		
 		$scope.changeWorkType(0);
 		$scope.attandArticle = attandArticle;
-		$scope.memoArticle = memoInit + memoPeople;
+		$scope.memoArticle = memoInit + memoPeople;		
 		$scope.serialColor = {};
 		$scope.systemArticle = '';
 	}

@@ -185,7 +185,7 @@
 					</span>
 					, 
 				</span><br>
-				(<span class='red'>紅色</span>為尚未填入以下任一車輛)					
+				(<span class='red'>紅色</span>為尚未填入以下任一車輛 / 重複填寫)					
 				<div class='outputAfter'>
 					<ul>
 						<li>91車92車(1~15日91，16~31日92)</li>
