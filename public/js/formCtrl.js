@@ -252,10 +252,10 @@ app.controller("formCtrl", function($scope, $http) {
 
 	};		
 	
+	createTimes();
 	
 	function init() {		
 		loadDefaults();
-		createTimes();
 		createInfoStorage();
 		createBtnsStorage();
 		insertMembers();		
