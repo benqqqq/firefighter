@@ -15,6 +15,8 @@ Route::get('/', 'HomeController@show');
 
 Route::get('dayWork', 'DayWorkController@show');
 Route::get('storableDayWork', 'DayWorkController@showStorable');
+Route::get('dayWork/default', 'DayWorkController@showDefault');
+Route::post('dayWork/default/edit', 'DayWorkController@editDefault');
 Route::post('dayWork/store', 'DayWorkController@store');
 Route::post('dayWork/load', 'DayWorkController@load');
 

@@ -9,8 +9,8 @@ var attandArticle = "第一梯次\n\
 var memoInit = "空氣複合瓶 可使用量21支  52車複合瓶6支 61車複合瓶8支 71車複合瓶7支\n\
 救生艇2艘 橡皮艇2艘  分隊通訊22時後燈火管制\n";
 var memoPeople = "21號公假(警大受訓)\n"
-var memoArticle = memoInit + memoPeople;
-
+var memberNum = 22;
+var memberAlphaMax = 'D';
 
 var app = angular.module("workApp", ['ngDragDrop']);
 
@@ -34,8 +34,6 @@ app.controller("formCtrl", function($scope, $http) {
 	$scope.restMapping = {
 		'1' : '輪休', '2' : '外宿', '3' : '補休', '4' : '休假', '5' : '差假', '6' : '事病假', '7' : '特休', '8' : '慰外假', '9' : '榮譽假'	
 	};
-	var us = ['A', 'B', 'C', 'D'];
-	
 	
 	
 	$scope.changeWorkType = function(index) {
@@ -254,18 +252,30 @@ app.controller("formCtrl", function($scope, $http) {
 
 	};		
 	
-	init();
 	
-	function init() {
+	function init() {		
+		loadDefaults();
 		createTimes();
 		createInfoStorage();
 		createBtnsStorage();
 		insertMembers();		
 		$scope.changeWorkType(0);
 		$scope.attandArticle = attandArticle;
-		$scope.memoArticle = memoArticle;
+		$scope.memoArticle = memoInit + memoPeople;
 		$scope.serialColor = {};
 		$scope.systemArticle = '';
+	}
+	
+	function loadDefaults() {
+		memberNum = getDefaultFromCode('memberNum');
+		memberAlphaMax = getDefaultFromCode('memberAlphaMax');
+		attandArticle = getDefaultFromCode('attandArticle');
+		memoInit = getDefaultFromCode('memoInit');
+		memoPeople = getDefaultFromCode('memoPeople');		
+	}
+	function getDefaultFromCode(code) {
+		var result = $.grep($scope.defaults, function(e) { return e.code == code });
+		return result[0].content;
 	}
 	
 	function createTimes() {
@@ -288,21 +298,29 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.rest9 = [];
 		$scope.rest1Class = {};
 		$scope.analysis = {
-			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0},
+			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0, 'F' : 0, 'G' : 0},
 			memberTimes : {}
 		};
-		for (var i = 1; i < 22; ++i) {
+		for (var i = 1; i <= memberNum; ++i) {
 			$scope.analysis.memberTimes[i] = 0;
 		}
 	}
 	
 	function insertMembers() {
-		for (var i = 1; i < 22; ++i) {
+		for (var i = 1; i <= memberNum; ++i) {
 			$scope.rest1.push(i + '');
 		}
-		$scope.rest1 = $scope.rest1.concat(us);
+		$scope.rest1 = $scope.rest1.concat(range('A', memberAlphaMax));
 		$scope.all = $scope.rest1.slice();
-		$scope.all.sort(mySortFunc)
+		$scope.all.sort(mySortFunc);
+	}
+	
+	function range(start,stop) {
+		var result=[];
+		for (var idx=start.charCodeAt(0),end=stop.charCodeAt(0); idx <=end; ++idx){
+			result.push(String.fromCharCode(idx));
+		}
+		return result;
 	}
 	
 	function createBtnsStorage() {		
@@ -724,7 +742,7 @@ app.controller("formCtrl", function($scope, $http) {
 		$scope.attandArticle = (result.attandArticle)? result.attandArticle : attandArticle;
 		$scope.memoArticle = (result.memoArticle)? result.memoArticle : memoArticle;		
 		$scope.analysis = (result.analysis) ? result.analysis : {
-			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0},
+			usTimes : {'A' : 0, 'B' : 0, 'C' : 0, 'D' : 0, 'E' : 0, 'F' : 0, 'G' : 0},
 			memberTimes : {}
 		};
 		$scope.systemArticle = (result.systemArticle) ? result.systemArticle : '';

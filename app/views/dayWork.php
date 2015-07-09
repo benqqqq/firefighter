@@ -18,9 +18,10 @@
     <body ng-app='workApp' ng-controller='formCtrl' ng-mousedown="press = true" ng-mouseup="press = false">
     	<span ng-init='host = "<?php echo URL::to("/") ?>"'></span>
 		<?php if($storable):?>
-			<span ng-init='loadNow()'></span>
+			<span ng-init='defaults = <?php echo $defaults ?>'></span>
+			<span ng-init='init()'></span>						
+			<span ng-init='loadNow()'></span>						
 		<?php endif; ?>
-
 
 		<div class='workTypeArea'>
 			<h1 class='area-content'>選擇勤務</h1>
@@ -34,6 +35,12 @@
 	    		</span>
 	    	</div>
 
+			<?php if($storable):?>
+				<div class="area-content">
+					<a class="btn bck-orange bck-red-hover" href="<?php echo URL::to("dayWork/default")?>">修改預設值</a>
+				</div>
+			<?php endif; ?>
+			
 		</div>
     	
     	<div class='restArea'>
