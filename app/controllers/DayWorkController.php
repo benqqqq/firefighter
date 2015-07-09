@@ -15,7 +15,7 @@ class DayWorkController extends BaseController {
 	}
 	public function showDefault() {
 		$defaults = Workdefault::all();
-		return View::make('dayWorkdefault', ['defaults' => $defaults]);
+		return View::make('dayWorkDefault', ['defaults' => $defaults]);
 	}
 	
 	public function editDefault() {
