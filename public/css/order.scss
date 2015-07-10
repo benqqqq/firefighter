@@ -136,6 +136,9 @@ body {
 .glyphicon-cog {
 	font-size: 18px;
 }
+.hidden-cog {
+	color: white;
+}
 
 .right-nav {
 	position: fixed;
@@ -163,4 +166,15 @@ body {
 
 .remark-word {
 	margin-left: 5px;
+}
+
+.menuRow {
+	margin-bottom: 0;
+	.btn {
+		font-size: 15px;
+		padding: 3.75px 12px;
+		&:hover {
+			background-color: #e2e2e2;
+		}
+	}
 }

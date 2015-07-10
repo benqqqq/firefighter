@@ -1,10 +1,12 @@
 @foreach ($items as $item)
-<p>
+<p class="menuRow">
 	@if (count($item->opts) > 0)		
 		<a href=""><span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal{{ $item->id }}"></span></a>
+	@else
+		<span class="glyphicon glyphicon-cog hidden-cog"></span>
 	@endif
 	<span class='{{ count($item->opts) > 0 ? "order-btn" : "" }}' data-item-id={{ $item->id }}>
-		<span class="btn btn-default pop-i-{{ $item->id }}"
+		<span class="btn pop-i-{{ $item->id }}"
 			ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" data-html="true">
 			<span>{{{ $item->name }}}</span>
 	

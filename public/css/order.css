@@ -112,6 +112,9 @@ body {
 .glyphicon-cog {
   font-size: 18px; }
 
+.hidden-cog {
+  color: white; }
+
 .right-nav {
   position: fixed;
   height: 100%;
@@ -134,5 +137,13 @@ body {
 
 .remark-word {
   margin-left: 5px; }
+
+.menuRow {
+  margin-bottom: 0; }
+  .menuRow .btn {
+    font-size: 15px;
+    padding: 3.75px 12px; }
+    .menuRow .btn:hover {
+      background-color: #e2e2e2; }
 
 /*# sourceMappingURL=order.css.map */
