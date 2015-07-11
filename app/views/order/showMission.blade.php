@@ -115,8 +115,8 @@
 					</h4>
 					<div class="menu-item-content menu-item-content-c">
 					@foreach ($mission->store->combos as $combo)			
-						<p>
-							<span class="btn btn-default pop-c-{{ $combo->id }}" 
+						<p class="menuRow">
+							<span class="btn pop-c-{{ $combo->id }}" 
 								ng-click="orderCombo({{ $combo->id }}, '.pop-c-{{ $combo->id }}')" 
 								 data-html="true">
 								<span>{{{ $combo->name }}}</span>

@@ -17,4 +17,29 @@ class Item extends Eloquent {
 		CtrlUtil::setOpt($this, $optIds);
 		$this->save();
 	}
+	
+	public function frequency() {
+		/*
+$storeFrequency = DB::table('item_order')
+			->join('items', 'item_order.item_id', '=', 'items.id')
+			->where('store_id', $this->store_id)->count();		
+return ($storeFrequency == 0)? 0 : $itemFrequency / $storeFrequency;
+*/
+		$category = DB::table('category_item')->where('item_id', $this->id)->select('category_id')->first();
+		if ($category == null) {
+			return 0;
+		} else {
+			$categoryId = $category->category_id;
+			$categoryFrequency = DB::table('item_order')
+				->join('category_item', 'item_order.item_id', '=', 'category_item.item_id')
+				->where('category_id', $categoryId)->count();		
+			$itemFrequency = DB::table('item_order')->where('item_id', $this->id)->count();
+			return ($categoryFrequency == 0) ? 0 : $itemFrequency / $categoryFrequency;
+		}		
+	}
+	
+	public function hotColor() {
+		$frequency = $this->frequency();
+		return ($frequency > 0.3)? 'text-danger' : ($frequency > 0.2)? 'text-warning' : '';
+	}
 }
