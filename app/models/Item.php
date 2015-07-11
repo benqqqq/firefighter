@@ -40,6 +40,12 @@ return ($storeFrequency == 0)? 0 : $itemFrequency / $storeFrequency;
 	
 	public function hotColor() {
 		$frequency = $this->frequency();
-		return ($frequency > 0.3)? 'text-danger' : ($frequency > 0.2)? 'text-warning' : '';
+		if ($frequency >= 0.2) {
+			return 'text-hottest';
+		} else if ($frequency >= 0.1) {
+			return 'text-hotter';
+		} else {
+			return '';
+		}
 	}
 }
