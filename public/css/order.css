@@ -142,7 +142,8 @@ body {
   margin-bottom: 0; }
   .menuRow .btn {
     font-size: 15px;
-    padding: 3.75px 12px; }
+    padding: 3.75px 12px;
+    border: 1px solid #f3f3f3; }
     .menuRow .btn:hover {
       background-color: #e2e2e2; }
 

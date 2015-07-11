@@ -19,12 +19,6 @@ class Item extends Eloquent {
 	}
 	
 	public function frequency() {
-		/*
-$storeFrequency = DB::table('item_order')
-			->join('items', 'item_order.item_id', '=', 'items.id')
-			->where('store_id', $this->store_id)->count();		
-return ($storeFrequency == 0)? 0 : $itemFrequency / $storeFrequency;
-*/
 		$category = DB::table('category_item')->where('item_id', $this->id)->select('category_id')->first();
 		if ($category == null) {
 			return 0;

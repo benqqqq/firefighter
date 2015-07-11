@@ -119,7 +119,7 @@
 							<span class="btn pop-c-{{ $combo->id }}" 
 								ng-click="orderCombo({{ $combo->id }}, '.pop-c-{{ $combo->id }}')" 
 								 data-html="true">
-								<span>{{{ $combo->name }}}</span>
+								<span class="{{ $combo->hotColor() }}">{{{ $combo->name }}}</span>
 							</span>
 							
 							(
@@ -143,7 +143,7 @@
 							
 							<span class='label label-primary '><span ng-bind='cPrice[{{ $combo->id }}]'></span>$</span>
 							@if ($combo->remark != '')
-								<small class="remark">({{ $combo->remark }})</small>
+								<small class="remark nowrap">({{ $combo->remark }})</small>
 							@endif
 						</p>
 						@foreach ($combo->items as $item)
