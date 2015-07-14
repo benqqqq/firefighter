@@ -7,16 +7,14 @@
 		<span class="glyphicon glyphicon-cog hidden-cog"></span>
 	@endif
 	
-	<span class='{{ count($item->opts) > 0 ? "order-btn" : "" }}' data-item-id={{ $item->id }}>
-		<span class="btn pop-i-{{ $item->id }}"
-			ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" data-html="true">
-			<span class="{{ $item->hotColor() }}">{{{ $item->name }}}</span>
-	
-			@foreach ($item->opts as $opt)
-				<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
-			@endforeach			
-		</span>			
-	</span>	
+	<span class="btn pop-i-{{ $item->id }}"
+		ng-click="orderItem({{ $item->id }}, '.pop-i-{{ $item->id }}');" data-html="true">
+		<span class="{{ $item->hotColor() }}">{{{ $item->name }}}</span>
+
+		@foreach ($item->opts as $opt)
+			<span ng-show='itemOpt[{{ $item->id }}][{{ $opt->id }}]' class='badge'>{{{ $opt->name }}}</span>
+		@endforeach			
+	</span>			
 	
 	<span class='label label-primary'><span ng-bind='iPrice[{{ $item->id }}]'></span>$</span></span>
 	

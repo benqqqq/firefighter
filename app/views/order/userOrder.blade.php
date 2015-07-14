@@ -5,9 +5,9 @@
 @else
 	
 @endif
-<p ng-repeat='item in order.items'>
+<p ng-repeat='item in order.items' class="orderRow">
 	@if ($isMe)
-	<span class="btn btn-default btn-wrap" ng-click="decrementItem(order.id, item.id, item.pivot.optStr)">
+	<span class="btn btn-wrap" ng-click="decrementItem(order.id, item.id, item.pivot.optStr)">
 	@else
 	<span class="">
 	@endif
@@ -19,7 +19,7 @@
 	</span>
 		 
 </p>
-<p ng-repeat='orderCombo in order.order_combos'>
+<p ng-repeat='orderCombo in order.order_combos' class="orderRow">
 	@if ($isMe)
 	<span class="btn btn-default btn-wrap" ng-click="decrementCombo(order.id, orderCombo.id)">
 	@else
@@ -38,27 +38,39 @@
 	</span>
 	 
 </p>
-
-<p><strong>總共 : </strong><span class="label label-primary border-light"><span ng-bind='getOrderPrice(order)'></span>$</span></p>
+<br>
+<p>
+	<strong>總共 : </strong><span class="label label-primary border-light"><span ng-bind='getOrderPrice(order)'></span>$</span>
+	<span>
+		<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
+			>少{[{ getOrderPrice(order) - order.paid }]}$</span>
+		<span ng-show='getOrderPrice(order) - order.paid < 0' class="label label-warning"
+			>退{[{ order.paid - getOrderPrice(order) }]}$</span>	
+	</span>
+</p>
 	
 	
-<p class="form-inline">
-	<span class="form-group"><strong>已付 : </strong>
-		@if ($isMe)
+<p>
+	<div>
+	@if ($isMe)
+		<span class="input-group">
+			<span class="input-group-addon input-sm">已付</span>
 			<input type='number' ng-model='order.paid'
 				class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order)"
 				onclick="$(this).select()">		
-		@else
-			<span class="label label-success">{[{ order.paid }]}$</span>
-		@endif
-	</span>
-		
-	<span class="form-group">
-		<span ng-show='getOrderPrice(order) - order.paid > 0' class="label label-danger"
-			>少 {[{ getOrderPrice(order) - order.paid }]} $</span>
-		<span ng-show='getOrderPrice(order) - order.paid < 0' class="label label-warning"
-			>退 {[{ order.paid - getOrderPrice(order) }]} $</span>	
-	</span>
+			<span class="input-group-addon input-sm">$</span>
+		</span>
+	@else
+		<strong>已付 : </strong>
+		<span class="label label-success">{[{ order.paid }]}$</span>
+		<button class="btn btn-sm btn-default" ng-click="order.paid = getOrderPrice(order); editPaid(order)"
+			><span class="glyphicon glyphicon-ok"></span></button>
+		<button class="btn btn-sm btn-default" ng-click="order.paid = 100; editPaid(order)"
+			>100$</button>
+		<button class="btn btn-sm btn-default" ng-click="order.paid = 200; editPaid(order)"
+			>200$</button>
+	@endif
+	</div>
 </p>
 
 <p>
@@ -67,8 +79,7 @@
 			<strong>備註 : </strong>
 		</div>
 		@if ($isMe)
-			<br/>
-			<small>自行打上菜單沒有的品項或特殊需求</small>
+			<small>&nbsp菜單沒有的品項或特殊需求</small>
 			<div class="form-group">		
 				<textarea ng-model='order.remark'
 				class="form-control pop-input-remark" data-content="已儲存" data-placement="bottom" 
@@ -77,7 +88,6 @@
 			</div>
 			<div class="form-group">
 				<label>調整總價格 : </label>
-				<br/>
 				<small>備註中品項的價錢</small>
 				<span class="input-group">
 					<span class="input-group-addon input-sm">±</span>

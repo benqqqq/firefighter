@@ -43,7 +43,12 @@ class OrderController extends BaseController {
 		
 		$orders = $this->getOrders($id);
 		
-		return View::make('order.showMission', ['mission' => $mission, 'orders' => $orders, 'statistic' => $statistic]);
+		$storeId = Mission::find($id)->store()->first()->id;
+		$lastOrders = Store::find($storeId)->lastOrder()->get();		
+		$recentOrders = Store::find($storeId)->recentOrders(); 
+		
+		return View::make('order.showMission', ['mission' => $mission, 'orders' => $orders, 'statistic' => $statistic, 
+			'lastOrders' => $lastOrders, 'recentOrders' => $recentOrders]);
 	}
 		
 	private function buildOrderStatistic($id) {

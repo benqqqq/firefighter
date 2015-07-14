@@ -113,7 +113,7 @@ body {
   font-size: 18px; }
 
 .hidden-cog {
-  color: white; }
+  color: transparent; }
 
 .right-nav {
   position: fixed;
@@ -138,14 +138,20 @@ body {
 .remark-word {
   margin-left: 5px; }
 
-.menuRow {
-  margin-bottom: 0; }
-  .menuRow .btn {
+.menuRow, .orderRow {
+  margin-bottom: 4px; }
+  .menuRow .btn, .orderRow .btn {
     font-size: 15px;
     padding: 3.75px 12px;
-    border: 1px solid #f3f3f3; }
-    .menuRow .btn:hover {
+    border: 1px solid #f3f3f3;
+    background: white; }
+    .menuRow .btn:hover, .orderRow .btn:hover {
       background-color: #e2e2e2; }
+
+.orderRow {
+  margin-bottom: 2px; }
+  .orderRow .btn {
+    background: white; }
 
 .text-hottest {
   color: #b90000;

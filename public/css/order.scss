@@ -137,7 +137,7 @@ body {
 	font-size: 18px;
 }
 .hidden-cog {
-	color: white;
+	color: rgba(0, 0, 0, 0);
 }
 
 .right-nav {
@@ -169,14 +169,22 @@ body {
 }
 
 .menuRow {
-	margin-bottom: 0;
+	margin-bottom: 4px;
 	.btn {
 		font-size: 15px;
 		padding: 3.75px 12px;
 		border: 1px solid #f3f3f3;
+		background: white;
 		&:hover {
 			background-color: #e2e2e2;
 		}
+	}
+}
+.orderRow {
+	@extend .menuRow;
+	margin-bottom: 2px;
+	.btn {		
+		background: white;
 	}
 }
 .text-hottest {
