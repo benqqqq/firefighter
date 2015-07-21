@@ -45,7 +45,9 @@ class OrderController extends BaseController {
 		
 		$storeId = Mission::find($id)->store()->first()->id;
 		$lastOrders = Store::find($storeId)->lastOrder()->get();		
-		$recentOrders = Store::find($storeId)->recentOrders(); 
+		$recentOrders = Cache::remember('recentOrder-'.$storeId, 60, function() use ($storeId) {
+			return Store::find($storeId)->recentOrders();
+		});
 		
 		return View::make('order.showMission', ['mission' => $mission, 'orders' => $orders, 'statistic' => $statistic, 
 			'lastOrders' => $lastOrders, 'recentOrders' => $recentOrders]);

@@ -28,7 +28,10 @@ class Combo extends Eloquent {
 		return ($storeFrequency == 0)? 0 : $comboFrequency / $storeFrequency;
 	}
 	public function hotColor() {
-		$frequency = $this->frequency();
+		$frequency = Cache::remember('frequency-c-'.$this->id, 60, function() {
+            return $this->frequency();
+        });
+
 		if ($frequency >= 0.2) {
 			return 'text-hottest';
 		} else if ($frequency >= 0.1) {
