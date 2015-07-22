@@ -25,7 +25,7 @@
 			$('.right-nav').on('mouseleave', function() {
 				var isShown = false
 				$('.optModal').each(function(i, v) {
-					if ($(v).data('bs.modal').isShown == true) {
+					if ($(v).data('bs.modal') && $(v).data('bs.modal').isShown == true) {						
 						isShown = true;
 					}
 				});
