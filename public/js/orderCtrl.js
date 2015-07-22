@@ -217,6 +217,12 @@ app.controller("orderCtrl", function($scope, socket) {
 		return price;
 	};
 	
+	$scope.getCeilPrice = function(order, digit) {
+		var price = $scope.getOrderPrice(order);
+		var size = Math.pow(10, digit);
+		return Math.ceil(price / size) * size;
+	};
+	
 	$scope.editPaid = function(order) {		
 		if (order.paid == null) {
 			return;

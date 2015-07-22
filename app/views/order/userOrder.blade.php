@@ -65,10 +65,13 @@
 		<span class="label label-success">{[{ order.paid }]}$</span>
 		<button class="btn btn-sm btn-default" ng-click="order.paid = getOrderPrice(order); editPaid(order)"
 			><span class="glyphicon glyphicon-ok"></span></button>
-		<button class="btn btn-sm btn-default" ng-click="order.paid = 100; editPaid(order)"
-			>100$</button>
-		<button class="btn btn-sm btn-default" ng-click="order.paid = 200; editPaid(order)"
-			>200$</button>
+
+		<button class="btn btn-sm btn-default" ng-click="order.paid = getCeilPrice(order, 1); editPaid(order)"
+			ng-show="getCeilPrice(order, 1) != getOrderPrice(order)"
+			>{[{ getCeilPrice(order, 1) }]}$</button>
+		<button class="btn btn-sm btn-default" ng-click="order.paid = getCeilPrice(order, 2); editPaid(order)"
+			ng-show="getCeilPrice(order, 2) != getOrderPrice(order)"
+			>{[{ getCeilPrice(order, 2) }]}$</button>
 	@endif
 	</div>
 </p>

@@ -167,6 +167,7 @@
 			
 	<div ng-init='statistic = {{ $statistic }}' class="col-md-12 col-sm-12 col-xs-12">
 		<h2>統計</h2>
+		<p><span class='glyphicon glyphicon-phone-alt' aria-hidden="true"></span> <strong>電話 :</strong> {{{ $mission->store->phone }}}</p>
 		<p ng-repeat='item in statistic.item'>
 			<span ng-bind='item.name'></span>
 			
