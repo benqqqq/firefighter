@@ -53,16 +53,17 @@
 <p>
 	<div>
 	@if ($isMe)
-		<span class="input-group">
+		<p class="input-group">
 			<span class="input-group-addon input-sm">已付</span>
 			<input type='number' ng-model='order.paid'
 				class="form-control input-sm pop-input-paid" data-content="已儲存" data-placement="bottom" ng-blur="editPaid(order)"
 				onclick="$(this).select()">		
 			<span class="input-group-addon input-sm">$</span>
-		</span>
+		</p>
 	@else
 		<strong>已付 : </strong>
-		<span class="label label-success">{[{ order.paid }]}$</span>
+		<span class="label label-success">{[{ order.paid }]}$</span>		
+	@endif
 		<button class="btn btn-sm btn-default" ng-click="order.paid = getOrderPrice(order); editPaid(order)"
 			><span class="glyphicon glyphicon-ok"></span></button>
 
@@ -70,9 +71,8 @@
 			ng-show="getCeilPrice(order, 1) != getOrderPrice(order)"
 			>{[{ getCeilPrice(order, 1) }]}$</button>
 		<button class="btn btn-sm btn-default" ng-click="order.paid = getCeilPrice(order, 2); editPaid(order)"
-			ng-show="getCeilPrice(order, 2) != getOrderPrice(order)"
+			ng-show="getCeilPrice(order, 2) != getOrderPrice(order) && getCeilPrice(order, 2) != getCeilPrice(order, 1)"
 			>{[{ getCeilPrice(order, 2) }]}$</button>
-	@endif
 	</div>
 </p>
 
