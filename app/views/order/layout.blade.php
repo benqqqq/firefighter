@@ -12,6 +12,7 @@
             var host = hostSplit[0] + ':' + hostSplit[1];
         </script>
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js') }}		
+		
 		{{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
     	{{ HTML::script('https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js') }}
     	

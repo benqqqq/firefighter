@@ -38,8 +38,7 @@
 @stop
 
 @section('content')
-
-<div class="col-md-10 col-sm-9 col-xs-12">
+<div class="col-md-10 col-sm-9 col-xs-12 showUntilReady">
 	<span ng-init="url = '{{ URL::to("") }}'"></span>
 	<span ng-init="missionId = {{ $mission->id }}"></span>
 	<span ng-init='initStore({{ $mission->store->items }}  , {{ $mission->store->combos }})'></span>	
@@ -246,7 +245,7 @@
 	</div>
 </div>
 
-<div class="navbar navbar-default right-nav col-md-2 col-sm-3 hidden-xs">
+<div class="navbar navbar-default right-nav col-md-2 col-sm-3 hidden-xs showUntilReady">
 	<h2>我的訂單 <small><span class="glyphicon glyphicon-user"></span> <span ng-bind='user.serial'></span></small></h2>
 	<p ng-show="user == null">請先選擇番號</p>
 	<hr/>	

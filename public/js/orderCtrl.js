@@ -50,6 +50,9 @@ app.controller("orderCtrl", function($scope, socket) {
 		}
 		
 	});
+	(function() {
+		$('.showUntilReady').css('opacity', 1);	
+	})();
 	
     $scope.iPrice = {};
     $scope.cPrice = {};

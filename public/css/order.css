@@ -161,4 +161,7 @@ body {
   color: #cc7e00;
   font-weight: bold; }
 
+.showUntilReady {
+  opacity: 0; }
+
 /*# sourceMappingURL=order.css.map */

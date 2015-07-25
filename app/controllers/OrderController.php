@@ -40,7 +40,6 @@ class OrderController extends BaseController {
 			'store.photos'])->find($id);				
 		
 		$statistic = json_encode($this->buildOrderStatistic($id));
-		
 		$orders = $this->getOrders($id);
 		
 		$storeId = Mission::find($id)->store()->first()->id;
