@@ -60,6 +60,7 @@ app.controller("orderCtrl", function($scope, socket) {
     $scope.comboItemOpt = {};
     $scope.initStore = function(items, combos) {
     	$scope.items = items;
+    	$scope.combos = combos;
     	for (var i in items) {
 	    	var item = items[i];
 	    	$scope.iPrice[item.id] = item.price;
@@ -85,6 +86,20 @@ app.controller("orderCtrl", function($scope, socket) {
 			    }
 		    }
 	    }
+    };
+    $scope.getItem = function(id) {
+		return $.grep($scope.items, function(e) { return e.id == id})[0];
+    };
+    $scope.getCombo = function(id) {
+		return $.grep($scope.combos, function(e) { return e.id == id})[0];
+    };
+    $scope.setOptModal = function(id) {
+    	var item = $scope.getItem(id);
+	    $scope.optItem = item;	    
+    };
+    $scope.setComboOptModal = function(id) {
+    	var combo = $scope.getCombo(id);
+	    $scope.optCombo = combo;
     };
     
     $scope.orderItem = function(id, popTarget) {
@@ -694,13 +709,20 @@ app.controller("orderCtrl", function($scope, socket) {
 	};
 	
 	$('.optModal').on('hidden.bs.modal', function() {
- 		var target = $('[data-target="#' +  $(this).attr('id') + '"]').parent('a'); 
+		var id;
+		if ($scope.optCombo) {
+			id = '#cog-' + $scope.optItem.id + '-' + $scope.optCombo.id;
+		} else {
+			id = '#cog-' + $scope.optItem.id;
+		}		
+ 		var target = $(id).parent('a');
 		flashPop(target, 3000, {
 			trigger : 'manual',
 			placement : 'top',
 			title : '注意 !',
 			content : '如果您更改了選項，記得要點品項名稱才會新增到訂單'
 		})
+		$scope.optCombo = null;
 	});
 	
 	if (!window.mobileAndTabletcheck()) {

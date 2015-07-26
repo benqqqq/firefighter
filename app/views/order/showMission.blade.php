@@ -243,6 +243,95 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	<div class="modal fade optModal" id="optModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+						><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">{[{ optItem.name }]} 
+						<span class='label label-primary '>{[{ optItem.price }]}$</span>
+						<small class="remark" ng-show="optItem.remark != ''">({[{ optItem.remark }]})</small>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<table class='table table-striped'>
+						<tr>
+							<th>名稱</th><th>加價</th>
+						</tr>
+						<tr ng-repeat="opt in optItem.opts">
+							<td>
+								<span class="checkbox">
+									<label>
+										<input type='checkbox' ng-model='itemOpt[optItem.id][opt.id]' 
+											ng-change='changeItemPrice(optItem.id, opt.id, opt.price)'>
+										{[{ opt.name }]}
+									</label>
+								</span>
+							</td>										
+							<td><span class='label label-primary '>{[{ opt.price }]}$</span></td>
+						</tr>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					{[{ optItem.name }]} 
+					<span ng-repeat="opt in optItem.opts" 
+						ng-show='itemOpt[optItem.id][opt.id]' class='badge'>{[{ opt.name }]}</span>
+						
+					總共 : <span class='label label-primary '><span ng-bind='iPrice[optItem.id]'></span>$</span>
+					<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	<div class="modal fade optModal" id="comboOptModal" tabindex="-1" 
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+						><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel"
+						>{[{ optCombo.name  + optItem.name }]} <span class='label label-primary '
+						>{[{ optItem.price }]}$</span>
+						<small class="remark" ng-show="optCombo.remark != ''">({[{ optCombo.remark }]})</small>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<table class='table table-striped'>
+						<tr>
+							<th>名稱</th><th>加價</th>
+						</tr>
+						<tr ng-repeat="opt in optItem.opts">
+							<td>
+								<div class="checkbox">
+									<label>
+										<input type='checkbox' 
+											ng-model='comboItemOpt[optCombo.id][optItem.id][opt.id]' 
+											ng-change='changeComboPrice(optCombo.id, optItem.id , opt.id, opt.price)'>
+										{[{ opt.name }]}
+									</label>
+								</div>
+							</td>
+							<td><span class='label label-primary '>{[{ opt.price }]}$</span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					{[{ optItem.name }]} 
+					<span ng-repeat="opt in optItem.opts" ng-show='comboItemOpt[optCombo.id][optItem.id][opt.id]' 
+						class='badge'>{[{ opt.name }]}</span>
+					套餐總共 : <span class='label label-primary '><span ng-bind='cPrice[optCombo.id]'></span>$</span>
+					<button type="button" class="btn btn-default" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </div>
 
 <div class="navbar navbar-default right-nav col-md-2 col-sm-3 hidden-xs showUntilReady">
